@@ -4,7 +4,7 @@ from snail import Snail
 from team import Team
 
 #D Display
-surface = pygame.display.set_mode([640,480]) #retourneert Surface
+surface = pygame.display.set_mode([640,640]) #retourneert Surface
 pygame.display.set_caption("Gravity Snails")
 
 pygame.mouse.set_visible(False)
