@@ -11,7 +11,8 @@ class Terrain(pygame.sprite.Group):
         
         for i in range(0,5):
             terrainSprite = pygame.sprite.Sprite()
-            terrainSprite.image, terrainSprite.rect = utils.load_image("ground.png")
+            terrainSprite.image = utils.load_image("ground.png")
+            terrainSprite.rect = terrainSprite.image.get_rect()
             terrainSprite.rect.move_ip(random.randint(0,640), random.randint(0,480))
             # add it to the terrain group
             self.add(terrainSprite)
