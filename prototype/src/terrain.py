@@ -1,0 +1,17 @@
+import pygame
+import random
+
+import utils
+
+class Terrain(pygame.sprite.Group):
+    def __init__(self):
+        pygame.sprite.Group.__init__(self)
+        
+        # create a terrain sprite
+        
+        for i in range(0,5):
+            terrainSprite = pygame.sprite.Sprite()
+            terrainSprite.image, terrainSprite.rect = utils.load_image("ground.png")
+            terrainSprite.rect.move_ip(random.randint(0,640), random.randint(0,480))
+            # add it to the terrain group
+            self.add(terrainSprite)
