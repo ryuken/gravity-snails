@@ -21,3 +21,9 @@ class Terrain(pygame.sprite.Group):
         terrainSprite.rect = terrainSprite.image.get_rect()
         terrainSprite.rect.move_ip(0, 640 - 100)
         self.add(terrainSprite)
+
+        terrainSprite = pygame.sprite.Sprite()
+        terrainSprite.image = utils.load_image("ground.png")
+        terrainSprite.rect = terrainSprite.image.get_rect()
+        terrainSprite.rect.move_ip(0, 0)
+        self.add(terrainSprite)
