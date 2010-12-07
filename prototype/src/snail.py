@@ -5,18 +5,31 @@ from pygame.locals import *
 from utils import load_image
 
 class Snail(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, terrain):
         pygame.sprite.Sprite.__init__(self)
         self.image_right = load_image('snailRight.png')
         self.image_left = load_image('snailLeft.png')
         self.image = self.image_right
         self.rect = self.image.get_rect()
-        self.movingLeft = False
+        self.speed = {'x' : 5, 'y' : 5}
+        self.direction = {'x' : 0.0, 'y' : 0.0}#Don't touch this!!!
+        self.terrain = terrain
     def update(self):
         #E Event
+        self.direction['x'] = 0
         if (pygame.key.get_pressed()[K_LEFT]):
-            self.rect = self.rect.move(-1,0)
+            self.direction['x'] = -self.speed['x']
             self.image = self.image_left
         if (pygame.key.get_pressed()[K_RIGHT]):
-            self.rect = self.rect.move(1,0)
+            self.direction['x'] = self.speed['x']
             self.image = self.image_right
+        if (pygame.key.get_pressed()[K_RETURN]):
+            self.direction['y'] = -self.speed['y']
+        self.direction['y'] += 0.2
+        if self.direction['y'] > 5:
+            self.direction['y'] = 5
+        self.rect = self.rect.move(self.direction['x'], self.direction['y'])
+        list = pygame.sprite.spritecollide(self, self.terrain, False)
+        if(len(list) > 0):
+            self.rect = self.rect.move(-self.direction['x'], -self.direction['y'])
+            self.direction['y'] = 0
