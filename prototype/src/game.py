@@ -13,7 +13,7 @@ pygame.mouse.set_visible(False)
 terrain = Terrain()
 team = Team('groep6')
 snail = Snail(terrain)
-snail.rect.move_ip(0, surface.get_height() - snail.rect.height - 100)
+snail.rect.move_ip(400, surface.get_height() - snail.rect.height - 100)
 team.add(snail)
 
 blue     = 0, 0, 128
