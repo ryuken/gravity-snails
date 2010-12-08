@@ -1,10 +1,10 @@
 import pygame
 import sys
 from pygame.locals import *
-
 from utils import load_image
 
 class Snail(pygame.sprite.Sprite):
+
     def __init__(self, terrain):
         pygame.sprite.Sprite.__init__(self)
         self.image_down_right = load_image('snailRight.png')
@@ -30,8 +30,11 @@ class Snail(pygame.sprite.Sprite):
             self.image = self.image_right_up
         if self.gravity_direction == self.FALL_RIGHT:
             self.image = self.image_right_up
-        self.rect = self.image.get_rect()
+        self.rect = self.image.get_rect()  
         self.terrain = terrain
+        
+        self.hitpoints = 100
+
     def update(self):
         #E Event
         self.updateMove()
@@ -68,7 +71,7 @@ class Snail(pygame.sprite.Sprite):
                 self.image = self.image_left_down
             elif(self.gravity_direction == self.FALL_RIGHT):
                 self.image = self.image_right_down
-
+                
     def updateGravity(self):
         self.direction['jump'] += self.speed['fall']
         if self.direction['jump'] > 5:

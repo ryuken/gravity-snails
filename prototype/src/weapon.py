@@ -5,8 +5,10 @@ from utils import load_image
 
 class Item(pygame.sprite.Sprite):
 
-    def __init__(self):
-        self.power = 20
+    def __init__(self, name, power, quantity=99):
+        self.name = name
+        self.power = power
+        self.quantity = quantity
     
     def shoot(self, target):
         target.getHit(self)
