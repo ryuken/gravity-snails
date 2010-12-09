@@ -30,27 +30,34 @@ class Snail(pygame.sprite.Sprite):
             self.image = self.image_right_up
         if self.gravity_direction == self.FALL_RIGHT:
             self.image = self.image_right_up
-        self.rect = self.image.get_rect()  
+        self.rect = self.image.get_rect()
         self.terrain = terrain
-        
+
         self.hitpoints = 100
+        self.isPlaced = False
 
     def update(self):
         #E Event
+        if(not self.isPlaced and pygame.mouse.get_pressed()[0]):
+            prev_x = self.rect.centerx
+            prev_y = self.rect.centery
+            self.rect.centerx = pygame.mouse.get_pos()[0]
+            self.rect.centery = pygame.mouse.get_pos()[1]
+            list = pygame.sprite.spritecollide(self, self.terrain, False)
+            if(len(list) > 0):
+                self.rect.centerx = prev_x
+                self.rect.centery = prev_y
+            else:
+                self.isPlaced = True
         self.updateMove()
+        self.updateImage()
         self.updateGravity()
 
         self.updateCollisionHorizontal()
         self.updateCollisionVertical()
-
-    def updateMove(self):
-        self.direction['movement'] = 0
-        left_pressed = pygame.key.get_pressed()[K_LEFT]
-        right_pressed = pygame.key.get_pressed()[K_RIGHT]
-        up_pressed = pygame.key.get_pressed()[K_UP]
-        down_pressed = pygame.key.get_pressed()[K_DOWN]
-        if(self.gravity_direction == self.FALL_RIGHT or self.gravity_direction == self.FALL_LEFT):
-            left_pressed, right_pressed = up_pressed, down_pressed
+    def updateImage(self):
+        left_pressed = self.direction['movement'] == -self.speed['movement']
+        right_pressed = self.direction['movement'] == self.speed['movement']
         if (left_pressed):
             self.direction['movement'] = -self.speed['movement']
             if(self.gravity_direction == self.FALL_DOWN):
@@ -71,7 +78,21 @@ class Snail(pygame.sprite.Sprite):
                 self.image = self.image_left_down
             elif(self.gravity_direction == self.FALL_RIGHT):
                 self.image = self.image_right_down
-                
+
+    def updateMove(self):
+        self.direction['movement'] = 0
+        left_pressed = pygame.key.get_pressed()[K_LEFT]
+        right_pressed = pygame.key.get_pressed()[K_RIGHT]
+        up_pressed = pygame.key.get_pressed()[K_UP]
+        down_pressed = pygame.key.get_pressed()[K_DOWN]
+        if(self.gravity_direction == self.FALL_RIGHT or self.gravity_direction == self.FALL_LEFT):
+            left_pressed, right_pressed = up_pressed, down_pressed
+        if (left_pressed):
+            self.direction['movement'] = -self.speed['movement']
+        if (right_pressed):
+            self.direction['movement'] = self.speed['movement']
+        self.updateImage()
+
     def updateGravity(self):
         self.direction['jump'] += self.speed['fall']
         if self.direction['jump'] > 5:
@@ -111,3 +132,6 @@ class Snail(pygame.sprite.Sprite):
                 self.rect = self.rect.move(-self.direction['movement'], 0)
             else:
                 self.rect = self.rect.move(0, -self.direction['movement'])
+
+
+
