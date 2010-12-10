@@ -10,10 +10,11 @@ pygame.display.set_caption("Gravity Snails")
 
 #A Assign
 terrain = Terrain()
-team = Team('groep6')
+team1 = Team('groep5')
+team2 = Team('groep6')
 snail = Snail(terrain)
-snail.rect.move_ip(400, surface.get_height() - snail.rect.height - 100)
-team.add(snail)
+#snail.rect.move_ip(400, surface.get_height() - snail.rect.height - 100)
+team1.add(snail)
 
 blue     = 0, 0, 128
 clock     = pygame.time.Clock()
@@ -28,12 +29,16 @@ while keepGoing:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             keepGoing = False
-
+        if event.type == pygame.MOUSEBUTTONUP:
+            if (snail.isPlaced):
+                snail = Snail(terrain)
+                team1.add(snail)
+        
     terrain.update()
-    team.update()
+    team1.update()
 
     #R refresh
     surface.fill(blue)
     terrain.draw(surface)
-    team.draw(surface)
+    team1.draw(surface)
     pygame.display.flip()

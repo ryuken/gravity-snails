@@ -38,7 +38,7 @@ class Snail(pygame.sprite.Sprite):
 
     def update(self):
         #E Event
-        if(not self.isPlaced and pygame.mouse.get_pressed()[0]):
+        if(not self.isPlaced):
             prev_x = self.rect.centerx
             prev_y = self.rect.centery
             self.rect.centerx = pygame.mouse.get_pos()[0]
@@ -48,11 +48,14 @@ class Snail(pygame.sprite.Sprite):
                 self.rect.centerx = prev_x
                 self.rect.centery = prev_y
             else:
-                self.isPlaced = True
-        self.updateMove()
-        self.updateImage()
-        self.updateGravity()
+                if pygame.mouse.get_pressed()[0]:
+                    self.isPlaced = True
+        
+        if self.isPlaced:
+            self.updateMove()
+            self.updateGravity()
 
+        self.updateImage()
         self.updateCollisionHorizontal()
         self.updateCollisionVertical()
     def updateImage(self):
