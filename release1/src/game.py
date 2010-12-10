@@ -2,6 +2,10 @@ import pygame
 from terrain import Terrain
 from snail import Snail
 from team import Team
+from timer import Timer
+
+#I Import
+pygame.font.init()
 
 #D Display
 surface = pygame.display.set_mode([640,640]) #retourneert Surface
@@ -15,6 +19,7 @@ team2 = Team('groep6')
 snail = Snail(terrain)
 #snail.rect.move_ip(400, surface.get_height() - snail.rect.height - 100)
 team1.add(snail)
+timer = Timer(position=(0,0), size=(20,20), startTime="30")
 
 blue     = 0, 0, 128
 clock     = pygame.time.Clock()
@@ -27,6 +32,7 @@ while keepGoing:
 
     #E Event
     for event in pygame.event.get():
+        timer.update(event)
         if event.type == pygame.QUIT:
             keepGoing = False
         if event.type == pygame.MOUSEBUTTONUP:
@@ -41,4 +47,5 @@ while keepGoing:
     surface.fill(blue)
     terrain.draw(surface)
     team1.draw(surface)
+    timer.draw(surface)
     pygame.display.flip()
