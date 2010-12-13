@@ -38,6 +38,8 @@ class Game(object):
             #E Event
             for event in pygame.event.get():
                 self.timer.update(event)
+                for team in self.teams:
+                    team.updateEvent(event)
                 if event.type == pygame.QUIT:
                     return
 #                if event.type == pygame.MOUSEBUTTONUP:
