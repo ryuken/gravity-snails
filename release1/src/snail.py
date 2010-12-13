@@ -5,10 +5,11 @@ from pygame.locals import *
 from utils import load_image
 from weapon import Weapon
 from enums import Direction
+from bullet import Bullet
 
 class Snail(pygame.sprite.Sprite):
 
-    def __init__(self, terrain):
+    def __init__(self, game):
         pygame.sprite.Sprite.__init__(self)
         self.image_down_right = load_image('snailRight.png')
         self.image_down_left = load_image('snailLeft.png')
@@ -20,17 +21,17 @@ class Snail(pygame.sprite.Sprite):
         self.image_right_down = pygame.transform.rotate(self.image_down_left, 90)
         self.speed = {'movement' : 2, 'jump' : 10, 'fall' : 0.2}
         self.direction = {'movement' : 0.0, 'jump' : 0.0}#Don't touch this!!!
-        self.gravity_direction = Direction.DOWN
+        self.gravity_direction = Direction.UP
         if self.gravity_direction == Direction.DOWN:
             self.image = self.image_down_right
         if self.gravity_direction == Direction.UP:
             self.image = self.image_up_right
         if self.gravity_direction == Direction.LEFT:
-            self.image = self.image_right_up
+            self.image = self.image_left_up
         if self.gravity_direction == Direction.RIGHT:
             self.image = self.image_right_up
         self.rect = self.image.get_rect()
-        self.terrain = terrain
+        self.game = game
 
         self.hitpoints = 100
         self.isPlaced = False
@@ -44,7 +45,7 @@ class Snail(pygame.sprite.Sprite):
             prev_y = self.rect.centery
             self.rect.centerx = pygame.mouse.get_pos()[0]
             self.rect.centery = pygame.mouse.get_pos()[1]
-            list = pygame.sprite.spritecollide(self, self.terrain, False)
+            list = pygame.sprite.spritecollide(self, self.game.terrain, False)
             if(len(list) > 0):
                 self.rect.centerx = prev_x
                 self.rect.centery = prev_y
@@ -89,8 +90,11 @@ class Snail(pygame.sprite.Sprite):
         right_pressed = pygame.key.get_pressed()[K_RIGHT]
         up_pressed = pygame.key.get_pressed()[K_UP]
         down_pressed = pygame.key.get_pressed()[K_DOWN]
+        space_pressed = pygame.key.get_pressed()[K_SPACE]
         if(self.gravity_direction == Direction.LEFT or self.gravity_direction == Direction.RIGHT):
+            temp_left, temp_right = left_pressed, right_pressed
             left_pressed, right_pressed = up_pressed, down_pressed
+            up_pressed, down_pressed = temp_left, temp_right
         if (left_pressed):
             self.direction['movement'] = -self.speed['movement']
         if (right_pressed):
@@ -103,6 +107,10 @@ class Snail(pygame.sprite.Sprite):
             self.weaponAngle -= 1
             if self.weaponAngle < 0:
                 self.weaponAngle = 360 + self.weaponAngle
+        if (space_pressed):
+            bullet_speed_x = math.cos(math.radians(self.weaponAngle)) * 2.0
+            bullet_speed_y = math.sin(math.radians(self.weaponAngle)) * 2.0
+            self.game.addBullet(Bullet(self.weapon.rect.center, [bullet_speed_x, bullet_speed_y]))
         self.updateImage()
 
     def updateGravity(self):
@@ -119,12 +127,12 @@ class Snail(pygame.sprite.Sprite):
             self.rect = self.rect.move(-self.direction['jump'], 0)
         if(self.gravity_direction == Direction.RIGHT):
             self.rect = self.rect.move(self.direction['jump'], 0)
-        list = pygame.sprite.spritecollide(self, self.terrain, False)
+        list = pygame.sprite.spritecollide(self, self.game.terrain, False)
         if(len(list) > 0):
-            if(self.gravity_direction == Direction.UP):
-                self.rect = self.rect.move(0, self.direction['jump'])
             if(self.gravity_direction == Direction.DOWN):
                 self.rect = self.rect.move(0, -self.direction['jump'])
+            if(self.gravity_direction == Direction.UP):
+                self.rect = self.rect.move(0, self.direction['jump'])
             if(self.gravity_direction == Direction.LEFT):
                 self.rect = self.rect.move(self.direction['jump'], 0)
             if(self.gravity_direction == Direction.RIGHT):
@@ -138,7 +146,7 @@ class Snail(pygame.sprite.Sprite):
             self.rect = self.rect.move(self.direction['movement'], 0)
         else:
             self.rect = self.rect.move(0, self.direction['movement'])
-        list = pygame.sprite.spritecollide(self, self.terrain, False)
+        list = pygame.sprite.spritecollide(self, self.game.terrain, False)
         if(len(list) > 0):
             if(self.gravity_direction == Direction.DOWN or self.gravity_direction == Direction.UP):
                 self.rect = self.rect.move(-self.direction['movement'], 0)

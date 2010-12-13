@@ -23,14 +23,19 @@ class Game(object):
         self.terrain = Terrain()
         #snail.rect.move_ip(400, surface.get_height() - snail.rect.height - 100)
 #        self.team1.add(self.snail)
+
+        self.bullets = pygame.sprite.Group()
     
     def addTeam(self, name, countSnails):
         team = Team(name)
         for i in range(0, countSnails):
-            snail = Snail(self.terrain)
+            snail = Snail(self)
             team.add(snail)
         self.teams.append(team)
     
+    def addBullet(self, bullet):
+        self.bullets.add(bullet)
+        
     def run(self):
         self.timer = Timer(position=(0,0), size=(20,20), startTime="30", teams=self.teams)
         
@@ -54,11 +59,14 @@ class Game(object):
             for team in self.teams:
                 team.update()
         
+            self.bullets.update()
+            
             #R refresh
             self.surface.fill(self.blue)
             self.terrain.draw(self.surface)
             for team in self.teams:
                 team.draw(self.surface)
+            self.bullets.draw(self.surface)
             self.timer.draw(self.surface)
             pygame.display.flip()
 
