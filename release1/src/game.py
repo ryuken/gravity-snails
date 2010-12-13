@@ -13,7 +13,7 @@ class Game(object):
         self.surface = pygame.display.set_mode([640,640]) #retourneert Surface
         pygame.display.set_caption("Gravity Snails")
         self.teams = []
-
+        self.currentTurn = 0
         #A Assign
         self.terrain = Terrain()
         #snail.rect.move_ip(400, surface.get_height() - snail.rect.height - 100)
@@ -26,7 +26,7 @@ class Game(object):
     def addTeam(self, name, countSnails):
         team = Team(name)
         for i in range(0, countSnails):
-            snail = Snail()
+            snail = Snail(self.terrain)
             team.add(snail)
         self.teams.append(team)
     
@@ -47,7 +47,7 @@ class Game(object):
                 
             self.terrain.update()
             for team in self.teams:
-                team.update(self.terrain)
+                team.update()
         
             #R refresh
             self.surface.fill(self.blue)
