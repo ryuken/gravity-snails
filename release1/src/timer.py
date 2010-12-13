@@ -16,19 +16,21 @@ class Timer(object):
         self.status = TurnStatus.BREAK
         
         #Why +1???
-        pygame.time.set_timer(USEREVENT+1, 1000)
+        pygame.time.set_timer(USEREVENT, 1000)
     
     def draw(self, surface):
+        # Draw the red rectangle on the game surface
         self.rect = surface.fill((255,0,0), self.rect)
         surface.blit(surface, self.position)
-        text = self.font.render(self.currentTime, 1, (10, 10, 10))
+        # Create a new surface at the position of the red rectangle and draw the text
+        text = self.font.render(self.currentTime, 1, (10, 10, 10)) #returns surface
         surface.blit(text, self.position)
     
     def update(self, event):
-        if event.type == USEREVENT+1:
+        if event.type == USEREVENT:
             if self.status == TurnStatus.CURRENTTURN:
                 self.currentTime = str(int(self.currentTime) - 1)
-                print "Go to next turn"
+                # if the time hits 0 end the turn and start the break
                 if self.currentTime == "0":
                     self.status = TurnStatus.BREAK
                     self.currentTime = self.breakTime
