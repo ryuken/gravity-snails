@@ -13,7 +13,7 @@ class Game(object):
         self.surface = pygame.display.set_mode([640,640]) #retourneert Surface
         pygame.display.set_caption("Gravity Snails")
         self.teams = []
-        
+
         #A Assign
         self.terrain = Terrain()
         #snail.rect.move_ip(400, surface.get_height() - snail.rect.height - 100)

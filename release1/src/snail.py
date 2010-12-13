@@ -2,6 +2,7 @@ import pygame
 import sys
 from pygame.locals import *
 from utils import load_image
+from weapon import Weapon
 
 class Snail(pygame.sprite.Sprite):
 
@@ -17,24 +18,25 @@ class Snail(pygame.sprite.Sprite):
         self.image_right_down = pygame.transform.rotate(self.image_down_left, 90)
         self.speed = {'movement' : 2, 'jump' : 10, 'fall' : 0.2}
         self.direction = {'movement' : 0.0, 'jump' : 0.0}#Don't touch this!!!
-        self.FALL_UP = 0
-        self.FALL_DOWN = 1
-        self.FALL_LEFT = 2
-        self.FALL_RIGHT = 3
-        self.gravity_direction = self.FALL_RIGHT
-        if self.gravity_direction == self.FALL_DOWN:
+        self.DIRECTION_UP = 0
+        self.DIRECTION_DOWN = 1
+        self.DIRECTION_LEFT = 2
+        self.DIRECTION_RIGHT = 3
+        self.gravity_direction = self.DIRECTION_RIGHT
+        if self.gravity_direction == self.DIRECTION_DOWN:
             self.image = self.image_down_right
-        if self.gravity_direction == self.FALL_UP:
+        if self.gravity_direction == self.DIRECTION_UP:
             self.image = self.image_up_right
-        if self.gravity_direction == self.FALL_LEFT:
+        if self.gravity_direction == self.DIRECTION_LEFT:
             self.image = self.image_right_up
-        if self.gravity_direction == self.FALL_RIGHT:
+        if self.gravity_direction == self.DIRECTION_RIGHT:
             self.image = self.image_right_up
         self.rect = self.image.get_rect()
         self.terrain = terrain
 
         self.hitpoints = 100
         self.isPlaced = False
+        self.weapon = Weapon("laser", 100)
 
     def update(self):
         #E Event
@@ -50,7 +52,7 @@ class Snail(pygame.sprite.Sprite):
             else:
                 if pygame.mouse.get_pressed()[0]:
                     self.isPlaced = True
-        
+
         if self.isPlaced:
             self.updateMove()
             self.updateGravity()
@@ -63,23 +65,23 @@ class Snail(pygame.sprite.Sprite):
         right_pressed = self.direction['movement'] == self.speed['movement']
         if (left_pressed):
             self.direction['movement'] = -self.speed['movement']
-            if(self.gravity_direction == self.FALL_DOWN):
+            if(self.gravity_direction == self.DIRECTION_DOWN):
                 self.image = self.image_down_left
-            elif(self.gravity_direction == self.FALL_UP):
+            elif(self.gravity_direction == self.DIRECTION_UP):
                 self.image = self.image_up_left
-            elif(self.gravity_direction == self.FALL_LEFT):
+            elif(self.gravity_direction == self.DIRECTION_LEFT):
                 self.image = self.image_left_up
-            elif(self.gravity_direction == self.FALL_RIGHT):
+            elif(self.gravity_direction == self.DIRECTION_RIGHT):
                 self.image = self.image_right_up
         if (right_pressed):
             self.direction['movement'] = self.speed['movement']
-            if(self.gravity_direction == self.FALL_DOWN):
+            if(self.gravity_direction == self.DIRECTION_DOWN):
                 self.image = self.image_down_right
-            elif(self.gravity_direction == self.FALL_UP):
+            elif(self.gravity_direction == self.DIRECTION_UP):
                 self.image = self.image_up_right
-            elif(self.gravity_direction == self.FALL_LEFT):
+            elif(self.gravity_direction == self.DIRECTION_LEFT):
                 self.image = self.image_left_down
-            elif(self.gravity_direction == self.FALL_RIGHT):
+            elif(self.gravity_direction == self.DIRECTION_RIGHT):
                 self.image = self.image_right_down
 
     def updateMove(self):
@@ -88,7 +90,7 @@ class Snail(pygame.sprite.Sprite):
         right_pressed = pygame.key.get_pressed()[K_RIGHT]
         up_pressed = pygame.key.get_pressed()[K_UP]
         down_pressed = pygame.key.get_pressed()[K_DOWN]
-        if(self.gravity_direction == self.FALL_RIGHT or self.gravity_direction == self.FALL_LEFT):
+        if(self.gravity_direction == self.DIRECTION_RIGHT or self.gravity_direction == self.DIRECTION_LEFT):
             left_pressed, right_pressed = up_pressed, down_pressed
         if (left_pressed):
             self.direction['movement'] = -self.speed['movement']
@@ -102,39 +104,49 @@ class Snail(pygame.sprite.Sprite):
             self.direction['jump'] = 5
 
     def updateCollisionVertical(self):
-        if(self.gravity_direction == self.FALL_DOWN):
+        if(self.gravity_direction == self.DIRECTION_DOWN):
             self.rect = self.rect.move(0, self.direction['jump'])
-        if(self.gravity_direction == self.FALL_UP):
+        if(self.gravity_direction == self.DIRECTION_UP):
             self.rect = self.rect.move(0, -self.direction['jump'])
-        if(self.gravity_direction == self.FALL_LEFT):
+        if(self.gravity_direction == self.DIRECTION_LEFT):
             self.rect = self.rect.move(-self.direction['jump'], 0)
-        if(self.gravity_direction == self.FALL_RIGHT):
+        if(self.gravity_direction == self.DIRECTION_RIGHT):
             self.rect = self.rect.move(self.direction['jump'], 0)
         list = pygame.sprite.spritecollide(self, self.terrain, False)
         if(len(list) > 0):
-            if(self.gravity_direction == self.FALL_UP):
+            if(self.gravity_direction == self.DIRECTION_UP):
                 self.rect = self.rect.move(0, self.direction['jump'])
-            if(self.gravity_direction == self.FALL_DOWN):
+            if(self.gravity_direction == self.DIRECTION_DOWN):
                 self.rect = self.rect.move(0, -self.direction['jump'])
-            if(self.gravity_direction == self.FALL_LEFT):
+            if(self.gravity_direction == self.DIRECTION_LEFT):
                 self.rect = self.rect.move(self.direction['jump'], 0)
-            if(self.gravity_direction == self.FALL_RIGHT):
+            if(self.gravity_direction == self.DIRECTION_RIGHT):
                 self.rect = self.rect.move(-self.direction['jump'], 0)
             self.direction['jump'] = 0
             if (pygame.key.get_pressed()[K_RETURN]):
                 self.direction['jump'] = -self.speed['jump']
 
     def updateCollisionHorizontal(self):
-        if(self.gravity_direction == self.FALL_DOWN or self.gravity_direction == self.FALL_UP):
+        if(self.gravity_direction == self.DIRECTION_DOWN or self.gravity_direction == self.DIRECTION_UP):
             self.rect = self.rect.move(self.direction['movement'], 0)
         else:
             self.rect = self.rect.move(0, self.direction['movement'])
         list = pygame.sprite.spritecollide(self, self.terrain, False)
         if(len(list) > 0):
-            if(self.gravity_direction == self.FALL_DOWN or self.gravity_direction == self.FALL_UP):
+            if(self.gravity_direction == self.DIRECTION_DOWN or self.gravity_direction == self.DIRECTION_UP):
                 self.rect = self.rect.move(-self.direction['movement'], 0)
             else:
                 self.rect = self.rect.move(0, -self.direction['movement'])
 
-
-
+    def draw(self, surface):
+        x_margin = 0
+        y_margin = 0
+        if(self.gravity_direction == self.DIRECTION_DOWN or self.gravity_direction == self.DIRECTION_UP):
+            x_margin = self.rect.width * 2
+        if(self.gravity_direction == self.DIRECTION_LEFT or self.gravity_direction == self.DIRECTION_RIGHT):
+            y_margin = self.rect.height * 2
+        #if(self.image == self.im)
+        self.weapon.rect.centerx = self.rect.centerx + x_margin
+        self.weapon.rect.centery = self.rect.centery + y_margin
+        #self.weapon.rect.move_ip(self.rect.centerx, self.rect.centery)
+        surface.blit(self.weapon.image, self.weapon.rect)
