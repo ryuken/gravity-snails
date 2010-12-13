@@ -108,8 +108,8 @@ class Snail(pygame.sprite.Sprite):
             if self.weaponAngle < 0:
                 self.weaponAngle = 360 + self.weaponAngle
         if (space_pressed):
-            bullet_speed_x = math.cos(math.radians(self.weaponAngle)) * 2.0
-            bullet_speed_y = math.sin(math.radians(self.weaponAngle)) * 2.0
+            bullet_speed_x = math.cos(math.radians(self.weaponAngle)) * 10.0 #(self.rect.width)
+            bullet_speed_y = math.sin(math.radians(self.weaponAngle)) * 10.0 #(self.rect.height)
             self.game.addBullet(Bullet(self.weapon.rect.center, [bullet_speed_x, bullet_speed_y]))
         self.updateImage()
 

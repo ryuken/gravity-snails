@@ -3,14 +3,14 @@ from terrain import Terrain
 from snail import Snail
 from team import Team
 from timer import Timer
-
+from settings import Settings
 class Game(object):
     def __init__(self):
         #Init
         pygame.init()
         pygame.font.init()
         #D Display
-        self.surface = pygame.display.set_mode([640,640]) #retourneert Surface
+        self.surface = pygame.display.set_mode([Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT]) #retourneert Surface
         pygame.display.set_caption("Gravity Snails")
         
         self.blue     = 0, 0, 128
