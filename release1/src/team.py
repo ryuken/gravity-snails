@@ -8,6 +8,8 @@ class Team(pygame.sprite.Group):
         pygame.sprite.Group.__init__(self)
         self.name = name
         self.inventory = inventory
+        self.hasTurn = False
+        
         self.status = TeamStatus.PLACESNAIL
         
     def draw(self, surface):
