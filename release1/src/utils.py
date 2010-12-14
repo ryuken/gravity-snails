@@ -8,7 +8,7 @@ def load_image(name, colorkey=None):
     fullpath = os.path.abspath(os.path.dirname(sys.argv[0]))
     fullname = fullpath + '/sprites/'
     fullname = fullname + name
-    print fullname + "\n"
+    #print fullname + "\n"
     try:
         image = pygame.image.load(fullname)
     except pygame.error, message:

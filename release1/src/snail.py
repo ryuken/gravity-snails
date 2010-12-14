@@ -37,6 +37,7 @@ class Snail(pygame.sprite.Sprite):
         self.isPlaced = False
         self.weapon = Weapon("laser", 100)
         self.weaponAngle = 45
+        self.has_shooted = False
 
     def update(self):
         #E Event
@@ -107,7 +108,8 @@ class Snail(pygame.sprite.Sprite):
             self.weaponAngle -= 1
             if self.weaponAngle < 0:
                 self.weaponAngle = 360 + self.weaponAngle
-        if (space_pressed):
+        if (space_pressed and not self.has_shooted):
+            self.has_shooted = True
             bullet_speed_x = math.cos(math.radians(self.weaponAngle)) * 10.0 #(self.rect.width)
             bullet_speed_y = math.sin(math.radians(self.weaponAngle)) * 10.0 #(self.rect.height)
             self.game.addBullet(Bullet(self.weapon.rect.center, [bullet_speed_x, bullet_speed_y]))

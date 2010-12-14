@@ -9,7 +9,7 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = position
         self.speed = speed
-    
+
     def update(self):
         self.rect.centerx += self.speed[0]
         self.rect.centery += self.speed[1]
