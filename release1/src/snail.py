@@ -57,6 +57,7 @@ class Snail(pygame.sprite.Sprite):
         self.has_shooted = False
         # The snail doesn't have the turn
         self.hasTurn = False
+        
     def update(self):
         #E Event
         if(not self.isPlaced):
@@ -64,7 +65,7 @@ class Snail(pygame.sprite.Sprite):
             # Store the current position
             prev_x = self.rect.centerx
             prev_y = self.rect.centery
-            # Get the mousep position
+            # Get the mouse position
             self.rect.centerx = pygame.mouse.get_pos()[0]
             self.rect.centery = pygame.mouse.get_pos()[1]
             # Is the position valid to place the snail?
@@ -82,6 +83,10 @@ class Snail(pygame.sprite.Sprite):
             # Check if the snail if moving, and check if the snail is falling
             self.updateMove()
             self.updateGravity()
+            
+            list = pygame.sprite.spritecollide(self, self.game.salt, False)
+            if(len(list) > 0):
+                print "DIED"
 
         # Use the correct sprite
         self.updateImage()
@@ -89,6 +94,7 @@ class Snail(pygame.sprite.Sprite):
         self.updateCollisionHorizontal()
         # Update the "vertical" movement (Falling / Jumping)
         self.updateCollisionVertical()
+        
     def updateImage(self):
         # Check if the snail is moving left or right
         left_pressed = self.direction['movement'] == -self.speed['movement']
@@ -158,7 +164,7 @@ class Snail(pygame.sprite.Sprite):
             # Calculate the x and y speed of the bullet
             bullet_speed_x = math.cos(math.radians(self.weaponAngle)) * 10.0 #(self.rect.width)
             bullet_speed_y = math.sin(math.radians(self.weaponAngle)) * 10.0 #(self.rect.height)
-            # Calculate the startposition of the bullet
+            # Calculate the start position of the bullet
             bullet_margin_x = math.cos(math.radians(self.weaponAngle)) * (self.rect.width)
             bullet_margin_y = math.sin(math.radians(self.weaponAngle)) * (self.rect.height)
             bullet_position = [0,0]
