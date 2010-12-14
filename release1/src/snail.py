@@ -53,7 +53,8 @@ class Snail(pygame.sprite.Sprite):
         self.weaponAngle = 45
         # The snail hasn't shooted yet
         self.has_shooted = False
-
+        # The snail doesn't have the turn
+        self.hasTurn = False
     def update(self):
         #E Event
         if(not self.isPlaced):
