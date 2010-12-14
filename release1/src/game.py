@@ -72,6 +72,6 @@ class Game(object):
 
 
 game = Game()
-game.addTeam('test', 3)
-game.addTeam('test2', 2)
+game.addTeam('test', 1)
+game.addTeam('test2', 0)
 game.run()

@@ -6,9 +6,11 @@ import utils
 class Terrain(pygame.sprite.Group):
     def __init__(self):
         pygame.sprite.Group.__init__(self)
+        self.createTerrain()
 
+    def createTerrain(self):
+        self.empty()
         # create a terrain sprite
-
         for i in range(0,5):
             terrainSprite = pygame.sprite.Sprite()
             terrainSprite.image = utils.load_image("ground.png")
