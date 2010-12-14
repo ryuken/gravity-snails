@@ -41,6 +41,7 @@ class Timer(object):
                     for i in range(0, maxTeamNumber):
                         # check which team hsa the turn
                         if self.teams[i].hasTurn:
+
                             # set the currentTeam on false
                             self.teams[i].hasTurn = False
                             if i+1 < maxTeamNumber:
@@ -49,6 +50,23 @@ class Timer(object):
                             else:
                                 # give the turn to the first Team in the list
                                 self.teams[0].hasTurn = True
+                                
+                            # set the next snail in the team to have the turn
+                            snails = self.teams[i].sprites()
+                            print [snail.hasTurn for snail in snails]
+                            maxSnails = len(snails)
+                            # loop through all the snails
+                            for i in range(0, maxSnails):
+                                
+                                # check if the current snail has the turn
+                                if snails[i].hasTurn == True:
+                                    snails[i].hasTurn = False
+                                    # check if it's not the last snail in the list
+                                    if i+1 < maxSnails:
+                                        snails[(i+1)].hasTurn = True
+                                    else:
+                                        snails[0].hasTurn = True
+                            print [snail.hasTurn for snail in snails]
                     self.status = TurnStatus.BREAK
                     self.currentTime = self.breakTime
             # Check the status
