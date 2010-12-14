@@ -30,6 +30,7 @@ class Game(object):
         team = Team(name)
         for i in range(0, countSnails):
             snail = Snail(self)
+            snail.id = i
             team.add(snail)
         self.teams.append(team)
 
@@ -72,6 +73,6 @@ class Game(object):
 
 
 game = Game()
-game.addTeam('test', 1)
-game.addTeam('test2', 0)
+game.addTeam('test', 5)
+game.addTeam('test2', 5)
 game.run()

@@ -45,6 +45,8 @@ class Snail(pygame.sprite.Sprite):
 
         # The hitpoints of the snail
         self.hitpoints = 100
+        # The id of the snail
+        self.id = None
         # The snail isn't placed yet
         self.isPlaced = False
         # Give the snail a weapon
