@@ -112,7 +112,15 @@ class Snail(pygame.sprite.Sprite):
             self.has_shooted = True
             bullet_speed_x = math.cos(math.radians(self.weaponAngle)) * 10.0 #(self.rect.width)
             bullet_speed_y = math.sin(math.radians(self.weaponAngle)) * 10.0 #(self.rect.height)
-            self.game.addBullet(Bullet(self.weapon.rect.center, [bullet_speed_x, bullet_speed_y]))
+
+            bullet_margin_x = math.cos(math.radians(self.weaponAngle)) * (self.rect.width)
+            bullet_margin_y = math.sin(math.radians(self.weaponAngle)) * (self.rect.height)
+            bullet_position = [0,0]
+            bullet_position[0] = self.rect.centerx
+            bullet_position[1] = self.rect.centery
+            bullet_position[0] += bullet_margin_x
+            bullet_position[1] += bullet_margin_y
+            self.game.addBullet(Bullet(bullet_position, [bullet_speed_x, bullet_speed_y]))
         self.updateImage()
 
     def updateGravity(self):
