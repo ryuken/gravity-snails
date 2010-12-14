@@ -31,6 +31,8 @@ class Game(object):
         for i in range(0, countSnails):
             snail = Snail(self)
             snail.id = i
+            if i == 1:
+                snail.hasTurn = True
             team.add(snail)
         self.teams.append(team)
 
@@ -38,7 +40,7 @@ class Game(object):
         self.bullets.add(bullet)
 
     def run(self):
-        self.timer = Timer(position=(0,0), size=(20,20), startTime="30", teams=self.teams)
+        self.timer = Timer(position=(0,0), size=(20,20), startTime="5", teams=self.teams)
 
         while 1:
             #T Timer (framerate)

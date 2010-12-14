@@ -39,7 +39,7 @@ class Timer(object):
                     maxTeamNumber = len(self.teams)
                     # give the turn to the next team and set the current team on false
                     for i in range(0, maxTeamNumber):
-                        # check which team hsa the turn
+                        # check which team has the turn
                         if self.teams[i].hasTurn:
 
                             # set the currentTeam on false
@@ -52,21 +52,26 @@ class Timer(object):
                                 self.teams[0].hasTurn = True
                                 
                             # set the next snail in the team to have the turn
-                            snails = self.teams[i].sprites()
-                            print [snail.hasTurn for snail in snails]
-                            maxSnails = len(snails)
+                            snails_iter = iter(self.teams[i])
+                            print [snail.hasTurn for snail in snails_iter]
+                            currentTurn = -1
+                            print currentTurn
                             # loop through all the snails
-                            for i in range(0, maxSnails):
-                                
+                            for snail in self.teams[i]: 
                                 # check if the current snail has the turn
-                                if snails[i].hasTurn == True:
-                                    snails[i].hasTurn = False
-                                    # check if it's not the last snail in the list
-                                    if i+1 < maxSnails:
-                                        snails[(i+1)].hasTurn = True
+                                if snail.hasTurn == True:
+                                    snail.hasTurn = False
+                                    currentTurn = snail.id
+                                    if currentTurn + 1 < len(self.teams[i]):
+                                        currentTurn += 1
                                     else:
-                                        snails[0].hasTurn = True
-                            print [snail.hasTurn for snail in snails]
+                                        currentTurn = 0
+                            
+                            for snail in self.teams[i]:
+                                if snail.id == currentTurn:
+                                    snail.hasTurn = True
+                            
+                            print currentTurn
                     self.status = TurnStatus.BREAK
                     self.currentTime = self.breakTime
             # Check the status
