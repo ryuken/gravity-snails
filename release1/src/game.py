@@ -4,7 +4,10 @@ from snail import Snail
 from team import Team
 from timer import Timer
 from settings import Settings
+from salt import Salt
+
 class Game(object):
+    
     def __init__(self):
         #Init
         pygame.init()
@@ -21,6 +24,7 @@ class Game(object):
         self.teams = []
         #A Assign
         self.terrain = Terrain()
+        self.salt = Salt()
         #snail.rect.move_ip(400, surface.get_height() - snail.rect.height - 100)
 #        self.team1.add(self.snail)
 
@@ -70,9 +74,10 @@ class Game(object):
             for team in self.teams:
                 team.draw(self.surface)
             self.bullets.draw(self.surface)
+            self.salt.draw(self.surface)
             self.timer.draw(self.surface)
+            
             pygame.display.flip()
-
 
 game = Game()
 game.addTeam('test', 5)
