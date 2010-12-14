@@ -12,11 +12,11 @@ class Game(object):
         #D Display
         self.surface = pygame.display.set_mode([Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT]) #retourneert Surface
         pygame.display.set_caption("Gravity Snails")
-        
+
         self.blue     = 0, 0, 128
         self.clock     = pygame.time.Clock()
         self.createGameObjects()
-        
+
     def createGameObjects(self):
         self.teams = []
         #A Assign
@@ -25,24 +25,24 @@ class Game(object):
 #        self.team1.add(self.snail)
 
         self.bullets = pygame.sprite.Group()
-    
+
     def addTeam(self, name, countSnails):
         team = Team(name)
         for i in range(0, countSnails):
             snail = Snail(self)
             team.add(snail)
         self.teams.append(team)
-    
+
     def addBullet(self, bullet):
         self.bullets.add(bullet)
-        
+
     def run(self):
         self.timer = Timer(position=(0,0), size=(20,20), startTime="30", teams=self.teams)
-        
+
         while 1:
             #T Timer (framerate)
             self.clock.tick(90)
-        
+
             #E Event
             for event in pygame.event.get():
                 self.timer.update(event)
@@ -54,13 +54,13 @@ class Game(object):
 #                    if (self.snail.isPlaced):
 #                        self.snail = Snail(self.terrain)
 #                        self.team1.add(self.snail)
-                
+
             self.terrain.update()
             for team in self.teams:
                 team.update()
-        
+
             self.bullets.update()
-            
+
             #R refresh
             self.surface.fill(self.blue)
             self.terrain.draw(self.surface)
