@@ -1,7 +1,7 @@
 import pygame
 import random
 
-import utils
+from utils import load_image
 
 class Terrain(pygame.sprite.Group):
     def __init__(self):
@@ -9,9 +9,9 @@ class Terrain(pygame.sprite.Group):
 
         # create a terrain sprite
 
-        for i in range(0,5):
+        for int in range(0,5):
             terrainSprite = pygame.sprite.Sprite()
-            terrainSprite.image = utils.load_image("ground.png")
+            terrainSprite.image = load_image("ground.png")
             terrainSprite.rect = terrainSprite.image.get_rect()
             terrainSprite.rect.move_ip(random.randint(0,100), random.randint(0,640))
             # add it to the terrain group
@@ -19,7 +19,7 @@ class Terrain(pygame.sprite.Group):
             
         for i in range(0,5):
             terrainSprite = pygame.sprite.Sprite()
-            terrainSprite.image = utils.load_image("ground.png")
+            terrainSprite.image = load_image("ground.png")
             terrainSprite.rect = terrainSprite.image.get_rect()
             terrainSprite.rect.move_ip(random.randint(0,640), random.randint(0,100))
             # add it to the terrain group
@@ -27,7 +27,7 @@ class Terrain(pygame.sprite.Group):
             
         for i in range(0,5):
             terrainSprite = pygame.sprite.Sprite()
-            terrainSprite.image = utils.load_image("ground.png")
+            terrainSprite.image = load_image("ground.png")
             terrainSprite.rect = terrainSprite.image.get_rect()
             terrainSprite.rect.move_ip(random.randint(540,640), random.randint(0,640))
             # add it to the terrain group
@@ -35,7 +35,7 @@ class Terrain(pygame.sprite.Group):
             
         for i in range(0,5):
             terrainSprite = pygame.sprite.Sprite()
-            terrainSprite.image = utils.load_image("ground.png")
+            terrainSprite.image = load_image("ground.png")
             terrainSprite.rect = terrainSprite.image.get_rect()
             terrainSprite.rect.move_ip(random.randint(0,640), random.randint(540,640))
             # add it to the terrain group
