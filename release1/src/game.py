@@ -80,6 +80,6 @@ class Game(object):
             pygame.display.flip()
 
 game = Game()
-game.addTeam('test', 5)
-game.addTeam('test2', 5)
+game.addTeam('test', 2)
+game.addTeam('test2', 2)
 game.run()

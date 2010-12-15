@@ -130,50 +130,51 @@ class Snail(pygame.sprite.Sprite):
         # Stop moving left right
         self.direction['movement'] = 0
         # Store the arrowkeys + spacebar in variables
-        left_pressed = pygame.key.get_pressed()[K_LEFT]
-        right_pressed = pygame.key.get_pressed()[K_RIGHT]
-        up_pressed = pygame.key.get_pressed()[K_UP]
-        down_pressed = pygame.key.get_pressed()[K_DOWN]
-        space_pressed = pygame.key.get_pressed()[K_SPACE]
-        # Check if the gravity is left or right
-        if(self.gravity_direction == Direction.LEFT or self.gravity_direction == Direction.RIGHT):
-            # switch the left/right arrowkey with up/down
-            temp_left, temp_right = left_pressed, right_pressed
-            left_pressed, right_pressed = up_pressed, down_pressed
-            up_pressed, down_pressed = temp_left, temp_right
-        if (left_pressed):
-            # Move the snail to the left
-            self.direction['movement'] = -self.speed['movement']
-        if (right_pressed):
-            # Move the snail to the right
-            self.direction['movement'] = self.speed['movement']
-        if (up_pressed):
-            # Adjust the aiming
-            self.weaponAngle += 1
-            if self.weaponAngle > 360:
-                self.weaponAngle = self.weaponAngle - 360
-        if (down_pressed):
-            # Adjust the aiming
-            self.weaponAngle -= 1
-            if self.weaponAngle < 0:
-                self.weaponAngle = 360 + self.weaponAngle
-        # Check if the spacebar is pressed and the snail is allowed to shoot
-        if (space_pressed and not self.has_shooted):
-            # The snail may only shoot once each turn
-            self.has_shooted = True
-            # Calculate the x and y speed of the bullet
-            bullet_speed_x = math.cos(math.radians(self.weaponAngle)) * 10.0 #(self.rect.width)
-            bullet_speed_y = math.sin(math.radians(self.weaponAngle)) * 10.0 #(self.rect.height)
-            # Calculate the start position of the bullet
-            bullet_margin_x = math.cos(math.radians(self.weaponAngle)) * (self.rect.width)
-            bullet_margin_y = math.sin(math.radians(self.weaponAngle)) * (self.rect.height)
-            bullet_position = [0,0]
-            bullet_position[0] = self.rect.centerx
-            bullet_position[1] = self.rect.centery
-            bullet_position[0] += bullet_margin_x
-            bullet_position[1] += bullet_margin_y
-            # Add the bullet to the game
-            self.game.addBullet(Bullet(self.game, bullet_position, [bullet_speed_x, bullet_speed_y]))
+        if self.hasTurn:
+            left_pressed = pygame.key.get_pressed()[K_LEFT]
+            right_pressed = pygame.key.get_pressed()[K_RIGHT]
+            up_pressed = pygame.key.get_pressed()[K_UP]
+            down_pressed = pygame.key.get_pressed()[K_DOWN]
+            space_pressed = pygame.key.get_pressed()[K_SPACE]
+            # Check if the gravity is left or right
+            if(self.gravity_direction == Direction.LEFT or self.gravity_direction == Direction.RIGHT):
+                # switch the left/right arrowkey with up/down
+                temp_left, temp_right = left_pressed, right_pressed
+                left_pressed, right_pressed = up_pressed, down_pressed
+                up_pressed, down_pressed = temp_left, temp_right
+            if (left_pressed):
+                # Move the snail to the left
+                self.direction['movement'] = -self.speed['movement']
+            if (right_pressed):
+                # Move the snail to the right
+                self.direction['movement'] = self.speed['movement']
+            if (up_pressed):
+                # Adjust the aiming
+                self.weaponAngle += 1
+                if self.weaponAngle > 360:
+                    self.weaponAngle = self.weaponAngle - 360
+            if (down_pressed):
+                # Adjust the aiming
+                self.weaponAngle -= 1
+                if self.weaponAngle < 0:
+                    self.weaponAngle = 360 + self.weaponAngle
+            # Check if the spacebar is pressed and the snail is allowed to shoot
+            if (space_pressed and not self.has_shooted):
+                # The snail may only shoot once each turn
+                self.has_shooted = True
+                # Calculate the x and y speed of the bullet
+                bullet_speed_x = math.cos(math.radians(self.weaponAngle)) * 10.0 #(self.rect.width)
+                bullet_speed_y = math.sin(math.radians(self.weaponAngle)) * 10.0 #(self.rect.height)
+                # Calculate the start position of the bullet
+                bullet_margin_x = math.cos(math.radians(self.weaponAngle)) * (self.rect.width)
+                bullet_margin_y = math.sin(math.radians(self.weaponAngle)) * (self.rect.height)
+                bullet_position = [0,0]
+                bullet_position[0] = self.rect.centerx
+                bullet_position[1] = self.rect.centery
+                bullet_position[0] += bullet_margin_x
+                bullet_position[1] += bullet_margin_y
+                # Add the bullet to the game
+                self.game.addBullet(Bullet(self.game, bullet_position, [bullet_speed_x, bullet_speed_y]))
 
     def updateGravity(self):
         # Make the snail fall
@@ -208,7 +209,7 @@ class Snail(pygame.sprite.Sprite):
                 self.rect = self.rect.move(-self.direction['jump'], 0)
                 can_jump = collision_x > self.rect.centerx
             self.direction['jump'] = 0
-            if (pygame.key.get_pressed()[K_RETURN] and can_jump):
+            if (pygame.key.get_pressed()[K_RETURN] and can_jump and self.hasTurn):
                 self.direction['jump'] = -self.speed['jump']
 
     def updateCollisionHorizontal(self):
