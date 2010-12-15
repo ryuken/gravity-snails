@@ -86,7 +86,7 @@ class Snail(pygame.sprite.Sprite):
             
             list = pygame.sprite.spritecollide(self, self.game.salt, False)
             if(len(list) > 0):
-                print "DIED"
+                self.kill()
 
         # Use the correct sprite
         self.updateImage()
