@@ -1,10 +1,13 @@
 import unittest
+import sys
+import pygame
+sys.path.append("..\\") 
+from snail import Snail
+from team import Team
+from settings import Settings
+from terrain import Terrain
 
-import snail
-
-
-
-class testBlogger(unittest.TestCase):
+class testSnail(unittest.TestCase):
 
     """
 
@@ -24,69 +27,76 @@ class testBlogger(unittest.TestCase):
 
         """
 
-        self.snail = Blogger.get_blog()
+        pygame.init()
+        pygame.display.set_mode([Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT], pygame.FULLSCREEN)
+        pygame.time.wait(1000)
+        
+        self.terrain = Terrain()
+        self.teamName = "EJteam"
+        self.team = Team(self.teamName)
+        self.snail = Snail(self.team)
 
 
 
-    def testGetFeedTitle(self):
+    def testInitialized(self):
+        self.assertEqual(self.snail.team.name, self.teamName)
+        self.assertEqual(self.snail.hasTurn, False)
 
-        title = "fitnessetesting"
+    def testFollowMouse(self):
+        pygame.mouse.set_pos([100,100])
+        pygame.display.flip()
+        pygame.display.flip()
+            
+        self.snail.update(self.terrain)
+        self.assertEqual(self.snail.rect.centerx, 100)
+        self.assertEqual(self.snail.rect.centery, 100)
+        
+        self.terrain.addBlock(150, 150)
+        #pygame.time.Clock().tick()
+        pygame.mouse.set_pos([300,300])
+        pygame.display.flip()
+        pygame.time.wait(1000)
+        pygame.display.flip()
+        
+        self.snail.update(self.terrain)
+        self.assertNotEqual(self.snail.rect.centerx, pygame.mouse.get_pos()[0])
+        self.assertNotEqual(self.snail.rect.centery, pygame.mouse.get_pos()[1])
+        pass    
+        
+    def testSnailPlaced(self):
+        
+        pass
+    
+    def testGravity(self):
+        pass
 
-        self.assertEqual(self.blogger.get_title(), title)
+    def testAiming(self):
+        pass
+        
+    def testShooting(self):
+        pass
+        
+    def testMoving(self):
+        pass
+        
+    def testJumping(self):
+        pass
+    
+    def testDie(self):
+        pass
+    
+    def testCollision(self):
+        pass
 
-
-
-    def testGetFeedPostingURL(self):
-
-        posting_url = "http://www.blogger.com/atom/9276918"
-
-        self.assertEqual(self.blogger.get_feed_posting_url(), posting_url)
-
-
-
-    def testGetFeedPostingHost(self):
-
-        posting_host = "www.blogger.com"
-
-        self.assertEqual(self.blogger.get_feed_posting_host(), posting_host)
-
-
-
-    def testPostNewEntry(self):
-
-        init_num_entries = self.blogger.get_num_entries()
-
-        title = "testPostNewEntry"
-
-        content = "testPostNewEntry"
-
-        self.assertTrue(self.blogger.post_new_entry(title, content))
-
-        self.assertEqual(self.blogger.get_num_entries(), init_num_entries+1)
-
-        # Entries are ordered most-recent first
-
-        # Newest entry should be first
-
-        self.assertEqual(title, self.blogger.get_nth_entry_title(1))
-
-        self.assertEqual(content, self.blogger.get_nth_entry_content_strip_html(1))
-
-
-
-    def testDeleteAllEntries(self):
-
-        self.blogger.delete_all_entries()
-
-        self.assertEqual(self.blogger.get_num_entries(), 0)
-
-
-
+    def testTouchingSalt(self):
+        pass
+        
+    
 def suite():
 
     suite = unittest.TestSuite()
 
-    suite.addTest(unittest.makeSuite(testBlogger))
+    suite.addTest(unittest.makeSuite(testSnail))
 
     return suite
 
@@ -100,9 +110,9 @@ if __name__ == '__main__':
 
     suiteFew = unittest.TestSuite()
 
-    suiteFew.addTest(testBlogger("testPostNewEntry"))
+    #suiteFew.addTest(testSnail("testPostNewEntry"))
 
-    suiteFew.addTest(testBlogger("testDeleteAllEntries"))
+    #suiteFew.addTest(testSnail("testDeleteAllEntries"))
 
     #unittest.TextTestRunner(verbosity=2).run(suiteFew)
 
