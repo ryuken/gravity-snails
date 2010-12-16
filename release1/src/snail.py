@@ -24,8 +24,13 @@ class Snail(pygame.sprite.Sprite):
         self.speed = {'movement' : 2, 'jump' : 10, 'fall' : 0.2}
         # The snail doesn't move
         self.direction = {'movement' : 0.0, 'jump' : 0.0}
+        
+        # Remember his own team
+        self.team = team
+        
         # Set the gravity direction
-        self.gravity_direction = team.gravity_direction
+        self.gravity_direction = self.team.gravity_direction
+        
         if self.gravity_direction == Direction.DOWN:
             # Use the correct sprite
             self.image = self.image_down_right
@@ -41,9 +46,6 @@ class Snail(pygame.sprite.Sprite):
         # Update the rect
         self.rect = self.image.get_rect()
         
-        # Remember his own team
-        self.team = team
-
         # The hitpoints of the snail
         self.hitpoints = 100
         # The id of the snail

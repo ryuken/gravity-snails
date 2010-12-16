@@ -31,9 +31,9 @@ class Game(object):
 
         self.bullets = pygame.sprite.Group()
 
-
     def addTeam(self, name, numberOfSnails, gravity_direction):
-        team = Team(name, gravity_direction)
+        team = Team(name)
+        team.setGravity(gravity_direction)
         team.addSnails(numberOfSnails)
         self.teams.append(team)
 

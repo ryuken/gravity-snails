@@ -19,14 +19,11 @@ class Team(pygame.sprite.Group):
         for s in self.sprites():
             s.draw(surface)
                         
-    def updateEvent(self, event):
-        pass
-    
     def addSnails(self, numberOfSnails):
         for i in range(0, numberOfSnails):
-            snail = Snail()
+            snail = Snail(self)
             self.add(snail)
-            snail.team = self
+            
             self.orderedSnailList.append(snail)
             
             snail.id = i

@@ -10,7 +10,6 @@ from enums import TurnStatus
 import time
 
 class TestTimer(unittest.TestCase):
-
     """
     A test class for the Timer module.
     """
@@ -20,10 +19,13 @@ class TestTimer(unittest.TestCase):
         set up data used in the tests.
         setUp is called before each test function execution.
         """
-        
+        self.teams= []
         self.team1 = Team("team1", 2)
         self.team2 = Team("team2", 4)
-        self.teams= []
+        
+        self.team1.addSnails(2)
+        self.team2.addSnails(3)
+        
         self.teams.append(self.team1)
         self.teams.append(self.team2)
         
@@ -34,6 +36,9 @@ class TestTimer(unittest.TestCase):
         Test if init goes good
         """
         self.assertEqual(self.turnManager.teams, self.teams)
+        self.assertEqual(self.turnManager.teams[0], self.team1)
+        self.assertEqual(self.turnManager.teams[1], self.team2)
+        
         self.assertEqual(self.turnManager.status, TurnStatus.BREAK)
         self.assertEqual(self.turnManager.startTime, Settings.TIMER_STARTTIME)
         self.assertEqual(self.turnManager.size, Settings.TIMER_SIZE)

@@ -1,13 +1,8 @@
 import unittest
-
-import sys
-sys.path.append("../")
-
 from team import Team
 from enums import Direction
 
 class TestTeam(unittest.TestCase):
-
     """
     A test class for the Timer module.
     """
@@ -20,9 +15,9 @@ class TestTeam(unittest.TestCase):
         self.maxSnails = 5
         self.team1 = Team("team1")
         self.team2 = Team("team2")
+        self.team1.setGravity(Direction.UP)
+        self.team2.setGravity(Direction.DOWN)
         
-        
-    
     def testInitialized(self):
         """
         Test if init goes good
@@ -48,6 +43,7 @@ class TestTeam(unittest.TestCase):
         Test if the next time get's the turn
         """
         # test if the currentSnailTurn is 0
+        self.team1.addSnails(self.maxSnails)
         self.assertEqual(self.team1.currentSnailTurn, 0)
         previousTurnSnail = self.team1.orderedSnailList[self.team1.currentSnailTurn]
         self.assertEqual(previousTurnSnail.hasTurn, True)
@@ -58,9 +54,11 @@ class TestTeam(unittest.TestCase):
         self.assertEqual(currentTurnSnail.hasTurn, True)
     
     def testNextSnailTurnException(self):
+        self.team1.addSnails(self.maxSnails)
+        
         self.team1.orderedSnailList[0].hasTurn = False
-        self.team1.nextSnailTurn()
-        self.assertRaises(ValueError)
+        
+        self.assertRaises(ValueError, self.team1.nextSnailTurn)
 
 if __name__ == '__main__':
     unittest.main()
