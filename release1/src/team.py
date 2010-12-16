@@ -4,7 +4,7 @@ from snail import Snail
 
 class Team(pygame.sprite.Group):
 
-    def __init__(self, name, gravity_direction):
+    def __init__(self, name):
         pygame.sprite.Group.__init__(self)
         self.name = name
         self.hasTurn = False
@@ -12,7 +12,7 @@ class Team(pygame.sprite.Group):
         self.orderedSnailList = []
         self.currentSnailTurn = None
 
-        self.gravity_direction = gravity_direction
+        self.gravity_direction = None
         
     def draw(self, surface):
         pygame.sprite.Group.draw(self, surface)

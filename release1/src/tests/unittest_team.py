@@ -4,6 +4,7 @@ import sys
 sys.path.append("../")
 
 from team import Team
+from enums import Direction
 
 class TestTeam(unittest.TestCase):
 
@@ -16,23 +17,33 @@ class TestTeam(unittest.TestCase):
         set up data used in the tests.
         setUp is called before each test function execution.
         """        
-        self.teams= []
-        self.team1 = Team("team1", 2)
-        self.team2 = Team("team2", 4)
+        self.maxSnails = 5
+        self.team1 = Team("team1", Direction.UP)
+        self.team2 = Team("team2", Direction.UP)
         
-        self.team1.addSnails(2)
-        self.team2.addSnails(3)
         
-        self.teams.append(self.team1)
-        self.teams.append(self.team2)
     
     def testInitialized(self):
         """
         Test if init goes good
         """
-        self.assertEqual(self.teams[0], self.team1)
+        self.assertEqual(self.team1.name, "team1")
+        self.assertEqual(self.team1.hasTurn, False)
+    
+    def testAddSnails(self):
+        self.team1.addSnails(self.maxSnails)
+        self.assertEqual(self.team1.currentSnailTurn, 0)
+        self.assertEqual(len(self.team1.sprites()), self.maxSnails)
+        self.assertEqual(len(self.team1.orderedSnailList), self.maxSnails)
+        self.assertEqual(self.team1.orderedSnailList[0].hasTurn, True)
+        for i in range(0, len(self.team1.orderedSnailList)):
+            if i == 0:
+                self.assertEqual(self.team1.orderedSnailList[i].hasTurn, True)
+            else:
+                self.assertEqual(self.team1.orderedSnailList[i].hasTurn, False)
+        self.assertEqual
         
-    def testChangeTurnTeam(self):
+    def testNextSnailTurn(self):
         """
         Test if the next time get's the turn
         """
