@@ -25,7 +25,7 @@ class Snail(pygame.sprite.Sprite):
         # The snail doesn't move
         self.direction = {'movement' : 0.0, 'jump' : 0.0}
         # Set the gravity direction
-        self.gravity_direction = Direction.UP
+        self.gravity_direction = team.gravity_direction
         if self.gravity_direction == Direction.DOWN:
             # Use the correct sprite
             self.image = self.image_down_right
@@ -87,16 +87,16 @@ class Snail(pygame.sprite.Sprite):
             self.updateMove(input)
             self.updateGravity()
             
+            # Update the "horizontal" movement (Walking)
+            self.updateCollisionHorizontal(terrain)
+            # Update the "vertical" movement (Falling / Jumping)
+            self.updateCollisionVertical(terrain)
             list = pygame.sprite.spritecollide(self, terrain.salt, False)
             if(len(list) > 0):
                 self.kill()
 
         # Use the correct sprite
         self.updateImage()
-        # Update the "horizontal" movement (Walking)
-        self.updateCollisionHorizontal(terrain)
-        # Update the "vertical" movement (Falling / Jumping)
-        self.updateCollisionVertical(terrain)
         
     def updateImage(self):
         # Check if the snail is moving left or right

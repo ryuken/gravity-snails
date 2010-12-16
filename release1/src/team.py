@@ -1,13 +1,14 @@
 import pygame
-from enums import TeamStatus
+from enums import *
 from snail import Snail
 
 class Team(pygame.sprite.Group):
 
-    def __init__(self, name):
+    def __init__(self, name, gravity_direction):
         pygame.sprite.Group.__init__(self)
         self.name = name
         self.hasTurn = False
+        self.gravity_direction = gravity_direction
         
     def draw(self, surface):
         pygame.sprite.Group.draw(self, surface)

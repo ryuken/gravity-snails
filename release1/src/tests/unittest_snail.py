@@ -56,24 +56,25 @@ class testSnail(unittest.TestCase):
         self.assertNotEqual(self.snail.rect.centerx, pygame.mouse.get_pos()[0])
         self.assertNotEqual(self.snail.rect.centery, pygame.mouse.get_pos()[1])
         
-    def testSnailPlaced(self):
+    def testSnailPlaceSnailCorrect(self):
         self.input.mouse_x = 100
         self.input.mouse_y = 100
         self.input.mouse_left = True
         self.snail.update(self.input, self.terrain)
         self.assertTrue(self.snail.isPlaced)
         
+    def testSnailPlaceSnailWrong(self):
         self.input.mouse_x = 150
         self.input.mouse_y = 150
         self.terrain.addBlock(150, 150)
         self.input.mouse_left = True
         self.snail.update(self.input, self.terrain)
-        self.assertTrue(self.snail.isPlaced)
-        self.assertFalse(self.snail.collideWithTerrain(self.terrain))
+        self.assertFalse(self.snail.isPlaced)
         
     def testGravity(self):
-        pass
-
+        self.testSnailPlaceSnailCorrect()
+        
+        
     def testAiming(self):
         pass
         

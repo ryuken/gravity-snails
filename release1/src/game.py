@@ -6,6 +6,7 @@ from timer import Timer
 from settings import Settings
 from salt import Salt
 from input import Input
+from enums import *
 class Game(object):
     
     def __init__(self):
@@ -31,8 +32,8 @@ class Game(object):
 
         self.bullets = pygame.sprite.Group()
 
-    def addTeam(self, name, countSnails):
-        team = Team(name)
+    def addTeam(self, name, countSnails, gravity_direction):
+        team = Team(name, gravity_direction)
         for i in range(0, countSnails):
             snail = Snail(team)
             snail.id = i
@@ -81,6 +82,6 @@ class Game(object):
             pygame.display.flip()
 
 game = Game()
-game.addTeam('test', 2)
-game.addTeam('test2', 2)
+game.addTeam('test', 2, Direction.UP)
+game.addTeam('test2', 2, Direction.DOWN)
 game.run()
