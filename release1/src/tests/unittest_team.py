@@ -18,8 +18,8 @@ class TestTeam(unittest.TestCase):
         setUp is called before each test function execution.
         """        
         self.maxSnails = 5
-        self.team1 = Team("team1", Direction.UP)
-        self.team2 = Team("team2", Direction.UP)
+        self.team1 = Team("team1")
+        self.team2 = Team("team2")
         
         
     
@@ -47,25 +47,20 @@ class TestTeam(unittest.TestCase):
         """
         Test if the next time get's the turn
         """
-        a = 1
-        
-    def testChangeTurnSnail(self):
-        """
-        Test if the next snail get's the turn
-        """
-        a = 1
-        
-    def testFirstTurnTeam(self):
-        """
-        Test if the first team in the team list got the turn when the turnManager starts 
-        """
-        self.assertEqual(self.turnManager.teams[0].hasTurn, True)
-        
-    def testFirstTurnSnail(self):
-        """
-        Test if the first snail of the team who got the turn has the turn
-        """
-        a = 1
+        # test if the currentSnailTurn is 0
+        self.assertEqual(self.team1.currentSnailTurn, 0)
+        previousTurnSnail = self.team1.orderedSnailList[self.team1.currentSnailTurn]
+        self.assertEqual(previousTurnSnail.hasTurn, True)
+        self.team1.nextSnailTurn()
+        self.assertEqual(self.team1.currentSnailTurn, 1)
+        currentTurnSnail = self.team1.orderedSnailList[self.team1.currentSnailTurn]
+        self.assertEqual(previousTurnSnail.hasTurn, False)
+        self.assertEqual(currentTurnSnail.hasTurn, True)
+    
+    def testNextSnailTurnException(self):
+        self.team1.orderedSnailList[0].hasTurn = False
+        self.team1.nextSnailTurn()
+        self.assertRaises(ValueError)
 
 if __name__ == '__main__':
     unittest.main()
