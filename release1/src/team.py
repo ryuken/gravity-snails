@@ -17,3 +17,8 @@ class Team(pygame.sprite.Group):
                         
     def updateEvent(self, event):
         pass
+    
+    def setGravity(self, direction):
+        self.gravity_direction = direction
+        for s in self.sprites():
+            s.gravity_direction = direction

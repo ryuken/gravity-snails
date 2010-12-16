@@ -7,6 +7,7 @@ from team import Team
 from settings import Settings
 from terrain import Terrain
 from input import Input
+from enums import *
 class testSnail(unittest.TestCase):
 
     """
@@ -33,7 +34,7 @@ class testSnail(unittest.TestCase):
         self.input = Input()
         self.terrain = Terrain()
         self.teamName = "EJteam"
-        self.team = Team(self.teamName)
+        self.team = Team(self.teamName, Direction.DOWN)
         self.snail = Snail(self.team)
 
 
@@ -71,10 +72,54 @@ class testSnail(unittest.TestCase):
         self.snail.update(self.input, self.terrain)
         self.assertFalse(self.snail.isPlaced)
         
-    def testGravity(self):
+    def testGravityDown(self):
         self.testSnailPlaceSnailCorrect()
+        self.team.setGravity(Direction.DOWN)
+        old_y = self.snail.rect.centery
+        for i in range(0,10):
+            self.snail.update(self.input, self.terrain)
+            
+        self.assertTrue(self.snail.rect.centery > old_y)
+    
+    def testGravityDownSpeed(self):
+        self.testSnailPlaceSnailCorrect()
+        self.assertEqual(self.snail.direction['jump'], 0)
+        self.snail.updateGravity()
+        self.assertEqual(self.snail.direction['jump'], self.snail.speed['fall'])
         
+        waitTurns = 5 / self.snail.speed['fall']
+        for i in range(0, waitTurns + 5):
+            self.snail.updateGravity()
+            
+        self.assertEqual(self.snail.direction['jump'], 5)
         
+    def testGravityUp(self):
+        self.testSnailPlaceSnailCorrect()
+        self.snail.gravity_direction = Direction.UP
+        old_y = self.snail.rect.centery
+        for i in range(0,10):
+            self.snail.update(self.input, self.terrain)
+            
+        self.assertTrue(self.snail.rect.centery < old_y)
+        
+    def testGravityRight(self):
+        self.testSnailPlaceSnailCorrect()
+        self.snail.gravity_direction = Direction.RIGHT
+        old_x = self.snail.rect.centerx
+        for i in range(0,10):
+            self.snail.update(self.input, self.terrain)
+            
+        self.assertTrue(self.snail.rect.centerx > old_x)
+    
+    def testGravityLeft(self):
+        self.testSnailPlaceSnailCorrect()
+        self.snail.gravity_direction = Direction.LEFT
+        old_x = self.snail.rect.centerx
+        for i in range(0,10):
+            self.snail.update(self.input, self.terrain)
+            
+        self.assertTrue(self.snail.rect.centerx < old_x)
+            
     def testAiming(self):
         pass
         
