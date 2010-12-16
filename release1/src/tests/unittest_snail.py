@@ -6,7 +6,7 @@ from snail import Snail
 from team import Team
 from settings import Settings
 from terrain import Terrain
-
+from input import Input
 class testSnail(unittest.TestCase):
 
     """
@@ -28,14 +28,13 @@ class testSnail(unittest.TestCase):
         """
 
         pygame.init()
-        pygame.display.set_mode([Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT], pygame.FULLSCREEN)
-        pygame.time.wait(1000)
-        
+        pygame.display.set_mode([Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT])
+
+        self.input = Input()
         self.terrain = Terrain()
         self.teamName = "EJteam"
         self.team = Team(self.teamName)
         self.snail = Snail(self.team)
-
 
 
     def testInitialized(self):
@@ -43,30 +42,35 @@ class testSnail(unittest.TestCase):
         self.assertEqual(self.snail.hasTurn, False)
 
     def testFollowMouse(self):
-        pygame.mouse.set_pos([100,100])
-        pygame.display.flip()
-        pygame.display.flip()
-            
-        self.snail.update(self.terrain)
+        self.input.mouse_x = 100
+        self.input.mouse_y = 100
+        self.snail.update(self.input, self.terrain)
         self.assertEqual(self.snail.rect.centerx, 100)
         self.assertEqual(self.snail.rect.centery, 100)
         
+        self.input.mouse_x = 150
+        self.input.mouse_y = 150
         self.terrain.addBlock(150, 150)
-        #pygame.time.Clock().tick()
-        pygame.mouse.set_pos([300,300])
-        pygame.display.flip()
-        pygame.time.wait(1000)
-        pygame.display.flip()
+        self.snail.update(self.input, self.terrain)
         
-        self.snail.update(self.terrain)
         self.assertNotEqual(self.snail.rect.centerx, pygame.mouse.get_pos()[0])
         self.assertNotEqual(self.snail.rect.centery, pygame.mouse.get_pos()[1])
-        pass    
         
     def testSnailPlaced(self):
+        self.input.mouse_x = 100
+        self.input.mouse_y = 100
+        self.input.mouse_left = True
+        self.snail.update(self.input, self.terrain)
+        self.assertTrue(self.snail.isPlaced)
         
-        pass
-    
+        self.input.mouse_x = 150
+        self.input.mouse_y = 150
+        self.terrain.addBlock(150, 150)
+        self.input.mouse_left = True
+        self.snail.update(self.input, self.terrain)
+        self.assertTrue(self.snail.isPlaced)
+        self.assertFalse(self.snail.collideWithTerrain(self.terrain))
+        
     def testGravity(self):
         pass
 

@@ -9,7 +9,7 @@ from bullet import Bullet
 
 class Snail(pygame.sprite.Sprite):
 
-    def __init__(self, game):
+    def __init__(self, team):
         pygame.sprite.Sprite.__init__(self)
         # Load every snail sprite
         self.image_down_right = load_image('snailRight.png')
@@ -25,7 +25,7 @@ class Snail(pygame.sprite.Sprite):
         # The snail doesn't move
         self.direction = {'movement' : 0.0, 'jump' : 0.0}
         # Set the gravity direction
-        self.gravity_direction = Direction.LEFT
+        self.gravity_direction = Direction.UP
         if self.gravity_direction == Direction.DOWN:
             # Use the correct sprite
             self.image = self.image_down_right
@@ -40,8 +40,9 @@ class Snail(pygame.sprite.Sprite):
             self.image = self.image_right_up
         # Update the rect
         self.rect = self.image.get_rect()
-        # Store the game object
-        self.game = game
+        
+        # Remember his own team
+        self.team = team
 
         # The hitpoints of the snail
         self.hitpoints = 100
@@ -57,8 +58,11 @@ class Snail(pygame.sprite.Sprite):
         self.has_shooted = False
         # The snail doesn't have the turn
         self.hasTurn = False
-        
-    def update(self):
+    
+    def collideWithTerrain(self, terrain):
+        return len(pygame.sprite.spritecollide(self, terrain, False)) > 0
+    
+    def update(self, input, terrain):
         #E Event
         if(not self.isPlaced):
             # The snail is not placed yet
@@ -66,34 +70,33 @@ class Snail(pygame.sprite.Sprite):
             prev_x = self.rect.centerx
             prev_y = self.rect.centery
             # Get the mouse position
-            self.rect.centerx = pygame.mouse.get_pos()[0]
-            self.rect.centery = pygame.mouse.get_pos()[1]
+            self.rect.centerx = input.mouse_x
+            self.rect.centery = input.mouse_y
             # Is the position valid to place the snail?
-            list = pygame.sprite.spritecollide(self, self.game.terrain, False)
-            if(len(list) > 0):
+            if(self.collideWithTerrain(terrain)):
                 # Use the last known valid position
                 self.rect.centerx = prev_x
                 self.rect.centery = prev_y
             else:
                 # Place the snail if the mousebutton is pressed
-                if pygame.mouse.get_pressed()[0]:
+                if input.mouse_left:
                     self.isPlaced = True
         else:
             # If the snail is placed
             # Check if the snail if moving, and check if the snail is falling
-            self.updateMove()
+            self.updateMove(input)
             self.updateGravity()
             
-            list = pygame.sprite.spritecollide(self, self.game.salt, False)
+            list = pygame.sprite.spritecollide(self, terrain.salt, False)
             if(len(list) > 0):
                 self.kill()
 
         # Use the correct sprite
         self.updateImage()
         # Update the "horizontal" movement (Walking)
-        self.updateCollisionHorizontal()
+        self.updateCollisionHorizontal(terrain)
         # Update the "vertical" movement (Falling / Jumping)
-        self.updateCollisionVertical()
+        self.updateCollisionVertical(terrain)
         
     def updateImage(self):
         # Check if the snail is moving left or right
@@ -126,16 +129,16 @@ class Snail(pygame.sprite.Sprite):
                 # Use the correct sprite
                 self.image = self.image_right_down
 
-    def updateMove(self):
+    def updateMove(self, input):
         # Stop moving left right
         self.direction['movement'] = 0
         # Store the arrowkeys + spacebar in variables
-        if self.hasTurn:
-            left_pressed = pygame.key.get_pressed()[K_LEFT]
-            right_pressed = pygame.key.get_pressed()[K_RIGHT]
-            up_pressed = pygame.key.get_pressed()[K_UP]
-            down_pressed = pygame.key.get_pressed()[K_DOWN]
-            space_pressed = pygame.key.get_pressed()[K_SPACE]
+        if self.hasTurn and self.team.hasTurn:
+            left_pressed = input.keyboard_left
+            right_pressed = input.keyboard_right
+            up_pressed = input.keyboard_up
+            down_pressed = input.keyboard_down
+            space_pressed = input.keyboard_space
             # Check if the gravity is left or right
             if(self.gravity_direction == Direction.LEFT or self.gravity_direction == Direction.RIGHT):
                 # switch the left/right arrowkey with up/down
@@ -174,7 +177,7 @@ class Snail(pygame.sprite.Sprite):
                 bullet_position[0] += bullet_margin_x
                 bullet_position[1] += bullet_margin_y
                 # Add the bullet to the game
-                self.game.addBullet(Bullet(self.game, bullet_position, [bullet_speed_x, bullet_speed_y]))
+                #self.game.addBullet(Bullet(self.game, bullet_position, [bullet_speed_x, bullet_speed_y]))
 
     def updateGravity(self):
         # Make the snail fall
@@ -182,7 +185,7 @@ class Snail(pygame.sprite.Sprite):
         if self.direction['jump'] > 5:
             self.direction['jump'] = 5
 
-    def updateCollisionVertical(self):
+    def updateCollisionVertical(self, terrain):
         if(self.gravity_direction == Direction.DOWN):
             self.rect = self.rect.move(0, self.direction['jump'])
         if(self.gravity_direction == Direction.UP):
@@ -191,8 +194,8 @@ class Snail(pygame.sprite.Sprite):
             self.rect = self.rect.move(-self.direction['jump'], 0)
         if(self.gravity_direction == Direction.RIGHT):
             self.rect = self.rect.move(self.direction['jump'], 0)
-        list = pygame.sprite.spritecollide(self, self.game.terrain, False)
-        if(len(list) > 0):
+        if(self.collideWithTerrain(terrain)):
+            list = pygame.sprite.spritecollide(self, terrain, False)
             can_jump = False
             collision_x = list[0].rect.centerx
             collision_y = list[0].rect.centery
@@ -212,13 +215,12 @@ class Snail(pygame.sprite.Sprite):
             if (pygame.key.get_pressed()[K_RETURN] and can_jump and self.hasTurn):
                 self.direction['jump'] = -self.speed['jump']
 
-    def updateCollisionHorizontal(self):
+    def updateCollisionHorizontal(self, terrain):
         if(self.gravity_direction == Direction.DOWN or self.gravity_direction == Direction.UP):
             self.rect = self.rect.move(self.direction['movement'], 0)
         else:
             self.rect = self.rect.move(0, self.direction['movement'])
-        list = pygame.sprite.spritecollide(self, self.game.terrain, False)
-        if(len(list) > 0):
+        if(self.collideWithTerrain(terrain)):
             if(self.gravity_direction == Direction.DOWN or self.gravity_direction == Direction.UP):
                 self.rect = self.rect.move(-self.direction['movement'], 0)
             else:

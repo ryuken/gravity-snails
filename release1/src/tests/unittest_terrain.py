@@ -4,6 +4,7 @@ import pygame
 sys.path.append("..\\") 
 from terrain import Terrain
 from settings import Settings
+from salt import Salt
 
 class testTerrain(unittest.TestCase):
     def setUp(self):
@@ -11,7 +12,6 @@ class testTerrain(unittest.TestCase):
         pygame.display.set_mode([Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT])
         
         self.terrain = Terrain()
-        
     def testAddTerrainBlock(self):
         self.terrain.addBlock(100, 150)
         self.assertEqual(len(self.terrain.sprites()), 1)
@@ -23,8 +23,8 @@ class testTerrain(unittest.TestCase):
         self.terrain.createNorthBorder(5)
         self.terrain.createSouthBorder(5)
         self.terrain.createWestBorder(5)
-        self.assertEqual(len(self.terrain.sprites()), 5 * 4)
-        
+        self.assertEqual(len(self.terrain.sprites()), 5 * 4) 
+               
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(testTerrain))

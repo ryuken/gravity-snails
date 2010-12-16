@@ -5,7 +5,7 @@ from team import Team
 from timer import Timer
 from settings import Settings
 from salt import Salt
-
+from input import Input
 class Game(object):
     
     def __init__(self):
@@ -16,6 +16,7 @@ class Game(object):
         self.surface = pygame.display.set_mode([Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT]) #retourneert Surface
         pygame.display.set_caption("Gravity Snails")
 
+        self.input = Input()
         self.blue     = 0, 0, 128
         self.clock     = pygame.time.Clock()
         self.createGameObjects()
@@ -24,7 +25,7 @@ class Game(object):
         self.teams = []
         #A Assign
         self.terrain = Terrain()
-        self.salt = Salt()
+        self.terrain.create(5)
         #snail.rect.move_ip(400, surface.get_height() - snail.rect.height - 100)
 #        self.team1.add(self.snail)
 
@@ -33,7 +34,7 @@ class Game(object):
     def addTeam(self, name, countSnails):
         team = Team(name)
         for i in range(0, countSnails):
-            snail = Snail(self)
+            snail = Snail(team)
             snail.id = i
             if i == 1:
                 snail.hasTurn = True
@@ -49,7 +50,7 @@ class Game(object):
         while 1:
             #T Timer (framerate)
             self.clock.tick(90)
-
+            self.input.update()
             #E Event
             for event in pygame.event.get():
                 self.timer.update(event)
@@ -64,7 +65,7 @@ class Game(object):
 
             self.terrain.update()
             for team in self.teams:
-                team.update()
+                team.update(self.input, self.terrain)
 
             self.bullets.update()
 
@@ -74,7 +75,7 @@ class Game(object):
             for team in self.teams:
                 team.draw(self.surface)
             self.bullets.draw(self.surface)
-            self.salt.draw(self.surface)
+            #self.salt.draw(self.surface)
             self.timer.draw(self.surface)
             
             pygame.display.flip()
