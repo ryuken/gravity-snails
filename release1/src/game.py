@@ -1,12 +1,13 @@
 import pygame
 from terrain import Terrain
-from snail import Snail
+
 from team import Team
-from timer import Timer
+from turnmanager import TurnManager
 from settings import Settings
-from salt import Salt
+
 from input import Input
-from enums import *
+from enums import Direction
+
 class Game(object):
     
     def __init__(self):
@@ -27,42 +28,31 @@ class Game(object):
         #A Assign
         self.terrain = Terrain()
         self.terrain.create(5)
-        #snail.rect.move_ip(400, surface.get_height() - snail.rect.height - 100)
-#        self.team1.add(self.snail)
 
         self.bullets = pygame.sprite.Group()
 
-    def addTeam(self, name, countSnails, gravity_direction):
+
+    def addTeam(self, name, numberOfSnails, gravity_direction):
         team = Team(name, gravity_direction)
-        for i in range(0, countSnails):
-            snail = Snail(team)
-            snail.id = i
-            if i == 1:
-                snail.hasTurn = True
-            team.add(snail)
+        team.addSnails(numberOfSnails)
         self.teams.append(team)
 
     def addBullet(self, bullet):
         self.bullets.add(bullet)
 
     def run(self):
-        self.timer = Timer(position=(0,0), size=(20,20), startTime="5", teams=self.teams)
-
+        self.turnManager = TurnManager(self.teams)
+        self.turnManager.startTimer()
+        
         while 1:
             #T Timer (framerate)
             self.clock.tick(90)
             self.input.update()
             #E Event
             for event in pygame.event.get():
-                self.timer.update(event)
-                for team in self.teams:
-                    team.updateEvent(event)
                 if event.type == pygame.QUIT:
+                    self.turnManager.timer.cancel()
                     return
-#                if event.type == pygame.MOUSEBUTTONUP:
-#                    if (self.snail.isPlaced):
-#                        self.snail = Snail(self.terrain)
-#                        self.team1.add(self.snail)
 
             self.terrain.update()
             for team in self.teams:
@@ -75,9 +65,10 @@ class Game(object):
             self.terrain.draw(self.surface)
             for team in self.teams:
                 team.draw(self.surface)
+            
             self.bullets.draw(self.surface)
-            #self.salt.draw(self.surface)
-            self.timer.draw(self.surface)
+            
+            self.turnManager.draw(self.surface)
             
             pygame.display.flip()
 
