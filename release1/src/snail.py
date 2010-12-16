@@ -57,6 +57,8 @@ class Snail(pygame.sprite.Sprite):
         self.weapon = Weapon("laser", 100)
         # Set the aiming direction
         self.weaponAngle = 45
+        # Bullet
+        self.bullet = None
         # The snail hasn't shooted yet
         self.has_shooted = False
         # The snail doesn't have the turn
@@ -97,6 +99,13 @@ class Snail(pygame.sprite.Sprite):
             list = pygame.sprite.spritecollide(self, terrain.salt, False)
             if(len(list) > 0):
                 self.kill()
+            self.updateBullet(terrain)
+    def updateBullet(self, terrain):
+        if self.bullet <> None:
+            self.bullet.update(terrain)
+            if self.bullet.alive == False:
+                self.bullet.kill()
+                self.bullet = None
 
         # Use the correct sprite
         self.updateImage()
@@ -165,7 +174,7 @@ class Snail(pygame.sprite.Sprite):
                 if self.weaponAngle < 0:
                     self.weaponAngle = 360 + self.weaponAngle
             # Check if the spacebar is pressed and the snail is allowed to shoot
-            if (space_pressed and not self.has_shooted):
+            if (space_pressed and self.bullet == None):
                 # The snail may only shoot once each turn
                 self.has_shooted = True
                 # Calculate the x and y speed of the bullet
@@ -180,6 +189,8 @@ class Snail(pygame.sprite.Sprite):
                 bullet_position[0] += bullet_margin_x
                 bullet_position[1] += bullet_margin_y
                 # Add the bullet to the game
+                self.bullet = Bullet(bullet_position, [bullet_speed_x, bullet_speed_y])
+                print "created bullet"
                 #self.game.addBullet(Bullet(self.game, bullet_position, [bullet_speed_x, bullet_speed_y]))
 
     def updateGravity(self):
@@ -241,3 +252,6 @@ class Snail(pygame.sprite.Sprite):
         self.weapon.rect.centery = self.rect.centery + y_margin
         #self.weapon.rect.move_ip(self.rect.centerx, self.rect.centery)
         surface.blit(self.weapon.image, self.weapon.rect)
+        
+        if self.bullet <> None:
+            surface.blit(self.bullet.image, self.bullet.rect)

@@ -8,6 +8,8 @@ from settings import Settings
 from terrain import Terrain
 from input import Input
 from enums import *
+from utils import load_image
+
 class testSnail(unittest.TestCase):
 
     """
@@ -141,6 +143,15 @@ class testSnail(unittest.TestCase):
     def testTouchingSalt(self):
         pass
         
+    #def testGravityImages(self):
+    #    self.team.gravity_direction = Direction.UP
+    #    self.snail = Snail(self.team)
+    #    self.team.gravity_direction = Direction.DOWN
+    #    self.snail.update(self.input, self.terrain)
+    #    self.current_snail_image_down_right = self.snail.image_down_right
+    #    self.supposed_snail_image_down_right = load_image('snail'+str(self.team.gravity_direction)+'Right.png')
+    #    self.assertEqual(self.current_snail_image_down_right., self.supposed_snail_image_down_right.__name__)
+
     
 def suite():
 
