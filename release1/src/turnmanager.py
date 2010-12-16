@@ -5,7 +5,7 @@ from settings import Settings
 from threading import Timer
 
 class TurnManager(object):
-    def __init__(self, teams=None):
+    def __init__(self, teams):
         # Display some text
         pygame.font.init()
         self.font_size = Settings.TIMER_FONT_SIZE
@@ -18,6 +18,7 @@ class TurnManager(object):
         self.rect = pygame.Rect(self.position, self.size)
         self.status = TurnStatus.BREAK
         self.teams = teams
+        self.currentTeamTurn = 0
         self.teams[0].hasTurn = True
         self.timer = Timer(1.0, self.updateTime)
         
@@ -52,39 +53,16 @@ class TurnManager(object):
         self.timer.start()
                 
     def changeTurn(self):
-        maxTeamNumber = len(self.teams)
         #give the turn to the next team and set the current team on false
-        for i in range(0, maxTeamNumber):
-            #check which team has the turn
-            if self.teams[i].hasTurn:
-
-                # set the currentTeam on false
-                self.teams[i].hasTurn = False
-                if i+1 < maxTeamNumber:
-                #    give the turn to the next Team
-                    self.teams[(i+1)].hasTurn = True
-                else:
-                #    give the turn to the first Team in the list
-                    self.teams[0].hasTurn = True
-                    
-                # set the next snail in the team to have the turn
-                snails_iter = iter(self.teams[i])
-                print [snail.hasTurn for snail in snails_iter]
-                currentTurn = -1
-                print currentTurn
-                #loop through all the snails
-                for snail in self.teams[i]: 
-                    #check if the current snail has the turn
-                    if snail.hasTurn == True:
-                        snail.hasTurn = False
-                        currentTurn = snail.id
-                        if currentTurn + 1 < len(self.teams[i]):
-                            currentTurn += 1
-                        else:
-                            currentTurn = 0
-                
-                for snail in self.teams[i]:
-                    if snail.id == currentTurn:
-                        snail.hasTurn = True
-                
-                print currentTurn
+        if self.teams[self.currentTeamTurn].hasTurn == True:
+            self.teams[self.currentTeamTurn].hasTurn = False
+            
+            nextTeam = self.currentTeamTurn + 1
+            if nextTeam < len(self.teams):
+                self.currentTeamTurn = nextTeam
+                self.teams[nextTeam].hasTurn = True
+                self.teams[nextTeam].nextSnailTurn()
+            else:
+                self.currentTeamTurn = 0
+                self.teams[0].hasTurn = True
+                self.teams[0].nextSnailTurn()

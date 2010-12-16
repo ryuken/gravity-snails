@@ -12,6 +12,7 @@ class Snail(pygame.sprite.Sprite):
     def __init__(self, team):
         pygame.sprite.Sprite.__init__(self)
         # Load every snail sprite
+        self.image = load_image('snailRight.png')
         self.image_down_right = load_image('snailRight.png')
         self.image_down_left = load_image('snailLeft.png')
         self.image_up_left = pygame.transform.rotate(self.image_down_right, 180)
@@ -135,7 +136,7 @@ class Snail(pygame.sprite.Sprite):
         # Stop moving left right
         self.direction['movement'] = 0
         # Store the arrowkeys + spacebar in variables
-        if self.hasTurn and self.team.hasTurn:
+        if self.team.hasTurn and self.hasTurn:
             left_pressed = input.keyboard_left
             right_pressed = input.keyboard_right
             up_pressed = input.keyboard_up
