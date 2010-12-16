@@ -20,8 +20,8 @@ class TestTimer(unittest.TestCase):
         setUp is called before each test function execution.
         """
         self.teams= []
-        self.team1 = Team("team1", 2)
-        self.team2 = Team("team2", 4)
+        self.team1 = Team("team1")
+        self.team2 = Team("team2")
         
         self.team1.addSnails(2)
         self.team2.addSnails(3)
@@ -56,7 +56,7 @@ class TestTimer(unittest.TestCase):
         
         self.assertEqual(self.turnManager.status, TurnStatus.CURRENTTURN)
         
-        time.sleep(Settings.TIMER_STARTTIME + 7)
+        time.sleep(Settings.TIMER_STARTTIME + 2)
         self.assertEqual(self.turnManager.status, TurnStatus.BREAK)
         self.turnManager.stopTimer()
     
@@ -76,7 +76,13 @@ class TestTimer(unittest.TestCase):
         """
         Test if the next time get's the turn
         """
-        a = 1
+        self.turnManager.startTimer()
+        self.assertEqual(self.turnManager.teams[0].hasTurn, True)
+        
+        time.sleep(Settings.TIMER_BREAKTIME + Settings.TIMER_STARTTIME + 5)
+        
+        self.assertEqual(self.turnManager.teams[0].hasTurn, False)
+        self.assertEqual(self.turnManager.teams[1].hasTurn, True)
         
     def testChangeTurnSnail(self):
         """
@@ -88,13 +94,32 @@ class TestTimer(unittest.TestCase):
         """
         Test if the first team in the team list got the turn when the turnManager starts 
         """
+        self.turnManager.startTimer()
+        time.sleep(2)
         self.assertEqual(self.turnManager.teams[0].hasTurn, True)
+        self.assertEqual(self.turnManager.teams[1].hasTurn, False)
+        self.turnManager.stopTimer()
         
     def testFirstTurnSnail(self):
         """
         Test if the first snail of the team who got the turn has the turn
         """
-        a = 1
+        # the first snail who gets the turn is the first snail of team 1
+        firstSnailID = self.turnManager.teams[0].currentSnailTurn
+        # the 2nd snail who gets the turn is the first snail of team 2
+        secondSnailID = self.turnManager.teams[1].currentSnailTurn
+        
+        self.turnManager.startTimer()
+        self.assertEqual(self.turnManager.teams[0].hasTurn, True)
+        self.assertEqual(self.turnManager.teams[0].currentSnailTurn, firstSnailID)
+        
+#        time.sleep(Settings.TIMER_BREAKTIME + Settings.TIMER_STARTTIME + 5)
+#        
+#        self.assertEqual(self.turnManager.teams[0].hasTurn, False)
+#        self.assertEqual(self.turnManager.teams[1].hasTurn, True)
+#        self.assertEqual(self.turnManager.teams[1].currentSnailTurn, secondSnailID)
+        
+        self.turnManager.stopTimer()
 
 if __name__ == '__main__':
     unittest.main()
