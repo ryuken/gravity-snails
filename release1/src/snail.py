@@ -70,22 +70,23 @@ class Snail(pygame.sprite.Sprite):
     def update(self, input, terrain):
         #E Event
         if(not self.isPlaced):
-            # The snail is not placed yet
-            # Store the current position
-            prev_x = self.rect.centerx
-            prev_y = self.rect.centery
-            # Get the mouse position
-            self.rect.centerx = input.mouse_x
-            self.rect.centery = input.mouse_y
-            # Is the position valid to place the snail?
-            if(self.collideWithTerrain(terrain)):
-                # Use the last known valid position
-                self.rect.centerx = prev_x
-                self.rect.centery = prev_y
-            else:
-                # Place the snail if the mousebutton is pressed
-                if input.mouse_left:
-                    self.isPlaced = True
+            if self.hasTurn and self.team.hasTurn:
+                # The snail is not placed yet
+                # Store the current position
+                prev_x = self.rect.centerx
+                prev_y = self.rect.centery
+                # Get the mouse position
+                self.rect.centerx = input.mouse_x
+                self.rect.centery = input.mouse_y
+                # Is the position valid to place the snail?
+                if(self.collideWithTerrain(terrain)):
+                    # Use the last known valid position
+                    self.rect.centerx = prev_x
+                    self.rect.centery = prev_y
+                else:
+                    # Place the snail if the mousebutton is pressed
+                    if input.mouse_left:
+                        self.isPlaced = True
         else:
             # If the snail is placed
             # Check if the snail if moving, and check if the snail is falling
