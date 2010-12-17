@@ -242,17 +242,18 @@ class Snail(pygame.sprite.Sprite):
                 self.rect = self.rect.move(0, -self.direction['movement'])
 
     def draw(self, surface):
-        x_margin = 0
-        y_margin = 0
-        #if(self.gravity_direction == Direction.DOWN or self.gravity_direction == Direction.UP):
-        x_margin = math.cos(math.radians(self.weaponAngle)) * (self.rect.width * 2)
-        #if(self.gravity_direction == Direction.LEFT or self.gravity_direction == Direction.RIGHT):
-        y_margin = math.sin(math.radians(self.weaponAngle)) * (self.rect.height * 2)
-        #if(self.image == self.im)
-        self.weapon.rect.centerx = self.rect.centerx + x_margin
-        self.weapon.rect.centery = self.rect.centery + y_margin
-        #self.weapon.rect.move_ip(self.rect.centerx, self.rect.centery)
-        surface.blit(self.weapon.image, self.weapon.rect)
+        if self.hasTurn and self.team.hasTurn:
+            x_margin = 0
+            y_margin = 0
+            #if(self.gravity_direction == Direction.DOWN or self.gravity_direction == Direction.UP):
+            x_margin = math.cos(math.radians(self.weaponAngle)) * (self.rect.width * 2)
+            #if(self.gravity_direction == Direction.LEFT or self.gravity_direction == Direction.RIGHT):
+            y_margin = math.sin(math.radians(self.weaponAngle)) * (self.rect.height * 2)
+            #if(self.image == self.im)
+            self.weapon.rect.centerx = self.rect.centerx + x_margin
+            self.weapon.rect.centery = self.rect.centery + y_margin
+            #self.weapon.rect.move_ip(self.rect.centerx, self.rect.centery)
+            surface.blit(self.weapon.image, self.weapon.rect)
         
         if self.bullet <> None:
             surface.blit(self.bullet.image, self.bullet.rect)
