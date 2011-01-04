@@ -163,10 +163,10 @@ class Snail(pygame.sprite.Sprite):
             # Check if the spacebar is pressed and the snail is allowed to shoot
             if (space_pressed and self.bullet == None):
                 # The snail may only shoot once each turn
-                self.has_shooted = True
                 
                 try:
-                    self.team.active_weapon.shoot(self.rect)
+                    self.has_shooted = self.team.active_weapon.shoot(self.rect)
+                    #TurnManager().changeTurn()
                 except ValueError:
                     pass
 

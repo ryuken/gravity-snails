@@ -27,6 +27,7 @@ class Weapon(pygame.sprite.Sprite):
             self.bullet = Bullet(snail_rect, self.weaponAngle)
             self.ammo -= 1
             print "created bullet"
+            return True
         else:
             raise ValueError("You can't shoot anymore, you don't have any ammo.")
         
