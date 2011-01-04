@@ -9,7 +9,7 @@ from input import Input
 from enums import GameModes
 
 class Game(object):
-    
+
     def __init__(self):
         self.gamemode = GameModes.INIT
         #Init
@@ -18,35 +18,35 @@ class Game(object):
         self.initScreen()
         self.initInput()
         self.initClock()
-        
+
         self.initTerrain()
         self.initTeams()
-        
+
         self.createGameObjects()
-    
+
         self.running = False
 
     def initPygame(self):
         result = pygame.init()
         return result[1]
-        
+
     def initScreen(self):
         self.surface = pygame.display.set_mode([Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT]) #retourneert Surface
         pygame.display.set_caption(Settings.GAME_TITLE)
-    
+
     def initInput(self):
         self.input = Input()
-        
+
     def initClock(self):
         self.clock     = pygame.time.Clock()
-        
+
     def initTeams(self):
         self.teams = []
         self.teamsAlive = 0
-        
+
     def initTerrain(self):
         self.terrain = Terrain()
-        
+
     def createGameObjects(self):
         #A Assign
         self.terrain.create(5)
@@ -63,9 +63,9 @@ class Game(object):
 
     def run(self):
         self.gamemode = GameModes.GAME_PLACING_SNAILS
-        self.turnManager = TurnManager(self.teams)
-        #self.turnManager.startTimer()
-        
+        self.turnManager = TurnManager()
+        self.turnManager.startTimer(self.teams)
+
         self.running = True
         while self.running:
             #T Timer (framerate)
@@ -81,7 +81,7 @@ class Game(object):
             #R refresh
             self.draw()
         self.turnManager.timer.cancel()
-        
+
     def update(self):
         self.terrain.update()
         self.updateTeams()
@@ -89,33 +89,33 @@ class Game(object):
         self.bullets.update()
 
         self.updateGameMode()
-        
+
     def updateTeams(self):
         self.teamsAlive = 0
         for team in self.teams:
             if team.isAlive():
                 team.update(self.input, self.terrain)
                 self.teamsAlive += 1
-    
+
     def updateGameMode(self):
         if self.gamemode == GameModes.GAME_PLAYING:
             if self.teamsAlive <= 1:
                 self.running = False
-            
+
     def draw(self):
         self.surface.fill(Settings.SCREEN_COLOR)
-        
+
         if self.gamemode == GameModes.GAME_PLACING_SNAILS:
             self.drawGame()
         if self.gamemode == GameModes.GAME_PLAYING:
             self.drawGame()
             self.turnManager.draw(self.surface)
-        
+
         pygame.display.flip()
-        
+
     def drawGame(self):
         self.terrain.draw(self.surface)
         for team in self.teams:
             team.draw(self.surface)
-        
-        self.bullets.draw(self.surface)        
+
+        self.bullets.draw(self.surface)
