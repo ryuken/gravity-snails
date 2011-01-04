@@ -2,7 +2,7 @@ import unittest
 
 import sys
 sys.path.append("../")
-
+import pygame
 from team import Team
 from turnmanager import TurnManager
 from settings import Settings
@@ -19,6 +19,7 @@ class TestTimer(unittest.TestCase):
         set up data used in the tests.
         setUp is called before each test function execution.
         """
+        pygame.init()
         self.teams= []
         self.team1 = Team("team1")
         self.team2 = Team("team2")
@@ -77,7 +78,7 @@ class TestTimer(unittest.TestCase):
         self.assertEqual(self.turnManager.status, TurnStatus.BREAK)
         self.turnManager.startTimer()
 
-        time.sleep(Settings.TIMER_BREAKTIME + 2)
+        time.sleep(Settings.TIMER_BREAKTIME + 1)
 
         self.assertEqual(self.turnManager.status, TurnStatus.CURRENTTURN)
         self.turnManager.stopTimer()

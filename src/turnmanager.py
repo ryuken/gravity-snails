@@ -6,27 +6,34 @@ from threading import Timer
 
 class TurnManager(object):
     _instance = None
+    _count    = 0
+
     def __new__(cls, *args, **kwargs):
         if not cls._instance:
             cls._instance = super(TurnManager, cls).__new__(
                                 cls, *args, **kwargs)
+
+#            _count += 1
+            print "Created new instance"
         return cls._instance
 
     def __init__(self):
         # Display some text
-        pygame.font.init()
-        self.font_size = Settings.TIMER_FONT_SIZE
-        self.font = pygame.font.Font(None, self.font_size)
-        self.startTime = Settings.TIMER_STARTTIME
-        self.breakTime = Settings.TIMER_BREAKTIME
-        self.currentTime = self.breakTime
-        self.position = Settings.TIMER_POSITION
-        self.size = Settings.TIMER_SIZE
-        self.rect = pygame.Rect(self.position, self.size)
-        self.status = TurnStatus.BREAK
-        self.teams = None
-        self.currentTeamTurn = 0
-        self.timer = Timer(1.0, self.updateTime)
+        if TurnManager._count == 0:
+            self.font_size = Settings.TIMER_FONT_SIZE
+            self.font = pygame.font.Font(None, self.font_size)
+            self.startTime = Settings.TIMER_STARTTIME
+            self.breakTime = Settings.TIMER_BREAKTIME
+            self.currentTime = self.breakTime
+            self.position = Settings.TIMER_POSITION
+            self.size = Settings.TIMER_SIZE
+            self.rect = pygame.Rect(self.position, self.size)
+            self.status = TurnStatus.BREAK
+            self.teams = None
+            self.currentTeamTurn = 0
+            self.timer = Timer(1.0, self.updateTime)
+            print "Init turnmanager"
+            TurnManager._count += 1
 
     def startTimer(self):
         if self.teams is not None:
