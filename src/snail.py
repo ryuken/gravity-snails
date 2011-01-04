@@ -4,10 +4,9 @@ import math
 from pygame.locals import *
 from utils import load_image
 from weapon import Weapon
-from enums import *
+from enums import Direction
 from bullet import Bullet
 from turnmanager import TurnManager
-from settings import Settings
 class Snail(pygame.sprite.Sprite):
 
     def __init__(self, team):
@@ -54,10 +53,7 @@ class Snail(pygame.sprite.Sprite):
         self.id = None
         # The snail isn't placed yet
         self.isPlaced = False
-        # Give the snail a weapon
-        self.weapon = Weapon("laser", 100)
-        # Set the aiming direction
-        self.weaponAngle = 45
+        
         # Bullet
         self.bullet = None
         # The snail hasn't shooted yet
@@ -103,13 +99,6 @@ class Snail(pygame.sprite.Sprite):
             list = pygame.sprite.spritecollide(self, terrain.salt, False)
             if(len(list) > 0):
                 self.kill()
-            self.updateBullet(terrain)
-    def updateBullet(self, terrain):
-        if self.bullet <> None:
-            self.bullet.update(terrain)
-            if self.bullet.alive == False:
-                self.bullet.kill()
-                self.bullet = None
 
         # Use the correct sprite
         self.updateImage()
@@ -149,7 +138,7 @@ class Snail(pygame.sprite.Sprite):
         # Stop moving left right
         self.direction['movement'] = 0
         # Store the arrowkeys + spacebar in variables
-        if self.team.hasTurn and self.hasTurn and TurnManager().status == TurnStatus.CURRENTTURN:
+        if self.team.hasTurn and self.hasTurn:
             left_pressed = input.keyboard_left
             right_pressed = input.keyboard_right
             up_pressed = input.keyboard_up
@@ -168,33 +157,18 @@ class Snail(pygame.sprite.Sprite):
                 # Move the snail to the right
                 self.direction['movement'] = self.speed['movement']
             if (up_pressed):
-                # Adjust the aiming
-                self.weaponAngle += 1
-                if self.weaponAngle > 360:
-                    self.weaponAngle = self.weaponAngle - 360
+                self.team.active_weapon.adjustAngle(0)
             if (down_pressed):
-                # Adjust the aiming
-                self.weaponAngle -= 1
-                if self.weaponAngle < 0:
-                    self.weaponAngle = 360 + self.weaponAngle
+                self.team.active_weapon.adjustAngle(1)
             # Check if the spacebar is pressed and the snail is allowed to shoot
             if (space_pressed and self.bullet == None):
-                # Calculate the x and y speed of the bullet
-                bullet_speed_x = math.cos(math.radians(self.weaponAngle)) * 10.0 #(self.rect.width)
-                bullet_speed_y = math.sin(math.radians(self.weaponAngle)) * 10.0 #(self.rect.height)
-                # Calculate the start position of the bullet
-                bullet_margin_x = math.cos(math.radians(self.weaponAngle)) * (self.rect.width)
-                bullet_margin_y = math.sin(math.radians(self.weaponAngle)) * (self.rect.height)
-                bullet_position = [0,0]
-                bullet_position[0] = self.rect.centerx
-                bullet_position[1] = self.rect.centery
-                bullet_position[0] += bullet_margin_x
-                bullet_position[1] += bullet_margin_y
-                # Add the bullet to the game
-                self.bullet = Bullet(bullet_position, [bullet_speed_x, bullet_speed_y])
-                print "created bullet"
-                TurnManager().changeTurn()
-                #self.game.addBullet(Bullet(self.game, bullet_position, [bullet_speed_x, bullet_speed_y]))
+                # The snail may only shoot once each turn
+                self.has_shooted = True
+                
+                try:
+                    self.team.active_weapon.shoot(self.rect)
+                except ValueError:
+                    pass
 
     def updateGravity(self):
         # Make the snail fall
@@ -242,20 +216,3 @@ class Snail(pygame.sprite.Sprite):
                 self.rect = self.rect.move(-self.direction['movement'], 0)
             else:
                 self.rect = self.rect.move(0, -self.direction['movement'])
-
-    def draw(self, surface):
-        if self.hasTurn and self.team.hasTurn:
-            x_margin = 0
-            y_margin = 0
-            #if(self.gravity_direction == Direction.DOWN or self.gravity_direction == Direction.UP):
-            x_margin = math.cos(math.radians(self.weaponAngle)) * (self.rect.width * 2)
-            #if(self.gravity_direction == Direction.LEFT or self.gravity_direction == Direction.RIGHT):
-            y_margin = math.sin(math.radians(self.weaponAngle)) * (self.rect.height * 2)
-            #if(self.image == self.im)
-            self.weapon.rect.centerx = self.rect.centerx + x_margin
-            self.weapon.rect.centery = self.rect.centery + y_margin
-            #self.weapon.rect.move_ip(self.rect.centerx, self.rect.centery)
-            surface.blit(self.weapon.image, self.weapon.rect)
-        
-        if self.bullet <> None:
-            surface.blit(self.bullet.image, self.bullet.rect)

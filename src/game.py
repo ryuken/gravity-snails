@@ -38,7 +38,7 @@ class Game(object):
         self.input = Input()
 
     def initClock(self):
-        self.clock     = pygame.time.Clock()
+        self.clock = pygame.time.Clock()
 
     def initTeams(self):
         self.teams = []

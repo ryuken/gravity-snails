@@ -1,5 +1,7 @@
 import pygame
 
+from inventory import Inventory
+from weapon import Weapon
 from snail import Snail
 
 class Team(pygame.sprite.Group):
@@ -14,10 +16,20 @@ class Team(pygame.sprite.Group):
 
         self.gravity_direction = None
         
+        self.inventory = Inventory()
+        cannon = Weapon("Canon", 20)
+        self.inventory.addWeapon(cannon)
+        
+        self.active_weapon = cannon
+        
     def draw(self, surface):
         pygame.sprite.Group.draw(self, surface)
-        for s in self.sprites():
-            s.draw(surface)
+        snail = self.orderedSnailList[self.currentSnailTurn]
+        if self.hasTurn and snail.hasTurn:
+            bool = True
+        else:
+            bool = False
+        self.active_weapon.draw(surface, snail.rect, bool)
                         
     def addSnails(self, numberOfSnails):
         for i in range(0, numberOfSnails):
