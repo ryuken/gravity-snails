@@ -101,6 +101,9 @@ class Game(object):
         for team in self.teams:
             if team.isAlive():
                 team.update(self.input, self.terrain)
+                bullet = team.active_weapon.bullet
+                if bullet <> None:
+                    bullet.update(self.terrain)
                 self.teamsAlive += 1
 
     def updateGameMode(self):

@@ -14,11 +14,11 @@ class Bullet(pygame.sprite.Sprite):
         self.speed[0] = math.cos(math.radians(angle)) * 10.0 #(self.rect.width)
         self.speed[1] = math.sin(math.radians(angle)) * 10.0 #(self.rect.height)
         # Calculate the start position of the bullet
-        bullet_margin_x = math.cos(math.radians(angle)) * (self.rect.width)
-        bullet_margin_y = math.sin(math.radians(angle)) * (self.rect.height)
+        bullet_margin_x = math.cos(math.radians(angle)) * (snail_rect.width)
+        bullet_margin_y = math.sin(math.radians(angle)) * (snail_rect.height)
         position = [0,0]
-        position[0] = self.rect.centerx
-        position[1] = self.rect.centery
+        position[0] = snail_rect.centerx
+        position[1] = snail_rect.centery
         position[0] += bullet_margin_x
         position[1] += bullet_margin_y
         
