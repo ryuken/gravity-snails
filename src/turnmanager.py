@@ -24,14 +24,19 @@ class TurnManager(object):
         self.size = Settings.TIMER_SIZE
         self.rect = pygame.Rect(self.position, self.size)
         self.status = TurnStatus.BREAK
-        self.teams = []
+        self.teams = None
         self.currentTeamTurn = 0
         self.timer = Timer(1.0, self.updateTime)
 
-    def startTimer(self, teams):
+    def startTimer(self):
+        if self.teams is not None:
+            self.timer.start()
+        else:
+            raise ValueError("Teams must be assigned use TurnManager.setTeams(teams).")
+
+    def setTeams(self, teams):
         self.teams = teams
         self.teams[0].hasTurn = True
-        self.timer.start()
 
     def stopTimer(self):
         self.timer.cancel()

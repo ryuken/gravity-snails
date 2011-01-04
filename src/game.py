@@ -64,7 +64,8 @@ class Game(object):
     def run(self):
         self.gamemode = GameModes.GAME_PLACING_SNAILS
         self.turnManager = TurnManager()
-        self.turnManager.startTimer(self.teams)
+        self.turnManager.setTeams(teams)
+        self.turnManager.startTimer()
 
         self.running = True
         while self.running:
