@@ -66,13 +66,13 @@ class TurnManager(object):
                 self.status = TurnStatus.CURRENTTURN
                 self.currentTime = self.startTime
             elif self.status == TurnStatus.CURRENTTURN:
-                self.status = TurnStatus.BREAK
-                self.currentTime = self.breakTime
                 self.changeTurn()
         self.timer = Timer(1.0, self.updateTime)
         self.timer.start()
 
     def changeTurn(self):
+        self.status = TurnStatus.BREAK
+        self.currentTime = self.breakTime
         #give the turn to the next team and set the current team on false
         if self.teams[self.currentTeamTurn].hasTurn == True:
             self.teams[self.currentTeamTurn].hasTurn = False

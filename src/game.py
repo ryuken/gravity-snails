@@ -120,3 +120,8 @@ class Game(object):
             team.draw(self.surface)
 
         self.bullets.draw(self.surface)
+        if self.gamemode == GameModes.GAME_PLAYING:
+            self.drawTimer()
+        
+    def drawTimer(self):
+        self.turnManager.draw(self.surface)

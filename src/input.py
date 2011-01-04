@@ -36,6 +36,7 @@ class Input:
         self.keyboard_up = pygame.key.get_pressed()[K_UP]
         self.keyboard_down = pygame.key.get_pressed()[K_DOWN]
         self.keyboard_return = pygame.key.get_pressed()[K_RETURN]
+        
         self.keyboard_space = pygame.key.get_pressed()[K_SPACE]
         
     def get_mouse_left_click(self):

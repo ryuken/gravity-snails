@@ -4,9 +4,10 @@ import math
 from pygame.locals import *
 from utils import load_image
 from weapon import Weapon
-from enums import Direction
+from enums import *
 from bullet import Bullet
 from turnmanager import TurnManager
+from settings import Settings
 class Snail(pygame.sprite.Sprite):
 
     def __init__(self, team):
@@ -148,7 +149,7 @@ class Snail(pygame.sprite.Sprite):
         # Stop moving left right
         self.direction['movement'] = 0
         # Store the arrowkeys + spacebar in variables
-        if self.team.hasTurn and self.hasTurn:
+        if self.team.hasTurn and self.hasTurn and TurnManager().status == TurnStatus.CURRENTTURN:
             left_pressed = input.keyboard_left
             right_pressed = input.keyboard_right
             up_pressed = input.keyboard_up
@@ -178,8 +179,6 @@ class Snail(pygame.sprite.Sprite):
                     self.weaponAngle = 360 + self.weaponAngle
             # Check if the spacebar is pressed and the snail is allowed to shoot
             if (space_pressed and self.bullet == None):
-                # The snail may only shoot once each turn
-                self.has_shooted = True
                 # Calculate the x and y speed of the bullet
                 bullet_speed_x = math.cos(math.radians(self.weaponAngle)) * 10.0 #(self.rect.width)
                 bullet_speed_y = math.sin(math.radians(self.weaponAngle)) * 10.0 #(self.rect.height)
@@ -194,6 +193,7 @@ class Snail(pygame.sprite.Sprite):
                 # Add the bullet to the game
                 self.bullet = Bullet(bullet_position, [bullet_speed_x, bullet_speed_y])
                 print "created bullet"
+                TurnManager().changeTurn()
                 #self.game.addBullet(Bullet(self.game, bullet_position, [bullet_speed_x, bullet_speed_y]))
 
     def updateGravity(self):
