@@ -139,7 +139,7 @@ class testSnail(unittest.TestCase):
         pass
     
     def testDie(self):
-        pass
+        self.assertEquals(self.snail.hitpoints, 100)
     
     def testCollision(self):
         pass

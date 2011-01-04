@@ -55,10 +55,15 @@ class TestTeam(unittest.TestCase):
     
     def testNextSnailTurnException(self):
         self.team1.addSnails(self.maxSnails)
-        
         self.team1.orderedSnailList[0].hasTurn = False
-        
         self.assertRaises(ValueError, self.team1.nextSnailTurn)
 
+    def testIsDead(self):
+        self.team1.addSnails(self.maxSnails)
+        self.assertTrue(self.team1.isAlive())
+        for snail in self.team1.orderedSnailList:
+            snail.kill()
+        self.assertFalse(self.team1.isAlive())
+            
 if __name__ == '__main__':
     unittest.main()

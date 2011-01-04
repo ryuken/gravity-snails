@@ -49,3 +49,10 @@ class Team(pygame.sprite.Group):
         self.gravity_direction = direction
         for s in self.sprites():
             s.gravity_direction = direction
+            
+    def isAlive(self):
+        # Check if all the snails are dead
+        for s in self.orderedSnailList:
+            if s.hitpoints > 0 and s.alive():
+                return True
+        return False
