@@ -62,6 +62,10 @@ class Game(object):
         self.bullets.add(bullet)
 
     def run(self):
+        self.runPlacingSnails()
+        self.turnManager.timer.cancel()
+        
+    def runPlacingSnails(self):
         self.gamemode = GameModes.GAME_PLACING_SNAILS
         self.turnManager = TurnManager()
         self.turnManager.setTeams(self.teams)
@@ -80,9 +84,10 @@ class Game(object):
 
             self.update()
             #R refresh
-            self.draw()
-        self.turnManager.timer.cancel()
-
+            self.surface.fill(Settings.SCREEN_COLOR)
+            self.drawGame()
+            pygame.display.flip()
+            
     def update(self):
         self.terrain.update()
         self.updateTeams()
@@ -99,20 +104,15 @@ class Game(object):
                 self.teamsAlive += 1
 
     def updateGameMode(self):
+        if self.gamemode == GameModes.GAME_PLACING_SNAILS:
+            for team in self.teams:
+                for snail in team.sprites():
+                    if snail.isPlaced == False:
+                        return
+            self.gamemode = GameModes.GAME_PLAYING
         if self.gamemode == GameModes.GAME_PLAYING:
             if self.teamsAlive <= 1:
                 self.running = False
-
-    def draw(self):
-        self.surface.fill(Settings.SCREEN_COLOR)
-
-        if self.gamemode == GameModes.GAME_PLACING_SNAILS:
-            self.drawGame()
-        if self.gamemode == GameModes.GAME_PLAYING:
-            self.drawGame()
-            self.turnManager.draw(self.surface)
-
-        pygame.display.flip()
 
     def drawGame(self):
         self.terrain.draw(self.surface)

@@ -3,10 +3,11 @@ class TurnStatus(object):
     CURRENTTURN = 2
     
 class Direction(object):
-    UP = 1
-    DOWN = 2
-    LEFT = 3
-    RIGHT = 4
+    UP, DOWN, LEFT, RIGHT = range(4)
+    #UP = 1
+    #DOWN = 2
+    #LEFT = 3
+    #RIGHT = 4
     
 class GameModes(object):
     INIT = 1

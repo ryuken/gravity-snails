@@ -6,7 +6,7 @@ from utils import load_image
 from weapon import Weapon
 from enums import Direction
 from bullet import Bullet
-
+from turnmanager import TurnManager
 class Snail(pygame.sprite.Sprite):
 
     def __init__(self, team):
@@ -85,8 +85,10 @@ class Snail(pygame.sprite.Sprite):
                     self.rect.centery = prev_y
                 else:
                     # Place the snail if the mousebutton is pressed
-                    if input.mouse_left:
+                    if input.get_mouse_left_click():
                         self.isPlaced = True
+                        TurnManager().changeTurn()
+                        
         else:
             # If the snail is placed
             # Check if the snail if moving, and check if the snail is falling
