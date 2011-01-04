@@ -6,11 +6,12 @@ from turnmanager import TurnManager
 from settings import Settings
 
 from input import Input
-from enums import Direction
+from enums import GameModes
 
 class Game(object):
     
     def __init__(self):
+        self.gamemode = GameModes.INIT
         #Init
         self.initPygame()
         #D Display
@@ -61,8 +62,9 @@ class Game(object):
         self.bullets.add(bullet)
 
     def run(self):
+        self.gamemode = GameModes.GAME_PLACING_SNAILS
         self.turnManager = TurnManager(self.teams)
-        self.turnManager.startTimer()
+        #self.turnManager.startTimer()
         
         self.running = True
         while self.running:
@@ -75,24 +77,18 @@ class Game(object):
                     self.turnManager.timer.cancel()
                     return
 
-            self.terrain.update()
-            self.updateTeams()
-
-            self.bullets.update()
-
-            self.updateGameMode()
+            self.update()
             #R refresh
-            self.surface.fill(Settings.SCREEN_COLOR)
-            self.terrain.draw(self.surface)
-            for team in self.teams:
-                team.draw(self.surface)
-            
-            self.bullets.draw(self.surface)
-            
-            self.turnManager.draw(self.surface)
-            
-            pygame.display.flip()
+            self.draw()
         self.turnManager.timer.cancel()
+        
+    def update(self):
+        self.terrain.update()
+        self.updateTeams()
+
+        self.bullets.update()
+
+        self.updateGameMode()
         
     def updateTeams(self):
         self.teamsAlive = 0
@@ -102,5 +98,24 @@ class Game(object):
                 self.teamsAlive += 1
     
     def updateGameMode(self):
-        if self.teamsAlive <= 1:
-            self.running = False
+        if self.gamemode == GameModes.GAME_PLAYING:
+            if self.teamsAlive <= 1:
+                self.running = False
+            
+    def draw(self):
+        self.surface.fill(Settings.SCREEN_COLOR)
+        
+        if self.gamemode == GameModes.GAME_PLACING_SNAILS:
+            self.drawGame()
+        if self.gamemode == GameModes.GAME_PLAYING:
+            self.drawGame()
+            self.turnManager.draw(self.surface)
+        
+        pygame.display.flip()
+        
+    def drawGame(self):
+        self.terrain.draw(self.surface)
+        for team in self.teams:
+            team.draw(self.surface)
+        
+        self.bullets.draw(self.surface)        
