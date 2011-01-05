@@ -1,6 +1,6 @@
-from game import Game
+from menu import Menu
 from enums import Direction
-game = Game()
+menu = Menu()
 #game.addTeam('test', 2, Direction.LEFT)
 #game.addTeam('test2', 2, Direction.RIGHT)
-game.run()
+menu.run()
