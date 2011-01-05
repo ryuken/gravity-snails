@@ -203,7 +203,7 @@ class Snail(pygame.sprite.Sprite):
                 self.rect = self.rect.move(-self.direction['jump'], 0)
                 can_jump = collision_x > self.rect.centerx
             self.direction['jump'] = 0
-            if (pygame.key.get_pressed()[K_RETURN] and can_jump and self.hasTurn):
+            if (pygame.key.get_pressed()[K_RETURN] and can_jump and self.hasTurn and self.team.hasTurn):
                 self.direction['jump'] = -self.speed['jump']
 
     def updateCollisionHorizontal(self, terrain):
