@@ -12,7 +12,7 @@ class Team(pygame.sprite.Group):
         self.hasTurn = False
 
         self.orderedSnailList = []
-        self.currentSnailTurn = None
+        self.currentSnailWithTurn = None
 
         self.gravity_direction = None
         
@@ -24,47 +24,53 @@ class Team(pygame.sprite.Group):
         
     def draw(self, surface):
         pygame.sprite.Group.draw(self, surface)
-        snail = self.orderedSnailList[self.currentSnailTurn]
-        if self.hasTurn and snail.hasTurn:
+        if self.hasTurn and self.currentSnailWithTurn.hasTurn:
             bool = True
         else:
             bool = False
-        self.active_weapon.draw(surface, snail.rect, bool)
+        self.active_weapon.draw(surface, self.currentSnailWithTurn.rect, bool)
                         
     def addSnails(self, numberOfSnails):
         for i in range(0, numberOfSnails):
             snail = Snail(self)
             self.add(snail)
-            
             self.orderedSnailList.append(snail)
-            
-            snail.id = i
             if i == 0:
-                self.currentSnailTurn = 0
+                self.currentSnailWithTurn = snail
                 snail.hasTurn = True
     
     def nextSnailTurn(self):
-        currentSnail = self.orderedSnailList[self.currentSnailTurn]
-        if currentSnail.isAlive:
-            if currentSnail.hasTurn == True:
-                currentSnail.hasTurn = False
-                nextSnailID = self.currentSnailTurn + 1
-                if nextSnailID < len(self.orderedSnailList):    
-                    self.currentSnailTurn = nextSnailID
-                    self.orderedSnailList[nextSnailID].hasTurn = True
-                else:
-                    self.currentSnailTurn = 0
+#        currentSnail = self.orderedSnailList[self.currentSnailTurn]
+#        if currentSnail.hasTurn == True:
+#            currentSnail.hasTurn = False
+#            nextSnailID = self.currentSnailTurn + 1
+#            if nextSnailID < len(self.sprites()):    
+#                self.currentSnailTurn = nextSnailID
+#                self.orderedSnailList[nextSnailID].hasTurn = True
+#            else:
+#                self.currentSnailTurn = 0
+#                self.orderedSnailList[0].hasTurn = True
+#        else:
+#            raise ValueError("Current snail should be true, but it wasn't!")
+#        stillNeedToGiveTurn = True
+        snailIterator = iter(self.orderedSnailList)
+        for snail in snailIterator:
+            if snail.hasTurn:
+                snail.hasTurn = False
+                nextSnail = None
+                try:
+                    nextSnail = snailIterator.next()
+                    if nextSnail:
+                        nextSnail.hasTurn = True
+                        self.currentSnailWithTurn = nextSnail
+                except StopIteration:
                     self.orderedSnailList[0].hasTurn = True
-            else:
-                raise ValueError("Current snail should be true, but it wasn't!")
-        else:
-            nextSnailID = self.currentSnailTurn + 1
-            if nextSnailID < len(self.orderedSnailList):    
-                self.currentSnailTurn = nextSnailID
-            else:
-                self.currentSnailTurn = 0
-            self.nextSnailTurn()
+                    return
+                        
+                    
 
+                        
+    
     def setGravity(self, direction):
         self.gravity_direction = direction
         for s in self.sprites():
@@ -73,6 +79,6 @@ class Team(pygame.sprite.Group):
     def isAlive(self):
         # Check if all the snails are dead
         for s in self.orderedSnailList:                
-            if s.hitpoints > 0 and s.alive():
+            if s.isAlive:
                 return True
         return False

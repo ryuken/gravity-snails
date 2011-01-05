@@ -50,8 +50,7 @@ class Snail(pygame.sprite.Sprite):
         
         # The hitpoints of the snail
         self.hitpoints = 100
-        # The id of the snail
-        self.id = None
+
         # The snail isn't placed yet
         self.isPlaced = False
         
@@ -65,11 +64,16 @@ class Snail(pygame.sprite.Sprite):
     def collideWithTerrain(self, terrain):
         return len(pygame.sprite.spritecollide(self, terrain, False)) > 0
     
-    def update(self, input, terrain):
+    def checkHealth(self):
         if self.hitpoints <= 0:
             self.isAlive = False
-            TurnManager().changeTurn()
+            if self.hasTurn:
+                self.team.nextSnailTurn()
+            self.team.orderedSnailList.remove(self)
             self.kill()
+    
+    def update(self, input, terrain):
+        self.checkHealth()
         
         #E Event
         if(not self.isPlaced):

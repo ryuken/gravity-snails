@@ -12,7 +12,7 @@ class TestTeam(unittest.TestCase):
         set up data used in the tests.
         setUp is called before each test function execution.
         """        
-        self.maxSnails = 5
+        self.maxSnails = 3
         self.team1 = Team("team1")
         self.team2 = Team("team2")
         self.team1.setGravity(Direction.UP)
@@ -36,7 +36,6 @@ class TestTeam(unittest.TestCase):
                 self.assertEqual(self.team1.orderedSnailList[i].hasTurn, True)
             else:
                 self.assertEqual(self.team1.orderedSnailList[i].hasTurn, False)
-        self.assertEqual
         
     def testNextSnailTurn(self):
         """
@@ -44,26 +43,30 @@ class TestTeam(unittest.TestCase):
         """
         # test if the currentSnailTurn is 0
         self.team1.addSnails(self.maxSnails)
-        self.assertEqual(self.team1.currentSnailTurn, 0)
-        previousTurnSnail = self.team1.orderedSnailList[self.team1.currentSnailTurn]
-        self.assertEqual(previousTurnSnail.hasTurn, True)
-        self.team1.nextSnailTurn()
-        self.assertEqual(self.team1.currentSnailTurn, 1)
-        currentTurnSnail = self.team1.orderedSnailList[self.team1.currentSnailTurn]
-        self.assertEqual(previousTurnSnail.hasTurn, False)
-        self.assertEqual(currentTurnSnail.hasTurn, True)
+        
+        # Check when all the snails had the turn, if the first snail gets turn again
+        for i in range(0, self.maxSnails):
+            print i
+            self.assertEqual(self.team1.orderedSnailList[i].hasTurn, True)
+            self.team1.nextSnailTurn()
+            self.assertEqual(self.team1.orderedSnailList[i].hasTurn, False)
+            
+            
+        # check if the first snail in the list has the turn again
+        self.assertEqual(self.team1.orderedSnailList[0].hasTurn, True)
     
-    def testNextSnailTurnException(self):
-        self.team1.addSnails(self.maxSnails)
-        self.team1.orderedSnailList[0].hasTurn = False
-        self.assertRaises(ValueError, self.team1.nextSnailTurn)
+        
+    
 
-    def testIsDead(self):
-        self.team1.addSnails(self.maxSnails)
-        self.assertTrue(self.team1.isAlive())
-        for snail in self.team1.orderedSnailList:
-            snail.kill()
-        self.assertFalse(self.team1.isAlive())
+#    def testIsDead(self):
+#        self.team1.addSnails(self.maxSnails)
+#        
+#        # Get the middle snail
+#        middleSnail = self.team1.orderedSnailList[self.maxSnails / 2]
+#        self.assertTrue(self.team1.isAlive())
+#        for snail in self.team1.orderedSnailList:
+#            snail.kill()
+#        self.assertFalse(self.team1.isAlive())
             
 if __name__ == '__main__':
     unittest.main()

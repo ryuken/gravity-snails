@@ -79,7 +79,20 @@ class TurnManager(object):
     def changeTurn(self):
         self.status = TurnStatus.BREAK
         self.currentTime = self.breakTime
-        #give the turn to the next team and set the current team on false
+        
+#        teamIterator = iter(self.teams)
+#        for team in teamIterator:
+#            if team.hasTurn:
+#                team.hasTurn = False
+#                nextTeam = None
+#                try:
+#                    nextTeam = teamIterator.next()
+#                    if nextTeam:
+#                        nextTeam.hasTurn = True
+#                except StopIteration:
+#                    self.teams[0].hasTurn = True
+#                    return
+        # give the turn to the next team and set the current team on false
         if self.teams[self.currentTeamTurn].hasTurn == True:
             self.teams[self.currentTeamTurn].hasTurn = False
 

@@ -9,7 +9,7 @@ from terrain import Terrain
 from input import Input
 from enums import *
 from utils import load_image
-
+from turnmanager import TurnManager
 class testSnail(unittest.TestCase):
 
     """
@@ -35,7 +35,8 @@ class testSnail(unittest.TestCase):
 
         self.input = Input()
         self.terrain = Terrain()
-        
+
+        TurnManager().status = TurnStatus.CURRENTTURN        
         self.teamName = "EJteam"
         self.team = Team(self.teamName)
         self.team.setGravity(Direction.DOWN)
