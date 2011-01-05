@@ -7,6 +7,7 @@ from threading import Timer
 class TurnManager(object):
     _instance = None
     _count    = 0
+    
 
     def __new__(cls, *args, **kwargs):
         if not cls._instance:
@@ -31,12 +32,14 @@ class TurnManager(object):
             self.status = TurnStatus.BREAK
             self.teams = None
             self.currentTeamTurn = 0
-            self.timer = Timer(1.0, self.updateTime)
+            self.timer = None
             print "Init turnmanager"
             TurnManager._count += 1
+    
 
     def startTimer(self):
         if self.teams is not None:
+            self.timer = Timer(1.0, self.updateTime)
             self.timer.start()
         else:
             raise ValueError("Teams must be assigned use TurnManager.setTeams(teams).")
@@ -59,6 +62,8 @@ class TurnManager(object):
     def updateTime(self):
         self.updateStatus()
         self.currentTime -= 1
+        self.timer = Timer(1.0, self.updateTime)
+        self.timer.start()
 
     def updateStatus(self):
         if self.currentTime == 0:
@@ -67,8 +72,7 @@ class TurnManager(object):
                 self.currentTime = self.startTime
             elif self.status == TurnStatus.CURRENTTURN:
                 self.changeTurn()
-        self.timer = Timer(1.0, self.updateTime)
-        self.timer.start()
+
 
     def changeTurn(self):
         self.status = TurnStatus.BREAK

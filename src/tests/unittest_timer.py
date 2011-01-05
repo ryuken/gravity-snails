@@ -32,6 +32,9 @@ class TestTimer(unittest.TestCase):
 
         self.turnManager = TurnManager()
         self.turnManager.setTeams(self.teams)
+        if self.turnManager.timer:
+            if self.turnManager.timer.isAlive():
+                self.turnManager.timer.cancel()
 
     def testInitialized(self):
         """
@@ -83,6 +86,7 @@ class TestTimer(unittest.TestCase):
         self.assertEqual(self.turnManager.status, TurnStatus.CURRENTTURN)
         self.turnManager.stopTimer()
 
+
     def testChangeTurnTeam(self):
         """
         Test if the next time get's the turn
@@ -94,6 +98,7 @@ class TestTimer(unittest.TestCase):
 
         self.assertEqual(self.turnManager.teams[0].hasTurn, False)
         self.assertEqual(self.turnManager.teams[1].hasTurn, True)
+
 
     def testChangeTurnSnail(self):
         """
@@ -110,6 +115,7 @@ class TestTimer(unittest.TestCase):
         self.assertEqual(self.turnManager.teams[0].hasTurn, True)
         self.assertEqual(self.turnManager.teams[1].hasTurn, False)
         self.turnManager.stopTimer()
+
 
     def testFirstTurnSnail(self):
         """
