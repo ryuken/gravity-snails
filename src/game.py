@@ -66,7 +66,6 @@ class Game(object):
 
     def run(self):
         self.runMainMenu()
-        self.turnManager.timer.cancel()
             
     def runMainMenu(self):
         self.gamemode = GameModes.MENU_MAIN
@@ -139,6 +138,7 @@ class Game(object):
                                 if team.hasTurn and snail.hasTurn and TurnManager().status == TurnStatus.CURRENTTURN:
                                     snail.useWeapon()
                 if event.type == pygame.QUIT:
+                    self.turnManager.timer.cancel()
                     return
 
             self.update()
@@ -146,6 +146,8 @@ class Game(object):
             self.surface.fill(Settings.SCREEN_COLOR)
             self.drawGame()
             pygame.display.flip()
+        self.turnManager.timer.cancel()
+        self.gamemode = GameModes.MENU_MAIN
             
     def update(self):
         self.terrain.update()
