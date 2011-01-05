@@ -12,6 +12,7 @@ class Direction(object):
 class GameModes(object):
     INIT = 1
     MENU_MAIN = 2
-    GAME_PLACING_SNAILS = 3
-    GAME_PLAYING = 4
-    GAME_WINNING = 5
+    MENU_SETTINGS = 3
+    GAME_PLACING_SNAILS = 4
+    GAME_PLAYING = 5
+    GAME_WINNING = 6

@@ -9,8 +9,7 @@ class Button(object):
         self.rect = rect
         self.text = text
     def update(self, input):
-        if input.mouse_left:
-            if self.rect.collidepoint(input.mouse_x, input.mouse_y):
+        if input.get_mouse_left_click(self.rect):
                 self.do_action()
     def draw(self, surface):
         # Draw the red rectangle on the game surface

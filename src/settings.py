@@ -10,3 +10,5 @@ class Settings:
     TIMER_BREAKTIME = 3
     
     GAME_TITLE = "Gravity Snails"
+    GAME_PLAYERS = 2
+    

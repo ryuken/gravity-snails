@@ -39,8 +39,12 @@ class Input:
         
         self.keyboard_space = pygame.key.get_pressed()[K_SPACE]
         
-    def get_mouse_left_click(self):
+    def get_mouse_left_click(self, rect=None):
         result = self.mouse_left_click
+        if rect:
+            if not rect.collidepoint(self.mouse_x, self.mouse_y):
+                result = False
+                
         if result:
             self.mouse_left_click = False
             self.mouse_left_clicked = True
