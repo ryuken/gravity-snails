@@ -8,6 +8,7 @@ from settings import Settings
 from input import Input
 from enums import GameModes
 
+from button import Button
 class Game(object):
 
     def __init__(self):
@@ -62,10 +63,33 @@ class Game(object):
         self.bullets.add(bullet)
 
     def run(self):
-        self.runPlacingSnails()
+        self.runMenu()
         self.turnManager.timer.cancel()
+            
+    def runMenu(self):
+        self.gamemode = GameModes.MENU_MAIN
         
-    def runPlacingSnails(self):
+        self.buttonStart = Button(pygame.Rect(32,32,96,32), "Start")
+        self.buttonStart.register_action(self.runGame)
+        self.buttonSettings = Button(pygame.Rect(32,96,96,32), "Settings")
+        self.buttonSettings.register_action(self.runGame)
+        while self.gamemode == GameModes.MENU_MAIN:
+            self.clock.tick(90)
+            self.input.update()
+            #E Event
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    return
+                
+            self.buttonStart.update(self.input)
+            self.buttonSettings.update(self.input)
+            
+            self.surface.fill(Settings.SCREEN_COLOR)
+            self.buttonStart.draw(self.surface)
+            self.buttonSettings.draw(self.surface)
+            pygame.display.flip()
+        
+    def runGame(self):
         self.gamemode = GameModes.GAME_PLACING_SNAILS
         self.turnManager = TurnManager()
         self.turnManager.setTeams(self.teams)
@@ -79,7 +103,6 @@ class Game(object):
             #E Event
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    self.turnManager.timer.cancel()
                     return
 
             self.update()
