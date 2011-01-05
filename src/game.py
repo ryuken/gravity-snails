@@ -6,10 +6,11 @@ from turnmanager import TurnManager
 from settings import Settings
 
 from input import Input
-from enums import GameModes
+from enums import GameModes, TurnStatus
 
 from gui.button import Button
 from gui.slider import Slider
+
 class Game(object):
 
     def __init__(self):
@@ -74,6 +75,7 @@ class Game(object):
         self.buttonStart.register_action(self.runGame)
         self.buttonSettings = Button(pygame.Rect(32,96,128,32), "Settings")
         self.buttonSettings.register_action(self.runSettingsMenu)
+        
         while self.gamemode == GameModes.MENU_MAIN:
             self.clock.tick(90)
             self.input.update()
@@ -130,6 +132,12 @@ class Game(object):
             self.input.update()
             #E Event
             for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        for team in self.teams:
+                            for snail in team.sprites():
+                                if team.hasTurn and snail.hasTurn and TurnManager().status == TurnStatus.CURRENTTURN:
+                                    snail.useWeapon()
                 if event.type == pygame.QUIT:
                     return
 

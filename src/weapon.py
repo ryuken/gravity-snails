@@ -1,6 +1,7 @@
 import pygame, math
 from bullet import Bullet
 from utils import load_image
+from turnmanager import TurnManager
 
 class Weapon(pygame.sprite.Sprite):
 
@@ -12,22 +13,17 @@ class Weapon(pygame.sprite.Sprite):
         # Set the aiming direction
         self.weaponAngle = 45
         
-        self.ammo = 5
+        self.ammo = 6 * 5
         self.bullet = None
         
         self.image = load_image('crosshair.png')
         self.rect = self.image.get_rect()
     
-#    def update(self, teams):
-#        if self.bullet <> None:
-#            self.bullet.update(teams)
-    
     def shoot(self, snail_rect):
         if self.ammo > 0:
             self.bullet = Bullet(snail_rect, self.weaponAngle)
             self.ammo -= 1
-            print "created bullet"
-            return True
+            TurnManager().changeTurn()
         else:
             raise ValueError("You can't shoot anymore, you don't have any ammo.")
         

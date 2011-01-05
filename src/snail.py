@@ -1,12 +1,11 @@
 import pygame
-import sys
-import math
 from pygame.locals import *
 from utils import load_image
-from weapon import Weapon
+
 from enums import Direction
-from bullet import Bullet
+from enums import TurnStatus
 from turnmanager import TurnManager
+
 class Snail(pygame.sprite.Sprite):
 
     def __init__(self, team):
@@ -28,6 +27,8 @@ class Snail(pygame.sprite.Sprite):
         
         # Remember his own team
         self.team = team
+        
+        self.isAlive = True
         
         # Set the gravity direction
         self.gravity_direction = self.team.gravity_direction
@@ -65,6 +66,11 @@ class Snail(pygame.sprite.Sprite):
         return len(pygame.sprite.spritecollide(self, terrain, False)) > 0
     
     def update(self, input, terrain):
+        if self.hitpoints <= 0:
+            self.isAlive = False
+            TurnManager().changeTurn()
+            self.kill()
+        
         #E Event
         if(not self.isPlaced):
             if self.hasTurn and self.team.hasTurn:
@@ -98,7 +104,7 @@ class Snail(pygame.sprite.Sprite):
             self.updateCollisionVertical(terrain)
             list = pygame.sprite.spritecollide(self, terrain.salt, False)
             if(len(list) > 0):
-                self.kill()
+                self.hitpoints = 0
 
         # Use the correct sprite
         self.updateImage()
@@ -138,12 +144,12 @@ class Snail(pygame.sprite.Sprite):
         # Stop moving left right
         self.direction['movement'] = 0
         # Store the arrowkeys + spacebar in variables
-        if self.team.hasTurn and self.hasTurn:
+        if self.team.hasTurn and self.hasTurn and TurnManager().status == TurnStatus.CURRENTTURN:
             left_pressed = input.keyboard_left
             right_pressed = input.keyboard_right
             up_pressed = input.keyboard_up
             down_pressed = input.keyboard_down
-            space_pressed = input.keyboard_space
+            
             # Check if the gravity is left or right
             if(self.gravity_direction == Direction.LEFT or self.gravity_direction == Direction.RIGHT):
                 # switch the left/right arrowkey with up/down
@@ -160,15 +166,13 @@ class Snail(pygame.sprite.Sprite):
                 self.team.active_weapon.adjustAngle(0)
             if (down_pressed):
                 self.team.active_weapon.adjustAngle(1)
-            # Check if the spacebar is pressed and the snail is allowed to shoot
-            if (space_pressed and self.bullet == None):
-                # The snail may only shoot once each turn
                 
-                try:
-                    self.has_shooted = self.team.active_weapon.shoot(self.rect)
-                    #TurnManager().changeTurn()
-                except ValueError:
-                    pass
+    def useWeapon(self):
+        # The snail may only shoot once each turn
+        try:
+            self.has_shooted = self.team.active_weapon.shoot(self.rect)
+        except ValueError:
+            pass
 
     def updateGravity(self):
         # Make the snail fall

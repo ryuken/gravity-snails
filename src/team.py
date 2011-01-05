@@ -45,18 +45,26 @@ class Team(pygame.sprite.Group):
     
     def nextSnailTurn(self):
         currentSnail = self.orderedSnailList[self.currentSnailTurn]
-        if currentSnail.hasTurn == True:
-            currentSnail.hasTurn = False
+        if currentSnail.isAlive:
+            if currentSnail.hasTurn == True:
+                currentSnail.hasTurn = False
+                nextSnailID = self.currentSnailTurn + 1
+                if nextSnailID < len(self.orderedSnailList):    
+                    self.currentSnailTurn = nextSnailID
+                    self.orderedSnailList[nextSnailID].hasTurn = True
+                else:
+                    self.currentSnailTurn = 0
+                    self.orderedSnailList[0].hasTurn = True
+            else:
+                raise ValueError("Current snail should be true, but it wasn't!")
+        else:
             nextSnailID = self.currentSnailTurn + 1
-            if nextSnailID < len(self.sprites()):    
+            if nextSnailID < len(self.orderedSnailList):    
                 self.currentSnailTurn = nextSnailID
-                self.orderedSnailList[nextSnailID].hasTurn = True
             else:
                 self.currentSnailTurn = 0
-                self.orderedSnailList[0].hasTurn = True
-        else:
-            raise ValueError("Current snail should be true, but it wasn't!")
-    
+            self.nextSnailTurn()
+
     def setGravity(self, direction):
         self.gravity_direction = direction
         for s in self.sprites():
@@ -64,7 +72,7 @@ class Team(pygame.sprite.Group):
             
     def isAlive(self):
         # Check if all the snails are dead
-        for s in self.orderedSnailList:
+        for s in self.orderedSnailList:                
             if s.hitpoints > 0 and s.alive():
                 return True
         return False

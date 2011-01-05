@@ -1,5 +1,4 @@
-import pygame
-import math
+import pygame, math
 from utils import load_image
 from settings import Settings
 
@@ -13,6 +12,7 @@ class Bullet(pygame.sprite.Sprite):
         self.speed = [0,0]
         self.speed[0] = math.cos(math.radians(angle)) * 10.0 #(self.rect.width)
         self.speed[1] = math.sin(math.radians(angle)) * 10.0 #(self.rect.height)
+        
         # Calculate the start position of the bullet
         bullet_margin_x = math.cos(math.radians(angle)) * (snail_rect.width)
         bullet_margin_y = math.sin(math.radians(angle)) * (snail_rect.height)
@@ -23,17 +23,17 @@ class Bullet(pygame.sprite.Sprite):
         position[1] += bullet_margin_y
         
         self.rect.center = position
-        #self.speed = speed
+        
         self.alive = True
 
     def update(self, terrain):
         self.rect.centerx += self.speed[0]
         self.rect.centery += self.speed[1]
-        if self.rect.x < 0 or self.rect.x > Settings.SCREEN_WIDTH:
+        if (self.rect.x < 0 or self.rect.x > Settings.SCREEN_WIDTH
+            or self.rect.y < 0 or self.rect.y > Settings.SCREEN_HEIGHT):
             self.alive = False
-        if self.rect.y < 0 or self.rect.y > Settings.SCREEN_HEIGHT:
-            self.alive = False
+            #TurnManager().changeTurn()
         list = pygame.sprite.spritecollide(self, terrain, True)
         if(len(list) > 0):
+            self.kill()
             self.alive = False
-            
