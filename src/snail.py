@@ -95,7 +95,6 @@ class Snail(pygame.sprite.Sprite):
                     if input.get_mouse_left_click():
                         self.isPlaced = True
                         TurnManager().changeTurn()
-                        
         else:
             # If the snail is placed
             # Check if the snail if moving, and check if the snail is falling
@@ -149,6 +148,8 @@ class Snail(pygame.sprite.Sprite):
         self.direction['movement'] = 0
         # Store the arrowkeys + spacebar in variables
         if self.team.hasTurn and self.hasTurn and TurnManager().status == TurnStatus.CURRENTTURN:
+            self.team.active_weapon.snail_rect = self.rect
+            
             left_pressed = input.keyboard_left
             right_pressed = input.keyboard_right
             up_pressed = input.keyboard_up
@@ -170,13 +171,6 @@ class Snail(pygame.sprite.Sprite):
                 self.team.active_weapon.adjustAngle(0)
             if (down_pressed):
                 self.team.active_weapon.adjustAngle(1)
-                
-    def useWeapon(self):
-        # The snail may only shoot once each turn
-        try:
-            self.has_shooted = self.team.active_weapon.shoot(self.rect)
-        except ValueError:
-            pass
 
     def updateGravity(self):
         # Make the snail fall

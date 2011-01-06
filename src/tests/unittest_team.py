@@ -4,7 +4,7 @@ from enums import Direction
 
 class TestTeam(unittest.TestCase):
     """
-    A test class for the Timer module.
+    A test class for the Team module.
     """
 
     def setUp(self):

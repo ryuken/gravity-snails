@@ -7,6 +7,7 @@ from settings import Settings
 from input import Input
 
 from game import Game
+
 class Menu(object):
     def __init__(self):
         #Init

@@ -10,24 +10,18 @@ from input import Input
 from enums import *
 from utils import load_image
 from turnmanager import TurnManager
+
 class testSnail(unittest.TestCase):
-
     """
-
-    A test class for the Blogger module.
-
+    A test class for the Snail module.
     """
-
-
 
     def setUp(self):
 
         """
-
         set up data used in the tests.
 
         setUp is called before each test function execution.
-
         """
 
         pygame.init()

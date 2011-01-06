@@ -1,6 +1,7 @@
 import pygame, math
 from utils import load_image
 from settings import Settings
+from turnmanager import TurnManager
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, snail_rect, angle):
@@ -26,14 +27,27 @@ class Bullet(pygame.sprite.Sprite):
         
         self.alive = True
 
-    def update(self, terrain):
-        self.rect.centerx += self.speed[0]
-        self.rect.centery += self.speed[1]
-        if (self.rect.x < 0 or self.rect.x > Settings.SCREEN_WIDTH
-            or self.rect.y < 0 or self.rect.y > Settings.SCREEN_HEIGHT):
-            self.alive = False
-            #TurnManager().changeTurn()
-        list = pygame.sprite.spritecollide(self, terrain, True)
-        if(len(list) > 0):
-            self.kill()
-            self.alive = False
+    def update(self, terrain):        
+        if self.alive:
+            self.rect.centerx += self.speed[0]
+            self.rect.centery += self.speed[1]
+            if (self.rect.x < 0 or self.rect.x > Settings.SCREEN_WIDTH):
+                self.bounceOutScreen()
+                self.alive = False
+                TurnManager().changeTurn()
+            if (self.rect.y < 0 or self.rect.y > Settings.SCREEN_HEIGHT):
+                self.bounceOutScreen()
+                self.alive = False
+                TurnManager().changeTurn()
+                #self.alive = False
+            list = pygame.sprite.spritecollide(self, terrain, True)
+            if(len(list) > 0):
+                self.bounceOutScreen()
+                self.alive = False
+                TurnManager().changeTurn()
+                
+    def bounceOutScreen(self):
+        # bullet's need to go out of screen because
+        # otherwise it will be in screen again
+        self.rect.x = Settings.SCREEN_WIDTH + 1000
+        self.rect.y = Settings.SCREEN_HEIGHT + 1000

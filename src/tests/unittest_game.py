@@ -2,25 +2,20 @@ import unittest
 import pygame
 from game import Game
 from settings import Settings
+
 class testGame(unittest.TestCase):
 
     """
-
-    A test class for the Blogger module.
-
+    A test class for the Game module.
     """
 
-
-
     def setUp(self):
-        self.game = Game()
         """
-
         set up data used in the tests.
 
         setUp is called before each test function execution.
-
         """
+        self.game = Game()
         
     def testInitializedPygame(self):
         self.assertEquals(self.game.initPygame(), 0)

@@ -53,16 +53,12 @@ class Game(object):
     def createGameObjects(self):
         #A Assign
         self.terrain.create(5)
-        self.bullets = pygame.sprite.Group()
 
     def addTeam(self, name, numberOfSnails, gravity_direction):
         team = Team(name)
         team.setGravity(gravity_direction)
         team.addSnails(numberOfSnails)
         self.teams.append(team)
-
-    def addBullet(self, bullet):
-        self.bullets.add(bullet)
 
     def run(self):
         self.runGame()
@@ -89,7 +85,7 @@ class Game(object):
                         for team in self.teams:
                             for snail in team.sprites():
                                 if team.hasTurn and snail.hasTurn and TurnManager().status == TurnStatus.CURRENTTURN:
-                                    snail.useWeapon()
+                                    team.active_weapon.shoot()
                 if event.type == pygame.QUIT:
                     self.turnManager.timer.cancel()
                     return
@@ -106,8 +102,6 @@ class Game(object):
         self.terrain.update()
         self.updateTeams()
 
-        self.bullets.update()
-
         self.updateGameMode()
 
     def updateTeams(self):
@@ -115,9 +109,6 @@ class Game(object):
         for team in self.teams:
             if team.isAlive():
                 team.update(self.input, self.terrain)
-                bullet = team.active_weapon.bullet
-                if bullet <> None:
-                    bullet.update(self.terrain)
                 self.teamsAlive += 1
 
     def updateGameMode(self):
@@ -136,7 +127,6 @@ class Game(object):
         for team in self.teams:
             team.draw(self.surface)
 
-        self.bullets.draw(self.surface)
         if self.gamemode == GameModes.GAME_PLAYING:
             self.drawTimer()
         

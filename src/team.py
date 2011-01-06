@@ -21,38 +21,29 @@ class Team(pygame.sprite.Group):
         self.inventory.addWeapon(cannon)
         
         self.active_weapon = cannon
+    
+    def update(self, *args):
+        pygame.sprite.Group.update(self,*args)
+        self.active_weapon.update(*args)
         
     def draw(self, surface):
         pygame.sprite.Group.draw(self, surface)
-        if self.hasTurn and self.currentSnailWithTurn.hasTurn:
-            bool = True
-        else:
-            bool = False
-        self.active_weapon.draw(surface, self.currentSnailWithTurn.rect, bool)
+        if self.hasTurn:
+            self.active_weapon.snail_rect = self.currentSnailWithTurn.rect
+            self.active_weapon.draw(surface)
                         
     def addSnails(self, numberOfSnails):
         for i in range(0, numberOfSnails):
             snail = Snail(self)
             self.add(snail)
             self.orderedSnailList.append(snail)
+            
+            # give the first snail in the team the turn
             if i == 0:
                 self.currentSnailWithTurn = snail
                 snail.hasTurn = True
     
     def nextSnailTurn(self):
-#        currentSnail = self.orderedSnailList[self.currentSnailTurn]
-#        if currentSnail.hasTurn == True:
-#            currentSnail.hasTurn = False
-#            nextSnailID = self.currentSnailTurn + 1
-#            if nextSnailID < len(self.sprites()):    
-#                self.currentSnailTurn = nextSnailID
-#                self.orderedSnailList[nextSnailID].hasTurn = True
-#            else:
-#                self.currentSnailTurn = 0
-#                self.orderedSnailList[0].hasTurn = True
-#        else:
-#            raise ValueError("Current snail should be true, but it wasn't!")
-#        stillNeedToGiveTurn = True
         snailIterator = iter(self.orderedSnailList)
         for snail in snailIterator:
             if snail.hasTurn:
@@ -64,13 +55,11 @@ class Team(pygame.sprite.Group):
                         nextSnail.hasTurn = True
                         self.currentSnailWithTurn = nextSnail
                 except StopIteration:
-                    self.orderedSnailList[0].hasTurn = True
+                    nextSnail = self.orderedSnailList[0]
+                    nextSnail.hasTurn = True
+                    self.currentSnailWithTurn = nextSnail
                     return
-                        
-                    
 
-                        
-    
     def setGravity(self, direction):
         self.gravity_direction = direction
         for s in self.sprites():

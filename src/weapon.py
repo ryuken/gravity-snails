@@ -1,7 +1,6 @@
 import pygame, math
 from bullet import Bullet
 from utils import load_image
-from turnmanager import TurnManager
 
 class Weapon(pygame.sprite.Sprite):
 
@@ -18,12 +17,15 @@ class Weapon(pygame.sprite.Sprite):
         
         self.image = load_image('crosshair.png')
         self.rect = self.image.get_rect()
+        
+        # this rect got the rect of 
+        self.snail_rect = None
     
-    def shoot(self, snail_rect):
+    def shoot(self):
         if self.ammo > 0:
-            self.bullet = Bullet(snail_rect, self.weaponAngle)
+            if(self.snail_rect):
+                self.bullet = Bullet(self.snail_rect, self.weaponAngle)
             self.ammo -= 1
-            TurnManager().changeTurn()
         else:
             raise ValueError("You can't shoot anymore, you don't have any ammo.")
         
@@ -37,19 +39,22 @@ class Weapon(pygame.sprite.Sprite):
             if self.weaponAngle < 0:
                 self.weaponAngle = 360 + self.weaponAngle
                 
-    def draw(self, surface, snail_rect, bool):        
-        if bool:
+    def update(self, input, terrain):
+        if self.snail_rect:
             x_margin = 0
             y_margin = 0
-            #if(self.gravity_direction == Direction.DOWN or self.gravity_direction == Direction.UP):
-            x_margin = math.cos(math.radians(self.weaponAngle)) * (snail_rect.width * 2)
-            #if(self.gravity_direction == Direction.LEFT or self.gravity_direction == Direction.RIGHT):
-            y_margin = math.sin(math.radians(self.weaponAngle)) * (snail_rect.height * 2)
-            #if(self.image == self.im)
-            self.rect.centerx = snail_rect.centerx + x_margin
-            self.rect.centery = snail_rect.centery + y_margin
-            #self.weapon.rect.move_ip(self.rect.centerx, self.rect.centery)
-            surface.blit(self.image, self.rect)
-    
+          
+            x_margin = math.cos(math.radians(self.weaponAngle)) * (self.snail_rect.width * 2)  
+            y_margin = math.sin(math.radians(self.weaponAngle)) * (self.snail_rect.height * 2)
+            
+            self.rect.centerx = self.snail_rect.centerx + x_margin
+            self.rect.centery = self.snail_rect.centery + y_margin
+            
+            if self.bullet <> None:
+                self.bullet.update(terrain)
+                
+    def draw(self, surface):
+        surface.blit(self.image, self.rect)
+        
         if self.bullet <> None:
             surface.blit(self.bullet.image, self.bullet.rect)

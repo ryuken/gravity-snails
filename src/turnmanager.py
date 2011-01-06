@@ -22,6 +22,7 @@ class TurnManager(object):
         # Display some text
         if TurnManager._count == 0:
             self.font_size = Settings.TIMER_FONT_SIZE
+            pygame.font.init()
             self.font = pygame.font.Font(None, self.font_size)
             self.startTime = Settings.TIMER_STARTTIME
             self.breakTime = Settings.TIMER_BREAKTIME
