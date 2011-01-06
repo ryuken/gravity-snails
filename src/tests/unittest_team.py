@@ -27,7 +27,7 @@ class TestTeam(unittest.TestCase):
     
     def testAddSnails(self):
         self.team1.addSnails(self.maxSnails)
-        self.assertEqual(self.team1.currentSnailTurn, 0)
+        self.assertEquals(self.team1.currentSnailWithTurn, self.team1.orderedSnailList[0])
         self.assertEqual(len(self.team1.sprites()), self.maxSnails)
         self.assertEqual(len(self.team1.orderedSnailList), self.maxSnails)
         self.assertEqual(self.team1.orderedSnailList[0].hasTurn, True)
