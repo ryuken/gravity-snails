@@ -15,34 +15,34 @@ class Team(pygame.sprite.Group):
         self.currentSnailWithTurn = None
 
         self.gravity_direction = None
-        
+
         self.inventory = Inventory()
         cannon = Weapon("Canon", 20)
         self.inventory.addWeapon(cannon)
-        
+
         self.active_weapon = cannon
-    
+
     def update(self, *args):
         pygame.sprite.Group.update(self,*args)
         self.active_weapon.update(*args)
-        
+
     def draw(self, surface):
         pygame.sprite.Group.draw(self, surface)
         if self.hasTurn:
             self.active_weapon.snail_rect = self.currentSnailWithTurn.rect
             self.active_weapon.draw(surface)
-                        
+
     def addSnails(self, numberOfSnails):
         for i in range(0, numberOfSnails):
             snail = Snail(self)
             self.add(snail)
             self.orderedSnailList.append(snail)
-            
+
             # give the first snail in the team the turn
             if i == 0:
                 self.currentSnailWithTurn = snail
                 snail.hasTurn = True
-    
+
     def nextSnailTurn(self):
         snailIterator = iter(self.orderedSnailList)
         for snail in snailIterator:
@@ -64,10 +64,22 @@ class Team(pygame.sprite.Group):
         self.gravity_direction = direction
         for s in self.sprites():
             s.gravity_direction = direction
-            
+
+    """
+    sets the image of the team using a number
+    the sprites folder contains snails with 4 different colors
+    the number given will be used to select a different snail
+    """
+    def setTeamImage(self, imageNumber):
+        rightAndLeftImages=['snail', 'snail']
+        rightAndLeftImages[0] += str(imageNumber) + 'Right.png'
+        rightAndLeftImages[1] += str(imageNumber) + 'Left.png'
+        for s in self.sprites():
+            s.setImages(rightAndLeftImages)
+
     def isAlive(self):
         # Check if all the snails are dead
-        for s in self.orderedSnailList:                
+        for s in self.orderedSnailList:
             if s.isAlive:
                 return True
         return False

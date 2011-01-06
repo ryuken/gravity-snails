@@ -10,60 +10,42 @@ class Snail(pygame.sprite.Sprite):
 
     def __init__(self, team):
         pygame.sprite.Sprite.__init__(self)
-        # Load every snail sprite
-        self.image = load_image('snailRight.png')
-        self.image_down_right = load_image('snailRight.png')
-        self.image_down_left = load_image('snailLeft.png')
-        self.image_up_left = pygame.transform.rotate(self.image_down_right, 180)
-        self.image_up_right = pygame.transform.rotate(self.image_down_left, 180)
-        self.image_left_up = pygame.transform.rotate(self.image_down_left, 270)
-        self.image_left_down = pygame.transform.rotate(self.image_down_right, 270)
-        self.image_right_up = pygame.transform.rotate(self.image_down_right, 90)
-        self.image_right_down = pygame.transform.rotate(self.image_down_left, 90)
+
         # Set the speed constants
         self.speed = {'movement' : 2, 'jump' : 10, 'fall' : 0.2}
         # The snail doesn't move
         self.direction = {'movement' : 0.0, 'jump' : 0.0}
-        
+
         # Remember his own team
         self.team = team
-        
+
         self.isAlive = True
-        
+
         # Set the gravity direction
         self.gravity_direction = self.team.gravity_direction
-        
-        if self.gravity_direction == Direction.DOWN:
-            # Use the correct sprite
-            self.image = self.image_down_right
-        if self.gravity_direction == Direction.UP:
-            # Use the correct sprite
-            self.image = self.image_up_right
-        if self.gravity_direction == Direction.LEFT:
-            # Use the correct sprite
-            self.image = self.image_left_up
-        if self.gravity_direction == Direction.RIGHT:
-            # Use the correct sprite
-            self.image = self.image_right_up
+
+        #load images, using default settings
+        self.setImages()
+
         # Update the rect
         self.rect = self.image.get_rect()
-        
+
         # The hitpoints of the snail
         self.hitpoints = 100
 
         # The snail isn't placed yet
         self.isPlaced = False
-        
+
         # Bullet
         self.bullet = None
         # The snail hasn't shooted yet
         self.has_shooted = False
         # The snail doesn't have the turn
         self.hasTurn = False
-    
+
     def collideWithTerrain(self, terrain):
         return len(pygame.sprite.spritecollide(self, terrain, False)) > 0
-    
+
     def checkHealth(self):
         if self.hitpoints <= 0:
             self.isAlive = False
@@ -71,10 +53,10 @@ class Snail(pygame.sprite.Sprite):
                 self.team.nextSnailTurn()
             self.team.orderedSnailList.remove(self)
             self.kill()
-    
+
     def update(self, input, terrain):
         self.checkHealth()
-        
+
         #E Event
         if(not self.isPlaced):
             if self.hasTurn and self.team.hasTurn:
@@ -100,7 +82,7 @@ class Snail(pygame.sprite.Sprite):
             # Check if the snail if moving, and check if the snail is falling
             self.updateMove(input)
             self.updateGravity()
-            
+
             # Update the "horizontal" movement (Walking)
             self.updateCollisionHorizontal(terrain)
             # Update the "vertical" movement (Falling / Jumping)
@@ -111,7 +93,7 @@ class Snail(pygame.sprite.Sprite):
 
         # Use the correct sprite
         self.updateImage()
-        
+
     def updateImage(self):
         # Check if the snail is moving left or right
         left_pressed = self.direction['movement'] == -self.speed['movement']
@@ -149,12 +131,12 @@ class Snail(pygame.sprite.Sprite):
         # Store the arrowkeys + spacebar in variables
         if self.team.hasTurn and self.hasTurn and TurnManager().status == TurnStatus.CURRENTTURN:
             self.team.active_weapon.snail_rect = self.rect
-            
+
             left_pressed = input.keyboard_left
             right_pressed = input.keyboard_right
             up_pressed = input.keyboard_up
             down_pressed = input.keyboard_down
-            
+
             # Check if the gravity is left or right
             if(self.gravity_direction == Direction.LEFT or self.gravity_direction == Direction.RIGHT):
                 # switch the left/right arrowkey with up/down
@@ -218,3 +200,29 @@ class Snail(pygame.sprite.Sprite):
                 self.rect = self.rect.move(-self.direction['movement'], 0)
             else:
                 self.rect = self.rect.move(0, -self.direction['movement'])
+
+    def setImages(self, rightAndLeftImages=['snail1Right.png', 'snail1Left.png']):
+        self.rightAndLeftImages = rightAndLeftImages
+        # Load every snail sprite
+        self.image = load_image(rightAndLeftImages[0])
+        self.image_down_right = load_image(rightAndLeftImages[0])
+        self.image_down_left = load_image(rightAndLeftImages[1])
+        self.image_up_left = pygame.transform.rotate(self.image_down_right, 180)
+        self.image_up_right = pygame.transform.rotate(self.image_down_left, 180)
+        self.image_left_up = pygame.transform.rotate(self.image_down_left, 270)
+        self.image_left_down = pygame.transform.rotate(self.image_down_right, 270)
+        self.image_right_up = pygame.transform.rotate(self.image_down_right, 90)
+        self.image_right_down = pygame.transform.rotate(self.image_down_left, 90)
+
+        if self.gravity_direction == Direction.DOWN:
+            # Use the correct sprite
+            self.image = self.image_down_right
+        if self.gravity_direction == Direction.UP:
+            # Use the correct sprite
+            self.image = self.image_up_right
+        if self.gravity_direction == Direction.LEFT:
+            # Use the correct sprite
+            self.image = self.image_left_up
+        if self.gravity_direction == Direction.RIGHT:
+            # Use the correct sprite
+            self.image = self.image_right_up

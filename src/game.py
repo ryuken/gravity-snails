@@ -41,6 +41,7 @@ class Game(Scene):
         team = Team(name)
         team.setGravity(gravity_direction)
         team.addSnails(numberOfSnails)
+        team.setTeamImage((gravity_direction+1)%4)
         self.teams.append(team)
 
     def run(self):
