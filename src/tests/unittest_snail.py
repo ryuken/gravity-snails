@@ -35,13 +35,15 @@ class testSnail(unittest.TestCase):
 
         self.input = Input()
         self.terrain = Terrain()
-
-        TurnManager().status = TurnStatus.CURRENTTURN        
+     
         self.teamName = "EJteam"
         self.team = Team(self.teamName)
         self.team.setGravity(Direction.DOWN)
         self.team.hasTurn = True
         
+        TurnManager().status = TurnStatus.CURRENTTURN
+        TurnManager().teams = [] 
+        TurnManager().teams.append(self.team)
         self.snail = Snail(self.team)
         self.snail.hasTurn = True
 
@@ -68,6 +70,7 @@ class testSnail(unittest.TestCase):
         self.input.mouse_x = 100
         self.input.mouse_y = 100
         self.input.mouse_left = True
+        self.input.mouse_left_click = True
         self.snail.update(self.input, self.terrain)
         self.assertTrue(self.snail.isPlaced)
         

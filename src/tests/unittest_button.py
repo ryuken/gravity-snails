@@ -1,6 +1,6 @@
 import unittest
 import pygame
-from button import Button
+from gui.button import Button
 from input import Input
 class TestButton(unittest.TestCase):
     """
@@ -22,6 +22,7 @@ class TestButton(unittest.TestCase):
         self.input.mouse_x = 32
         self.input.mouse_y = 32
         self.input.mouse_left = True
+        self.input.mouse_left_click = True
         
         self.button.update(self.input)
         self.assertTrue(self.got_clicked)
@@ -30,6 +31,7 @@ class TestButton(unittest.TestCase):
         self.input.mouse_x = 128
         self.input.mouse_y = 128
         self.input.mouse_left = True
+        self.input.mouse_left_click = True
         
         self.button.update(self.input)
         self.assertFalse(self.got_clicked)
