@@ -49,9 +49,8 @@ class TurnManager(object):
         self.teams[0].hasTurn = True
 
     def stopTimer(self):
-        if self.started == True:
-            self.started = False
-            self.timer.cancel()
+        self.started = False
+        self.timer.cancel()
 
     def draw(self, surface):
         # Draw the red rectangle on the game surface
