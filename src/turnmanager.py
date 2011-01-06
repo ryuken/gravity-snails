@@ -80,31 +80,17 @@ class TurnManager(object):
         self.status = TurnStatus.BREAK
         self.currentTime = self.breakTime
         
-#        teamIterator = iter(self.teams)
-#        for team in teamIterator:
-#            if team.hasTurn:
-#                team.hasTurn = False
-#                nextTeam = None
-#                try:
-#                    nextTeam = teamIterator.next()
-#                    if nextTeam:
-#                        nextTeam.hasTurn = True
-#                except StopIteration:
-#                    self.teams[0].hasTurn = True
-#                    return
-        # give the turn to the next team and set the current team on false
-        if self.teams[self.currentTeamTurn].hasTurn == True:
-            self.teams[self.currentTeamTurn].hasTurn = False
-
-            nextTeam = self.currentTeamTurn + 1
-            if nextTeam < len(self.teams):
-                self.currentTeamTurn = nextTeam
-                if self.teams[nextTeam].isAlive:
-                    self.teams[nextTeam].hasTurn = True
-                    self.teams[nextTeam].nextSnailTurn()
-                else:
-                    self.changeTurn()
-            else:
-                self.currentTeamTurn = 0
-                self.teams[0].hasTurn = True
-                self.teams[0].nextSnailTurn()
+        teamIterator = iter(self.teams)
+        for team in teamIterator:
+            if team.hasTurn:
+                team.hasTurn = False
+                nextTeam = None
+                try:
+                    nextTeam = teamIterator.next()
+                    if nextTeam:
+                        nextTeam.hasTurn = True
+                        nextTeam.nextSnailTurn()
+                except StopIteration:
+                    self.teams[0].hasTurn = True
+                    self.teams[0].nextSnailTurn()
+                    return
