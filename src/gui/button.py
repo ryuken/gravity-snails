@@ -3,11 +3,13 @@ from pygame.locals import *
 from input import Input
 class Button(object):
     
-    def __init__(self, rect, text):
+    def __init__(self, text, callback):
         self.font_size = 25
         self.font = pygame.font.Font(None, self.font_size)
-        self.rect = rect
+        self.rect = pygame.Rect(0,0,1,1)
         self.text = text
+        self.callback = callback
+        
     def update(self, input):
         if input.get_mouse_left_click(self.rect):
                 self.do_action()

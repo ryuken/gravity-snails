@@ -11,12 +11,17 @@ class SettingsMenu(Menu):
     def __init__(self, parentScene):
         Menu.__init__(self)
         self.parentScene = parentScene
-        self.slider = Slider((32,32), 2, 4, Settings.GAME_PLAYERS)
-        self.buttonOk = Button(pygame.Rect(32, 96, 128, 32), "Ok")
-        self.buttonOk.register_action(self.applySettings)
-        self.addOption(self.slider)
-        self.addOption(self.buttonOk)
+        self.sliderPlayers = Slider(2, 4, Settings.GAME_PLAYERS)
+        self.sliderStartTime = Slider(10, 90, Settings.TIMER_STARTTIME)
+        self.sliderBreakTime = Slider(0,10, Settings.TIMER_BREAKTIME)
+        
+        self.addOption(self.sliderPlayers)
+        self.addOption(self.sliderStartTime)
+        self.addOption(self.sliderBreakTime)
+        self.addOption(Button("Ok",self.applySettings))
 
     def applySettings(self):
-        Settings.GAME_PLAYERS = self.slider.value
+        Settings.GAME_PLAYERS = self.sliderPlayers.value
+        Settings.TIMER_STARTTIME = self.sliderStartTime.value
+        Settings.TIMER_BREAKTIME = self.sliderBreakTime.value
         SceneManager().setScene(self.parentScene)

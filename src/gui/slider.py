@@ -3,10 +3,10 @@ from pygame.locals import *
 from input import Input
 class Slider(object):
     
-    def __init__(self, position, min, max, value):
+    def __init__(self, min, max, value):
         self.font_size = 25
         self.font = pygame.font.Font(None, self.font_size)
-        self.rect = pygame.Rect(position[0], position[1], 128, 32)
+        self.rect = pygame.Rect(0,0,1,1)
         self.min = min
         self.max = max
         self.value = value
