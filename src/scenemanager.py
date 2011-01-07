@@ -55,6 +55,8 @@ class SceneManager(object):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+                else:
+                    self.scene.do_action(event)
 
             #game.addTeam('test', 2, Direction.LEFT)
             #game.addTeam('test2', 2, Direction.RIGHT)

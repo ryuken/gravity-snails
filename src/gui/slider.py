@@ -11,9 +11,8 @@ class Slider(object):
         self.max = max
         self.value = value
     def update(self, input):
-        if input.mouse_left:
-            if self.rect.collidepoint(input.mouse_x, input.mouse_y):
-                self.value = int(float(input.mouse_x - self.rect.left) / self.rect.width * (self.max - self.min) + 0.5) + self.min
+        if input.get_mouse_left_click(self.rect):
+            self.value = int(float(input.mouse_x - self.rect.left) / self.rect.width * (self.max - self.min) + 0.5) + self.min
     
     def draw(self, surface):
         # Draw the red rectangle on the game surface

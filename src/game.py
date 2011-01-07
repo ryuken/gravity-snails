@@ -23,6 +23,11 @@ class Game(Scene):
 
         self.startNewGame()
 
+    def do_action(self, event):
+        # check events
+        if event.type == pygame.KEYDOWN:
+            print "test"
+        
     def clean(self):
         self.turnManager.timer.cancel()
 
