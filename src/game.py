@@ -23,13 +23,15 @@ class Game(Scene):
         self.createGameObjects()
 
         self.startNewGame()
-    
+
     def do_action(self, event):
         # check events
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     TurnManager().currentTeam.currentSnailWithTurn.shoot()
-        
+                if event.key == pygame.K_ESCAPE:
+                    SceneManager().setScene(self.mainmenu)
+
     def clean(self):
         self.turnManager.timer.cancel()
 
@@ -60,7 +62,7 @@ class Game(Scene):
         self.turnManager = TurnManager()
         self.turnManager.setTeams(self.teams)
         self.turnManager.startTimer()
-        
+
         self.gamemode = GameModes.GAME_PLACING_SNAILS
 
     def stopGame(self):
@@ -94,7 +96,7 @@ class Game(Scene):
         self.terrain.draw(surface)
         for team in self.teams:
             team.draw(surface)
-        
+
 
         #self.bullets.draw(surface)
         if self.gamemode == GameModes.GAME_PLAYING:

@@ -15,7 +15,7 @@ class SettingsMenu(Menu):
         self.sliderSnails = Slider(2, 10, Settings.GAME_SNAILS, "Snails: ")
         self.sliderStartTime = Slider(10, 90, Settings.TIMER_STARTTIME, "Turntime: ")
         self.sliderBreakTime = Slider(0,10, Settings.TIMER_BREAKTIME, "Breaktime: ")
-        
+
         self.addOption(self.sliderPlayers)
         self.addOption(self.sliderSnails)
         self.addOption(self.sliderStartTime)

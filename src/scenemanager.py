@@ -31,6 +31,7 @@ class SceneManager(object):
     def initGame(self):
         self.gamemode = GameModes.MENU_MAIN
         self.scene = None
+        self.running = True
 
     def initPygame(self):
         result = pygame.init()
@@ -47,14 +48,13 @@ class SceneManager(object):
         self.input = Input()
 
     def run(self):
-        running = True
-        while(running):
+        while(self.running):
             self.clock.tick(90)
             self.input.update()
             #E Event
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    running = False
+                    self.running = False
                 else:
                     self.scene.do_action(event)
 
@@ -71,4 +71,7 @@ class SceneManager(object):
     def setScene(self, scene):
         if self.scene:
             self.scene.clean()
-        self.scene = scene
+        if not scene == None:
+            self.scene = scene
+        else:
+            self.running = False

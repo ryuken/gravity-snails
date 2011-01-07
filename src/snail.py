@@ -50,12 +50,12 @@ class Snail(pygame.sprite.Sprite):
     def checkHealth(self):
         if self.hitpoints <= 0:
             self.isAlive = False
-    
+
     def shoot(self):
         if self.team.hasTurn and self.hasTurn and TurnManager().status == TurnStatus.CURRENTTURN and self.hasShot == False:
             self.team.active_weapon.shoot()
             self.hasShot = True
-    
+
     def changeTurn(self):
         if self.isAlive == False:
             if self.hasTurn:
@@ -69,7 +69,7 @@ class Snail(pygame.sprite.Sprite):
         if self.hasShot == True and self.team.active_weapon.bullet.isAlive == False:
             TurnManager().changeTurn()
             self.hasShot = False
-            
+
 
     def update(self, input, terrain):
         # the checkhealth needs to be run first
