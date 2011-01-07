@@ -3,16 +3,18 @@ from pygame.locals import *
 from input import Input
 class Slider(object):
     
-    def __init__(self, min, max, value):
+    def __init__(self, min, max, value, text = ""):
         self.font_size = 25
         self.font = pygame.font.Font(None, self.font_size)
         self.rect = pygame.Rect(0,0,1,1)
+        self.text = text
         self.min = min
         self.max = max
         self.value = value
     def update(self, input):
-        if input.get_mouse_left_click(self.rect):
-            self.value = int(float(input.mouse_x - self.rect.left) / self.rect.width * (self.max - self.min) + 0.5) + self.min
+        if self.rect.collidepoint(input.mouse_x, input.mouse_y):
+            if input.mouse_left:
+                self.value = int(float(input.mouse_x - self.rect.left) / self.rect.width * (self.max - self.min) + 0.5) + self.min
     
     def draw(self, surface):
         # Draw the red rectangle on the game surface
@@ -22,6 +24,6 @@ class Slider(object):
         pygame.draw.rect(surface, (0,255,255), pygame.Rect(position - 4, self.rect.top, 8, self.rect.height))
         surface.blit(surface, (0,0))
         # Create a new surface at the position of the red rectangle and draw the text
-        text = self.font.render(str(self.value), 1, (10, 10, 10)) #returns surface
+        text = self.font.render(self.text + str(self.value), 1, (10, 10, 10))
         surface.blit(text, (self.rect.left, self.rect.centery - (text.get_height() / 2)))
     

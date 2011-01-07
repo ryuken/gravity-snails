@@ -11,4 +11,4 @@ class Settings:
     
     GAME_TITLE = "Gravity Snails"
     GAME_PLAYERS = 2
-    
+    GAME_SNAILS = 2
