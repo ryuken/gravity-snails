@@ -26,12 +26,9 @@ class Game(Scene):
     
     def do_action(self, event):
         # check events
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                for team in self.teams:
-                    for snail in team.sprites():
-                        if team.hasTurn and snail.hasTurn and TurnManager().status == TurnStatus.CURRENTTURN:
-                            team.active_weapon.shoot()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    TurnManager().currentTeam.currentSnailWithTurn.shoot()
         
     def clean(self):
         self.turnManager.timer.cancel()

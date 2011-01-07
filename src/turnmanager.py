@@ -8,18 +8,20 @@ class TurnManager(object):
     _instance = None
     _count    = 0
     
-
+    # forcing singleton to always return the instance of the static variable _instance
     def __new__(cls, *args, **kwargs):
+        # Check if the instance exists
         if not cls._instance:
+            # create a new instance if it didnt exist
             cls._instance = super(TurnManager, cls).__new__(
                                 cls, *args, **kwargs)
 
 #            _count += 1
             print "Created new instance"
+        # return the class attribute _instance we just maked or we already had
         return cls._instance
 
     def __init__(self):
-        # Display some text
         if TurnManager._count == 0:
             self.font_size = Settings.TIMER_FONT_SIZE
             pygame.font.init()
@@ -33,6 +35,7 @@ class TurnManager(object):
             self.status = TurnStatus.BREAK
             self.teams = None
             self.timer = None
+            self.currentTeam = None
             print "Init turnmanager"
             TurnManager._count += 1
     
@@ -88,7 +91,9 @@ class TurnManager(object):
                     if nextTeam:
                         nextTeam.hasTurn = True
                         nextTeam.nextSnailTurn()
+                        self.currentTeam = nextTeam
                 except StopIteration:
                     self.teams[0].hasTurn = True
                     self.teams[0].nextSnailTurn()
+                    self.currentTeam = self.teams[0]
                     return

@@ -25,26 +25,23 @@ class Bullet(pygame.sprite.Sprite):
         
         self.rect.center = position
         
-        self.alive = True
+        self.isAlive = True
 
     def update(self, terrain):        
-        if self.alive:
+        if self.isAlive:
             self.rect.centerx += self.speed[0]
             self.rect.centery += self.speed[1]
             if (self.rect.x < 0 or self.rect.x > Settings.SCREEN_WIDTH):
                 self.bounceOutScreen()
-                self.alive = False
-                TurnManager().changeTurn()
+                self.isAlive = False
             if (self.rect.y < 0 or self.rect.y > Settings.SCREEN_HEIGHT):
                 self.bounceOutScreen()
-                self.alive = False
-                TurnManager().changeTurn()
-                #self.alive = False
+                self.isAlive = False
+                #self.isAlive = False
             list = pygame.sprite.spritecollide(self, terrain, True)
             if(len(list) > 0):
                 self.bounceOutScreen()
-                self.alive = False
-                TurnManager().changeTurn()
+                self.isAlive = False
                 
     def bounceOutScreen(self):
         # bullet's need to go out of screen because
