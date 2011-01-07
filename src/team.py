@@ -3,6 +3,7 @@ import pygame
 from inventory import Inventory
 from weapon import Weapon
 from snail import Snail
+from turnmanager import TurnManager
 
 class Team(pygame.sprite.Group):
 
@@ -10,6 +11,8 @@ class Team(pygame.sprite.Group):
         pygame.sprite.Group.__init__(self)
         self.name = name
         self.hasTurn = False
+        # When initalized the list of snails is empty so not alive!
+        self.isAlive = False
 
         self.orderedSnailList = []
         self.currentSnailWithTurn = None
@@ -25,6 +28,7 @@ class Team(pygame.sprite.Group):
     def update(self, *args):
         pygame.sprite.Group.update(self,*args)
         self.active_weapon.update(*args)
+        self.checkAlive()
 
     def draw(self, surface):
         pygame.sprite.Group.draw(self, surface)
@@ -76,10 +80,11 @@ class Team(pygame.sprite.Group):
         rightAndLeftImages[1] += str(imageNumber) + 'Left.png'
         for s in self.sprites():
             s.setImages(rightAndLeftImages)
-
-    def isAlive(self):
+    
+    def checkAlive(self):
         # Check if all the snails are dead
-        for s in self.orderedSnailList:
-            if s.isAlive:
-                return True
-        return False
+        if len(self.orderedSnailList) > 0:
+            self.isAlive = True
+        else:
+            self.isAlive = False
+            TurnManager().teams.remove(self)

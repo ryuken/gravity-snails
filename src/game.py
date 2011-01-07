@@ -76,9 +76,8 @@ class Game(Scene):
     def updateTeams(self, input):
         self.teamsAlive = 0
         for team in self.teams:
-            if team.isAlive():
-                team.update(input, self.terrain)
-                self.teamsAlive += 1
+            team.update(input, self.terrain)
+            self.teamsAlive += 1
 
     def updateGameMode(self):
         if self.gamemode == GameModes.GAME_PLACING_SNAILS:

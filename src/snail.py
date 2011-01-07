@@ -52,7 +52,7 @@ class Snail(pygame.sprite.Sprite):
             self.isAlive = False
     
     def shoot(self):
-        if self.team.hasTurn and self.hasTurn and TurnManager().status == TurnStatus.CURRENTTURN:
+        if self.team.hasTurn and self.hasTurn and TurnManager().status == TurnStatus.CURRENTTURN and self.hasShot == False:
             self.team.active_weapon.shoot()
             self.hasShot = True
     
