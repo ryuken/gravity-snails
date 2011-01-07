@@ -16,17 +16,22 @@ from scene import Scene
 class Game(Scene):
 
     def __init__(self):
+        self.mainmenu = None
         self.initTerrain()
         self.initTeams()
 
         self.createGameObjects()
 
         self.startNewGame()
-
+    
     def do_action(self, event):
         # check events
         if event.type == pygame.KEYDOWN:
-            print "test"
+            if event.key == pygame.K_SPACE:
+                for team in self.teams:
+                    for snail in team.sprites():
+                        if team.hasTurn and snail.hasTurn and TurnManager().status == TurnStatus.CURRENTTURN:
+                            team.active_weapon.shoot()
         
     def clean(self):
         self.turnManager.timer.cancel()
@@ -59,10 +64,12 @@ class Game(Scene):
         self.turnManager = TurnManager()
         self.turnManager.setTeams(self.teams)
         self.turnManager.startTimer()
+        
+        self.gamemode = GameModes.GAME_PLACING_SNAILS
 
     def stopGame(self):
         self.turnManager.timer.cancel()
-        self.gamemode = GameModes.MENU_MAIN
+        SceneManager().scene = self.mainmenu
 
     def update(self, input):
         self.terrain.update()
@@ -78,24 +85,22 @@ class Game(Scene):
                 self.teamsAlive += 1
 
     def updateGameMode(self):
-        if SceneManager().gamemode == GameModes.GAME_PLACING_SNAILS:
+        if self.gamemode == GameModes.GAME_PLACING_SNAILS:
             for team in self.teams:
                 for snail in team.sprites():
                     if snail.isPlaced == False:
                         return
-            SceneManager().gamemode = GameModes.GAME_PLAYING
-        if SceneManager().gamemode == GameModes.GAME_PLAYING:
+            self.gamemode = GameModes.GAME_PLAYING
+        if self.gamemode == GameModes.GAME_PLAYING:
             if self.teamsAlive <= 1:
-                self.running = False
+                self.stopGame()
 
     def draw(self, surface):
         self.terrain.draw(surface)
         for team in self.teams:
             team.draw(surface)
+        
 
         #self.bullets.draw(surface)
-        if SceneManager().gamemode == GameModes.GAME_PLAYING:
-            self.drawTimer(surface)
-
-    def drawTimer(self):
-        self.turnManager.draw(self.surface)
+        if self.gamemode == GameModes.GAME_PLAYING:
+            self.turnManager.draw(surface)
