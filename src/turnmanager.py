@@ -32,7 +32,6 @@ class TurnManager(object):
             self.rect = pygame.Rect(self.position, self.size)
             self.status = TurnStatus.BREAK
             self.teams = None
-            self.currentTeamTurn = 0
             self.timer = None
             print "Init turnmanager"
             TurnManager._count += 1

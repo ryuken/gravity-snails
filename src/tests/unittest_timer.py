@@ -24,17 +24,14 @@ class TestTimer(unittest.TestCase):
         self.team1 = Team("team1")
         self.team2 = Team("team2")
 
-        self.team1.addSnails(2)
+        self.team1.addSnails(3)
         self.team2.addSnails(3)
 
         self.teams.append(self.team1)
         self.teams.append(self.team2)
 
         self.turnManager = TurnManager()
-        self.turnManager.setTeams(self.teams)        
-        if self.turnManager.timer:
-            if self.turnManager.timer.isAlive():
-                self.turnManager.timer.cancel()
+        self.turnManager.setTeams(self.teams)
 
     def testInitialized(self):
         """
@@ -56,8 +53,9 @@ class TestTimer(unittest.TestCase):
         """
         turnmanager2 = TurnManager()
         self.assertEqual(id(self.turnManager), id(turnmanager2))
+        self.assertEqual(self.turnManager._instance, turnmanager2._instance)
 
-    def testBreak(self):
+    def testTimer(self):
         """
         Test if the turnManager's status switches from CurrentTurn to Break when counter is 0
         """
@@ -85,6 +83,13 @@ class TestTimer(unittest.TestCase):
 
         self.assertEqual(self.turnManager.status, TurnStatus.CURRENTTURN)
         self.turnManager.stopTimer()
+    
+    def testChangeTurn(self):
+        self.assertEqual(self.team1.hasTurn, True)
+        self.turnManager.changeTurn()
+        self.assertEqual(self.team1.hasTurn, False)
+        self.assertEqual(self.team2.hasTurn, True)
+        se
 
 
     def testChangeTurnTeam(self):
