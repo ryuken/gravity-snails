@@ -45,6 +45,7 @@ class Team(pygame.sprite.Group):
 
     def nextSnailTurn(self):
         snailIterator = iter(self.orderedSnailList)
+            
         for snail in snailIterator:
             if snail.hasTurn:
                 snail.hasTurn = False
@@ -58,7 +59,6 @@ class Team(pygame.sprite.Group):
                     nextSnail = self.orderedSnailList[0]
                     nextSnail.hasTurn = True
                     self.currentSnailWithTurn = nextSnail
-                    return
 
     def setGravity(self, direction):
         self.gravity_direction = direction

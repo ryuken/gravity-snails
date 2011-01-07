@@ -17,7 +17,7 @@ class Menu(Scene):
         self.options.append(optionValue)
         
         menu_height = option_height * len(self.options)
-        print menu_height
+
         for i in range(0, len(self.options)):
             screen_center = Settings.SCREEN_HEIGHT / 2
             menu_top = (screen_center - (menu_height / 2))

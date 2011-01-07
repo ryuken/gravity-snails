@@ -60,7 +60,6 @@ class Game(Scene):
     def startNewGame(self):
         for i in range(0, Settings.GAME_PLAYERS):
             self.addTeam('test', 2, i)
-
         self.turnManager = TurnManager()
         self.turnManager.setTeams(self.teams)
         self.turnManager.startTimer()

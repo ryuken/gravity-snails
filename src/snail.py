@@ -1,4 +1,5 @@
 import pygame
+import random
 from pygame.locals import *
 from utils import load_image
 
@@ -51,8 +52,13 @@ class Snail(pygame.sprite.Sprite):
             self.isAlive = False
             if self.hasTurn:
                 self.team.nextSnailTurn()
-            self.team.orderedSnailList.remove(self)
-            self.kill()
+                self.team.orderedSnailList.remove(self)
+                TurnManager().changeTurn()
+                self.kill()
+            else:
+                self.team.orderedSnailList.remove(self)
+                self.kill()
+                
 
     def update(self, input, terrain):
         self.checkHealth()
