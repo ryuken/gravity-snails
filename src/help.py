@@ -24,10 +24,6 @@ class HelpMenu(Menu):
         self.addOption(Label("So you need shoot away the ground it stands on!"))
         self.addOption(Label(" "))
         self.addOption(Button("BACK", self.runPreviousScene))
-    def runGame(self):
-        game = Game()
-        game.mainmenu = self
-        SceneManager().setScene(game)
 
     def runPreviousScene(self):
         SceneManager().setScene(self.previousScene)

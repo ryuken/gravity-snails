@@ -25,6 +25,8 @@ class Team(pygame.sprite.Group):
 
         self.active_weapon = cannon
 
+        self.colorIndex = None
+
     def update(self, *args):
         pygame.sprite.Group.update(self,*args)
         self.active_weapon.update(*args)
@@ -49,7 +51,7 @@ class Team(pygame.sprite.Group):
 
     def nextSnailTurn(self):
         snailIterator = iter(self.orderedSnailList)
-            
+
         for snail in snailIterator:
             if snail.hasTurn:
                 snail.hasTurn = False
@@ -75,12 +77,13 @@ class Team(pygame.sprite.Group):
     the number given will be used to select a different snail
     """
     def setTeamImage(self, imageNumber):
+        self.colorIndex = imageNumber
         rightAndLeftImages=['snail', 'snail']
         rightAndLeftImages[0] += str(imageNumber) + 'Right.png'
         rightAndLeftImages[1] += str(imageNumber) + 'Left.png'
         for s in self.sprites():
             s.setImages(rightAndLeftImages)
-    
+
     def checkAlive(self):
         # Check if all the snails are dead
         if len(self.orderedSnailList) > 0:

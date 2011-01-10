@@ -8,7 +8,7 @@ class Settings:
     TIMER_FONT_SIZE = 25
     TIMER_STARTTIME = 10
     TIMER_BREAKTIME = 3
-    
+
     GAME_TITLE = "Gravity Snails"
     GAME_PLAYERS = 2
     GAME_SNAILS = 2

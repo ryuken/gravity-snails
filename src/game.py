@@ -13,10 +13,12 @@ from gui.slider import Slider
 from scenemanager import SceneManager
 
 from scene import Scene
+from winscreen import WinScreen
 class Game(Scene):
 
     def __init__(self):
         self.mainmenu = None
+        self.winscreen = None
         self.initTerrain()
         self.initTeams()
 
@@ -67,7 +69,10 @@ class Game(Scene):
 
     def stopGame(self):
         self.turnManager.timer.cancel()
-        SceneManager().scene = self.mainmenu
+        teamColors = {1:'green', 2:'red', 3:'yellow', 4:'blue'}
+        livingTeamColor = str(teamColors[self.teams[0].colorIndex])
+        SceneManager().scene = WinScreen(self.mainmenu, livingTeamColor)
+        #SceneManager().scene = self.mainmenu
 
     def update(self, input):
         self.terrain.update()
