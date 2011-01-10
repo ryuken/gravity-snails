@@ -5,15 +5,13 @@ from team import Team
 from turnmanager import TurnManager
 from settings import Settings
 
-from enums import GameModes, TurnStatus
-
-from gui.button import Button
-from gui.slider import Slider
+from enums import GameModes
 
 from scenemanager import SceneManager
 
 from scene import Scene
 from winscreen import WinScreen
+
 class Game(Scene):
 
     def __init__(self):

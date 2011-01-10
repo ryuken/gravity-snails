@@ -11,7 +11,7 @@ class Team(pygame.sprite.Group):
         pygame.sprite.Group.__init__(self)
         self.name = name
         self.hasTurn = False
-        # When initalized the list of snails is empty so not alive!
+        # When initialized the list of snails is empty so not alive!
         self.isAlive = False
 
         self.orderedSnailList = []
@@ -33,7 +33,10 @@ class Team(pygame.sprite.Group):
         self.checkAlive()
 
     def draw(self, surface):
-        pygame.sprite.Group.draw(self, surface)
+        #pygame.sprite.Group.draw(self, surface)
+        for sprite in self:
+            sprite.draw(surface)
+            
         if self.hasTurn:
             self.active_weapon.snail_rect = self.currentSnailWithTurn.rect
             self.active_weapon.draw(surface)

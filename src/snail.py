@@ -71,7 +71,7 @@ class Snail(pygame.sprite.Sprite):
             self.hasShot = False
 
     def update(self, input, terrain):
-        # the checkhealth needs to be run first
+        # the checkHealth needs to be run first
         self.checkHealth()
         self.changeTurn()
 
@@ -244,3 +244,42 @@ class Snail(pygame.sprite.Sprite):
         if self.gravity_direction == Direction.RIGHT:
             # Use the correct sprite
             self.image = self.image_right_up
+    
+    def draw(self, surface):
+        """
+        Draw the snail, when the snail has the turn it will
+        get an arrow on his head so you know that he got the turn
+        """
+        
+        # draw the snail
+        surface.blit(self.image, self.rect)
+        
+        # draw an arrow with the snail who got the turn
+        arrow = load_image("arrow.png")
+        if self.team.hasTurn and self.hasTurn:
+            # !!! DO NOT CHANGE POS VALUES OR BACK THEM UP BEFORE CHANGING THEM !!!
+            # !!! WHEN U CHANGE THEM FOR LEFT OR RIGHT THE X AND Y ARE REVERTED !!!
+            if self.team.gravity_direction == Direction.DOWN:
+                # set the arrow at the correct position
+                pos = [self.rect.topleft[0] - 15, self.rect.top - 85]
+            elif self.team.gravity_direction == Direction.UP:
+                # flip the default image so the arrow will be at the correct direction
+                arrow = pygame.transform.flip(arrow, 1, 1)
+                # set the arrow at the correct position
+                pos = [self.rect.topleft[0] - 20, self.rect.top + 30]
+                
+            elif self.team.gravity_direction == Direction.LEFT:
+                # flip the default image so the arrow will be easier to rotate
+                # then rotate it to the correct direction
+                arrow = pygame.transform.flip(arrow, 1, 1)
+                arrow = pygame.transform.rotate(arrow, 90)
+                # set the arrow at the correct position
+                pos = [self.rect.topleft[0] + 27, self.rect.top - 20]
+                
+            elif self.team.gravity_direction == Direction.RIGHT:
+                # rotate the default image to the correct direction
+                arrow = pygame.transform.rotate(arrow, 90)
+                # set the arrow at the correct position
+                pos = [self.rect.topleft[0] - 85, self.rect.top - 27]
+            
+            surface.blit(arrow, pos)
