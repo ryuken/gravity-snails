@@ -37,11 +37,27 @@ class Bullet(pygame.sprite.Sprite):
             if (self.rect.y < 0 or self.rect.y > Settings.SCREEN_HEIGHT):
                 self.bounceOutScreen()
                 self.isAlive = False
-                #self.isAlive = False
+            
+            # terrain collision
             list = pygame.sprite.spritecollide(self, terrain, True)
             if(len(list) > 0):
                 self.bounceOutScreen()
                 self.isAlive = False
+            
+            # snail collision
+            teams = TurnManager().teams
+            for team in teams:
+                list = pygame.sprite.spritecollide(self, team, False)
+                if(len(list) > 0):
+                    # iterate thru the sprite's which collided with the bullet
+                    for sprite in list:
+                        # when the sprite is not self ( a bullet), it's a snail
+                        if sprite <> self:
+                            # decrease the hitpoint's of the snail with the power of weapon which shot
+                            sprite.hitpoints -= TurnManager().currentTeam.active_weapon.power
+                    
+                    self.bounceOutScreen()
+                    self.isAlive = False
                 
     def bounceOutScreen(self):
         # bullet's need to go out of screen because

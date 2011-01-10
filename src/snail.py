@@ -70,7 +70,6 @@ class Snail(pygame.sprite.Sprite):
             TurnManager().changeTurn()
             self.hasShot = False
 
-
     def update(self, input, terrain):
         # the checkhealth needs to be run first
         self.checkHealth()
