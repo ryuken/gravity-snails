@@ -11,19 +11,27 @@ class Label(object):
         textSurface = self.font.render(str(self.text), 1, (10, 10, 10)) #returns surface
         #print 'label size before resizing: ('+str(self.rect.width)+', ' +str(self.rect.height)+ ')'
         self.rect = pygame.Rect(0,0,1,1)
-        self.rect.width = textSurface.get_width()
-        self.rect.height = textSurface.get_height()
+        self.rect.width, self.rect.height = self.calc_size()
 
+    def calc_size(self):
+        lines = self.text.split("\n")
+        width = 0
+        height = 0
+        for line in lines:
+            lineSurface = self.font.render(line, 1, (255, 255, 255)) #returns surface
+            height += lineSurface.get_height()
+            if lineSurface.get_width() > width:
+                width = lineSurface.get_width()
+        return (width, height)
+            
     def update(self, input):
         pass
 
     def draw(self, surface):
-        # Draw the red rectangle on the game surface
-        #surface.fill((255,0,0), self.rect)
-        surface.blit(surface, (0,0))
         # Create a new surface at the position of the red rectangle and draw the text
-        textSurface = self.font.render(str(self.text), 1, (255, 255, 255)) #returns surface
-        surface.blit(textSurface, (self.rect.centerx - (textSurface.get_width() / 2), self.rect.centery - (textSurface.get_height() / 2)))
-
-    def do_action(self):
-        pass
+        lines = self.text.split("\n")
+        y = self.rect.top
+        for line in lines:
+            lineSurface = self.font.render(line, 1, (255, 255, 255)) #returns surface
+            surface.blit(lineSurface, (self.rect.centerx - (lineSurface.get_width() / 2), y))
+            y += lineSurface.get_height()

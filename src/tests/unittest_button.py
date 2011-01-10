@@ -13,7 +13,8 @@ class TestButton(unittest.TestCase):
         setUp is called before each test function execution.
         """
         pygame.init()        
-        self.button = Button(pygame.Rect(0,0,64,64), "Test")
+        self.button = Button("Test", self.callback())
+        self.button.rect = pygame.Rect(0,0,64,64)
         self.button.register_action(self.callback)
         self.got_clicked = False
         self.input = Input()

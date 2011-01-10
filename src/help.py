@@ -4,26 +4,41 @@ from gui.button import Button
 from gui.label import Label
 from gui.slider import Slider
 from settings import Settings
-from menu import Menu
+from scene import Scene
+from gui.frame import Frame
 from game import Game
 from settingsmenu import SettingsMenu
 
-class HelpMenu(Menu):
+class HelpMenu(Scene):
     def __init__(self, previousScene):
-        Menu.__init__(self)
+        Scene.__init__(self)
         self.previousScene = previousScene
-        self.addOption(Label("Welcome to gravity snails"))
-        self.addOption(Label("=================="))
-        self.addOption(Label(" "))
-        self.addOption(Label("Use mouse to place snails in screen"))
-        self.addOption(Label("Use arrow keys to move and to target"))
-        self.addOption(Label("Use SPACE to shoot"))
-        self.addOption(Label(" "))
-        self.addOption(Label("You can't shoot the snails themself"))
-        self.addOption(Label("A snail only dies if it falls into the salt"))
-        self.addOption(Label("So you need shoot away the ground it stands on!"))
-        self.addOption(Label(" "))
-        self.addOption(Button("BACK", self.runPreviousScene))
+        self.frame = Frame()
+        text  = "Welcome to gravity snails\n"
+        text += "=========================\n"
+        text += "\n"
+        text += "Use the left mouse button to place snails in the screen\n"
+        text += "Use the arrow keys to move and to target\n"
+        text += "Use the spacebar to fire the weapon\n"
+        text += "\n"
+        text += "You can't shoot the snails themself\n"
+        text += "Snails only die if they touch the salt\n"
+        text += "So shoot the ground under them away!\n"
+        labelText = Label(text)
+        labelText.rect.center = (self.frame.rect.width / 2, self.frame.rect.height / 2)
+        self.frame.addWidget(labelText)
+        
+        buttonBack = Button("Back", self.runPreviousScene)
+        buttonBack.rect.size = (128, 32)
+        buttonBack.rect.centerx = self.frame.rect.width / 2
+        buttonBack.rect.bottom = self.frame.rect.height - 32
+        self.frame.addWidget(buttonBack)
 
+    def update(self, input):
+        self.frame.update(input)
+        
+    def draw(self, surface):
+        self.frame.draw(surface)
+        
     def runPreviousScene(self):
         SceneManager().setScene(self.previousScene)
