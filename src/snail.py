@@ -55,25 +55,27 @@ class Snail(pygame.sprite.Sprite):
         if self.team.hasTurn and self.hasTurn and TurnManager().status == TurnStatus.CURRENTTURN and self.hasShot == False:
             self.team.active_weapon.shoot()
             self.hasShot = True
-
-    def changeTurn(self):
-        if self.isAlive == False:
-            if self.hasTurn:
-                self.team.nextSnailTurn()
-                self.team.orderedSnailList.remove(self)
-                TurnManager().changeTurn()
-                self.kill()
-            else:
-                self.team.orderedSnailList.remove(self)
-                self.kill()
-        if self.hasShot == True and self.team.active_weapon.bullet.isAlive == False:
-            TurnManager().changeTurn()
+            TurnManager().stopTurn()
             self.hasShot = False
+
+#    def changeTurn(self):
+#        if self.isAlive == False:
+#            if self.hasTurn:
+#                self.team.nextSnailTurn()
+#                self.team.orderedSnailList.remove(self)
+#                TurnManager().changeTurn()
+#                self.kill()
+#            else:
+#                self.team.orderedSnailList.remove(self)
+#                self.kill()
+#        if self.hasShot == True and self.team.active_weapon.bullet.isAlive == False:
+#            TurnManager().changeTurn()
+#            self.hasShot = False
 
     def update(self, input, terrain):
         # the checkHealth needs to be run first
         self.checkHealth()
-        self.changeTurn()
+#        self.changeTurn()
 
         #E Event
         if(not self.isPlaced):
@@ -147,7 +149,7 @@ class Snail(pygame.sprite.Sprite):
         # Stop moving left right
         self.direction['movement'] = 0
         # Store the arrowkeys + spacebar in variables
-        if self.team.hasTurn and self.hasTurn and TurnManager().status == TurnStatus.CURRENTTURN:
+        if self.team.hasTurn and self.hasTurn:
             self.team.active_weapon.snail_rect = self.rect
 
             left_pressed = input.keyboard_left

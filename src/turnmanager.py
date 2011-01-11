@@ -50,6 +50,7 @@ class TurnManager(object):
     def setTeams(self, teams):
         self.teams = teams
         self.teams[0].hasTurn = True
+        self.currentTeam = self.teams[0]
 
     def stopTimer(self):
         self.timer.cancel()
@@ -73,27 +74,55 @@ class TurnManager(object):
             if self.status == TurnStatus.BREAK:
                 self.status = TurnStatus.CURRENTTURN
                 self.currentTime = self.startTime
-            elif self.status == TurnStatus.CURRENTTURN:
                 self.changeTurn()
+            elif self.status == TurnStatus.CURRENTTURN:
+                self.stopTurn()
+                
 
 
     def changeTurn(self):
-        self.status = TurnStatus.BREAK
-        self.currentTime = self.breakTime
         
         teamIterator = iter(self.teams)
         for team in teamIterator:
-            if team.hasTurn:
+            if team == self.currentTeam:
                 team.hasTurn = False
                 nextTeam = None
                 try:
                     nextTeam = teamIterator.next()
                     if nextTeam:
                         nextTeam.hasTurn = True
-                        nextTeam.nextSnailTurn()
                         self.currentTeam = nextTeam
                 except StopIteration:
                     self.teams[0].hasTurn = True
-                    self.teams[0].nextSnailTurn()
                     self.currentTeam = self.teams[0]
-                    return
+                    
+                self.changeTurnSnail()
+    
+    
+    def changeTurnSnail(self):
+        snailIterator = iter(self.currentTeam.orderedSnailList)
+
+        for snail in snailIterator:
+            if snail == self.currentTeam.currentSnailWithTurn:
+                snail.hasTurn = False
+                nextSnail = None
+                try:
+                    nextSnail = snailIterator.next()
+                    if nextSnail:
+                        nextSnail.hasTurn = True
+                        self.currentTeam.currentSnailWithTurn = nextSnail
+                except StopIteration:
+                    nextSnail = self.currentTeam.orderedSnailList[0]
+                    nextSnail.hasTurn = True
+                    self.currentTeam.currentSnailWithTurn = nextSnail
+
+    def stopTurn(self):
+        self.status = TurnStatus.BREAK
+        self.currentTime = self.breakTime
+        
+        self.currentTeam.hasTurn = False
+        for team in self.teams:
+            team.currentSnailWithTurn.hasTurn = False
+            if team.hasTurn:
+                raise ValueError('No team should have the turn. See TurnManager.stopturn')
+        
