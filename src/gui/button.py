@@ -13,6 +13,7 @@ class Button(object):
     def update(self, input):
         if input.get_mouse_left_click(self.rect):
                 self.do_action()
+                
     def draw(self, surface):
         # Draw the red rectangle on the game surface
         self.rect = surface.fill((255,0,0), self.rect)

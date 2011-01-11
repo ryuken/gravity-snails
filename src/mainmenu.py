@@ -17,6 +17,7 @@ class MainMenu(Menu):
         self.addOption(Button("Settings", self.runSettingsMenu))
         self.addOption(Button("Help", self.runHelpMenu))
         self.addOption(Button("Quit", self.quitGame))
+        
     def runGame(self):
         game = Game()
         game.mainmenu = self
