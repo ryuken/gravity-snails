@@ -25,7 +25,8 @@ class TurnManager(object):
         if TurnManager._count == 0:
             self.font_size = Settings.TIMER_FONT_SIZE
             pygame.font.init()
-            self.font = pygame.font.Font(None, self.font_size)
+            self.font_timer = pygame.font.Font(None, self.font_size)
+            self.font_break = pygame.font.Font(None, 50)
             self.startTime = Settings.TIMER_STARTTIME
             self.breakTime = Settings.TIMER_BREAKTIME
             self.currentTime = self.breakTime
@@ -60,8 +61,15 @@ class TurnManager(object):
         self.rect = surface.fill((255,0,0), self.rect)
         surface.blit(surface, self.position)
         # Create a new surface at the position of the red rectangle and draw the text
-        text = self.font.render(str(self.currentTime), 1, (10, 10, 10)) #returns surface
-        surface.blit(text, (Settings.TIMER_SIZE[0] / 2 - 7, Settings.TIMER_SIZE[1] / 2 - 7))
+        text_timer = self.font_timer.render(str(self.currentTime), 1, (10, 10, 10)) #returns surface
+        surface.blit(text_timer, (Settings.TIMER_SIZE[0] / 2 - 7, Settings.TIMER_SIZE[1] / 2 - 7))
+        
+        if self.status == TurnStatus.BREAK:
+            # Create a new surface in the middle of the screen and draw the text: Breaktime
+            text_break = self.font_break.render("It's break time!", 1, (255, 0, 0)) #returns surface
+            surface.blit(text_break, (Settings.SCREEN_WIDTH / 2 - 70, Settings.SCREEN_HEIGHT / 2 - 50))
+         
+        
 
     def updateTime(self):
         self.updateStatus()

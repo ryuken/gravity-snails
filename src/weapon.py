@@ -1,6 +1,7 @@
 import pygame, math
 from bullet import Bullet
 from utils import load_image
+from turnmanager import TurnManager
 
 class Weapon(pygame.sprite.Sprite):
 
@@ -50,8 +51,12 @@ class Weapon(pygame.sprite.Sprite):
             self.rect.centerx = self.snail_rect.centerx + x_margin
             self.rect.centery = self.snail_rect.centery + y_margin
             
-            if self.bullet <> None:
-                self.bullet.update(terrain)
+            if self.bullet:
+                if self.bullet.isAlive == False:
+                    self.bullet = None
+                    TurnManager().stopTurn()
+                else:
+                    self.bullet.update(terrain)
                 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
