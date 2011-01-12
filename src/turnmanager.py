@@ -7,7 +7,7 @@ from threading import Timer
 class TurnManager(object):
     _instance = None
     _count    = 0
-    
+
     # forcing singleton to always return the instance of the static variable _instance
     def __new__(cls, *args, **kwargs):
         # Check if the instance exists
@@ -39,7 +39,7 @@ class TurnManager(object):
             self.currentTeam = None
             print "Init turnmanager"
             TurnManager._count += 1
-    
+
 
     def startTimer(self):
         if self.teams is not None:
@@ -63,11 +63,11 @@ class TurnManager(object):
         # Create a new surface at the position of the red rectangle and draw the text
         text_timer = self.font_timer.render(str(self.currentTime), 1, (10, 10, 10)) #returns surface
         surface.blit(text_timer, (Settings.TIMER_SIZE[0] / 2 - 7, Settings.TIMER_SIZE[1] / 2 - 7))
-        
+
         if self.status == TurnStatus.BREAK:
             # Create a new surface in the middle of the screen and draw the text: Breaktime
-            text_break = self.font_break.render("It's break time!", 1, (255, 0, 0)) #returns surface
-            surface.blit(text_break, (Settings.SCREEN_WIDTH / 2 - 70, Settings.SCREEN_HEIGHT / 2 - 50))        
+            text_break = self.font_break.render("Next player, be ready!", 1, (255, 0, 0)) #returns surface
+            surface.blit(text_break, (Settings.SCREEN_WIDTH / 2 - text_break.get_width()/2, Settings.SCREEN_HEIGHT / 2 - 50))
 
     def updateTime(self):
         self.updateStatus()
@@ -83,11 +83,11 @@ class TurnManager(object):
                 self.changeTurn()
             elif self.status == TurnStatus.CURRENTTURN:
                 self.stopTurn()
-                
+
 
 
     def changeTurn(self):
-        
+
         teamIterator = iter(self.teams)
         for team in teamIterator:
             if team == self.currentTeam:
@@ -101,10 +101,10 @@ class TurnManager(object):
                 except StopIteration:
                     self.teams[0].hasTurn = True
                     self.currentTeam = self.teams[0]
-                    
+
                 self.changeTurnSnail(self.currentTeam)
-    
-    
+
+
     def changeTurnSnail(self, team):
         snailIterator = iter(team)
 
@@ -125,10 +125,9 @@ class TurnManager(object):
     def stopTurn(self):
         self.status = TurnStatus.BREAK
         self.currentTime = self.breakTime
-        
+
         self.currentTeam.hasTurn = False
         for team in self.teams:
             team.currentSnailWithTurn.hasTurn = False
             if team.hasTurn:
                 raise ValueError('No team should have the turn. See TurnManager.stopturn')
-        
