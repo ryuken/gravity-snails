@@ -1,20 +1,28 @@
 from scenemanager import SceneManager
 from gui.button import Button
+from scene import Scene
 from menu import Menu
 from game import Game
 from settingsmenu import SettingsMenu
 from help import HelpMenu
 
-class MainMenu(Menu):
+class MainMenu(Scene):
     def __init__(self):
-        Menu.__init__(self)
+        Scene.__init__(self)
         self.helpMenu = HelpMenu(self)
 
-        self.addOption(Button("Start", self.runGame))
-        self.addOption(Button("Settings", self.runSettingsMenu))
-        self.addOption(Button("Help", self.runHelpMenu))
-        self.addOption(Button("Quit", self.quitGame))
+        self.menu = Menu()
+        self.menu.addWidget(Button("Start", self.runGame))
+        self.menu.addWidget(Button("Settings", self.runSettingsMenu))
+        self.menu.addWidget(Button("Help", self.runHelpMenu))
+        self.menu.addWidget(Button("Quit", self.quitGame))
+      
+    def draw(self, surface):
+        self.menu.draw(surface)
         
+    def update(self, input):
+        self.menu.update(input)
+          
     def runGame(self):
         game = Game()
         game.mainmenu = self

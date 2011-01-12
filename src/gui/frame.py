@@ -5,18 +5,21 @@ class Frame(object):
     def __init__(self):
         self.widgets = []
         # should always be "fullscreen" otherwise, input acts weird
-        self.rect = Rect(0, 0, Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT)
+        self.rect = Rect(32, 32, Settings.SCREEN_WIDTH - 64, Settings.SCREEN_HEIGHT - 64)
         
     def addWidget(self, widget):
         self.widgets.append(widget)
         
     def update(self, input):
+        localInput = input.copy();
+        localInput.mouse_x -= self.rect.left
+        localInput.mouse_y -= self.rect.top
         for widget in self.widgets:
-            widget.update(input)
+            widget.update(localInput)
             
     def draw(self, surface):
         frameSurface = pygame.Surface((self.rect.width,self.rect.height))
-        frameSurface.fill((0,255,0))
+        frameSurface.fill((0,0,128))
         for widget in self.widgets:
             widget.draw(frameSurface)
         surface.blit(frameSurface, self.rect)

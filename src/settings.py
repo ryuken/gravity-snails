@@ -1,7 +1,7 @@
 class Settings:
     SCREEN_WIDTH = 640
     SCREEN_HEIGHT = 640
-    SCREEN_COLOR = (0, 0, 128)
+    SCREEN_COLOR = (0, 0, 64)
     # TIMER SETTINGS
     TIMER_SIZE = (40, 40)
     TIMER_POSITION = (0,0)

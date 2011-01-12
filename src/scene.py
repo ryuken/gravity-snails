@@ -3,9 +3,9 @@ class Scene(object):
         pass
     def clean(self):
         pass
-    def draw(self,surface):
+    def draw(self, surface):
         pass
-    def update(self,input):
+    def update(self, input):
         pass
     
     def do_action(self, event):

@@ -1,4 +1,5 @@
 import pygame
+import copy
 from pygame.locals import *
 
 class Input:
@@ -49,3 +50,6 @@ class Input:
             self.mouse_left_click = False
             self.mouse_left_clicked = True
         return result
+    
+    def copy(self):
+        return copy.copy(self)
