@@ -21,7 +21,10 @@ class Button(object):
                 
     def draw(self, surface):
         # Draw the red rectangle on the game surface
-        self.rect = surface.fill((255,0,0), self.rect)
+        if self.pressed:
+            self.rect = surface.fill((128,0,0), self.rect)
+        else:
+            self.rect = surface.fill((255,0,0), self.rect)
         surface.blit(surface, (0,0))
         # Create a new surface at the position of the red rectangle and draw the text
         text = self.font.render(str(self.text), 1, (10, 10, 10)) #returns surface
