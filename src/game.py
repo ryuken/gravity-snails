@@ -61,7 +61,6 @@ class Game(Scene):
             self.addTeam('test', Settings.GAME_SNAILS, i)
         self.turnManager = TurnManager()
         self.turnManager.setTeams(self.teams)
-        self.turnManager.startTimer()
 
         self.gamemode = GameModes.GAME_PLACING_SNAILS
 
@@ -90,6 +89,7 @@ class Game(Scene):
                 for snail in team.sprites():
                     if snail.isPlaced == False:
                         return
+            self.turnManager.startTimer()
             self.gamemode = GameModes.GAME_PLAYING
         if self.gamemode == GameModes.GAME_PLAYING:
             if self.teamsAlive <= 1:
