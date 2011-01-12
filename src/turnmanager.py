@@ -104,11 +104,11 @@ class TurnManager(object):
                     self.teams[0].hasTurn = True
                     self.currentTeam = self.teams[0]
                     
-                self.changeTurnSnail()
+                self.changeTurnSnail(self.currentTeam)
     
     
-    def changeTurnSnail(self):
-        snailIterator = iter(self.currentTeam.orderedSnailList)
+    def changeTurnSnail(self, team):
+        snailIterator = iter(team)
 
         for snail in snailIterator:
             if snail == self.currentTeam.currentSnailWithTurn:
