@@ -9,10 +9,15 @@ class Button(object):
         self.rect = pygame.Rect(0,0,1,1)
         self.text = text
         self.callback = callback
+        self.pressed = False
         
     def update(self, input):
         if input.get_mouse_left_click(self.rect):
-                self.do_action()
+            self.pressed = True
+        if self.pressed:
+            if not input.mouse_left:
+                self.pressed = False
+                self.callback()
                 
     def draw(self, surface):
         # Draw the red rectangle on the game surface
@@ -21,9 +26,6 @@ class Button(object):
         # Create a new surface at the position of the red rectangle and draw the text
         text = self.font.render(str(self.text), 1, (10, 10, 10)) #returns surface
         surface.blit(text, (self.rect.centerx - (text.get_width() / 2), self.rect.centery - (text.get_height() / 2)))
-        
-    def do_action(self):
-        self.callback()
     
     def register_action(self, callback):
         self.callback = callback
