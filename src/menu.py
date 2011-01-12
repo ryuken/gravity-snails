@@ -20,14 +20,14 @@ class Menu(Frame):
 
         optionValue.rect.width = widget_width
         optionValue.rect.height = widget_height
-        optionValue.rect.centerx = (Settings.SCREEN_WIDTH / 2)
+        optionValue.rect.centerx = (self.rect.width / 2)
 
         Frame.addWidget(self, optionValue)
 
         menu_height = widget_height * len(self.widgets)
 
         for i in range(0, len(self.widgets)):
-            screen_center = Settings.SCREEN_HEIGHT / 2
+            screen_center = self.rect.height / 2
             menu_top = (screen_center - (menu_height / 2))
             option_y = ((widget_height + widget_space) * i)
             self.widgets[i].rect.width = widget_width
