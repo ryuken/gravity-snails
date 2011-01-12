@@ -92,7 +92,7 @@ class Team(pygame.sprite.Group):
             if snail.isAlive == False:
                 if self.hasTurn == True and snail.hasTurn == True:
                     TurnManager().stopTurn()
-                    TurnManager().changeTurnSnail()
+                    TurnManager().changeTurnSnail(self)
                 if snail == self.currentSnailWithTurn:
                     TurnManager().changeTurnSnail(self)
                 self.orderedSnailList.remove(snail)
