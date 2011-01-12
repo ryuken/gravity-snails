@@ -68,7 +68,7 @@ class Game(Scene):
         self.turnManager.timer.cancel()
         teamColors = {1:'green', 2:'red', 3:'yellow', 4:'blue'}
         livingTeamColor = str(teamColors[self.teams[0].colorIndex])
-        SceneManager().scene = WinScreen(self.mainmenu, livingTeamColor)
+        SceneManager().setScene(WinScreen(self.mainmenu, livingTeamColor))
         #SceneManager().scene = self.mainmenu
 
     def update(self, input):
