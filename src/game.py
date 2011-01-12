@@ -33,7 +33,7 @@ class Game(Scene):
                     SceneManager().setScene(self.mainmenu)
 
     def clean(self):
-        self.turnManager.timer.cancel()
+        self.turnManager.stopTimer()
 
     def initTeams(self):
         self.teams = []
@@ -99,7 +99,6 @@ class Game(Scene):
         self.terrain.draw(surface)
         for team in self.teams:
             team.draw(surface)
-
 
         #self.bullets.draw(surface)
         if self.gamemode == GameModes.GAME_PLAYING:

@@ -43,6 +43,9 @@ class Snail(pygame.sprite.Sprite):
         self.hasShot = False
         # The snail doesn't have the turn
         self.hasTurn = False
+        
+        pygame.font.init()
+        self.font_hp = pygame.font.Font(None, 20)
 
     def collideWithTerrain(self, terrain):
         return len(pygame.sprite.spritecollide(self, terrain, False)) > 0
@@ -56,24 +59,9 @@ class Snail(pygame.sprite.Sprite):
             self.team.active_weapon.shoot()
             self.hasShot = True
 
-#    def changeTurn(self):
-#        if self.isAlive == False:
-#            if self.hasTurn:
-#                self.team.nextSnailTurn()
-#                self.team.orderedSnailList.remove(self)
-#                TurnManager().changeTurn()
-#                self.kill()
-#            else:
-#                self.team.orderedSnailList.remove(self)
-#                self.kill()
-#        if self.hasShot == True and self.team.active_weapon.bullet.isAlive == False:
-#            TurnManager().changeTurn()
-#            self.hasShot = False
-
     def update(self, input, terrain):
         # the checkHealth needs to be run first
         self.checkHealth()
-#        self.changeTurn()
 
         #E Event
         if(not self.isPlaced):
@@ -254,6 +242,25 @@ class Snail(pygame.sprite.Sprite):
         # draw the snail
         surface.blit(self.image, self.rect)
         
+        # draw the snail's HP
+        text = self.font_hp.render(str(self.hitpoints), 1, (255, 0, 0)) #returns surface
+        if self.team.gravity_direction == Direction.DOWN:
+                # set the arrow at the correct position
+                pos = [self.rect.topleft[0], self.rect.top - 20]
+        elif self.team.gravity_direction == Direction.UP:
+            # set the arrow at the correct position
+            pos = [self.rect.topleft[0], self.rect.top + 30]
+            
+        elif self.team.gravity_direction == Direction.LEFT:
+            # set the arrow at the correct position
+            pos = [self.rect.topleft[0] + 27, self.rect.top - 20]
+            
+        elif self.team.gravity_direction == Direction.RIGHT:
+            # set the arrow at the correct position
+            pos = [self.rect.topleft[0] - 20, self.rect.top - 27]
+        
+        surface.blit(text, pos)
+        
         # draw an arrow with the snail who got the turn
         arrow = load_image("arrow.png")
         if self.team.hasTurn and self.hasTurn:
@@ -261,12 +268,12 @@ class Snail(pygame.sprite.Sprite):
             # !!! WHEN U CHANGE THEM FOR LEFT OR RIGHT THE X AND Y ARE REVERTED !!!
             if self.team.gravity_direction == Direction.DOWN:
                 # set the arrow at the correct position
-                pos = [self.rect.topleft[0] - 15, self.rect.top - 85]
+                pos = [self.rect.topleft[0] - 20, self.rect.top - 100]
             elif self.team.gravity_direction == Direction.UP:
                 # flip the default image so the arrow will be at the correct direction
                 arrow = pygame.transform.flip(arrow, 1, 1)
                 # set the arrow at the correct position
-                pos = [self.rect.topleft[0] - 20, self.rect.top + 30]
+                pos = [self.rect.topleft[0] - 20, self.rect.top + 50]
                 
             elif self.team.gravity_direction == Direction.LEFT:
                 # flip the default image so the arrow will be easier to rotate

@@ -1,8 +1,5 @@
-import pygame
 from scenemanager import SceneManager
 from gui.button import Button
-from gui.slider import Slider
-from settings import Settings
 from menu import Menu
 from game import Game
 from settingsmenu import SettingsMenu

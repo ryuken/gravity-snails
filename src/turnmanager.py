@@ -67,9 +67,7 @@ class TurnManager(object):
         if self.status == TurnStatus.BREAK:
             # Create a new surface in the middle of the screen and draw the text: Breaktime
             text_break = self.font_break.render("It's break time!", 1, (255, 0, 0)) #returns surface
-            surface.blit(text_break, (Settings.SCREEN_WIDTH / 2 - 70, Settings.SCREEN_HEIGHT / 2 - 50))
-         
-        
+            surface.blit(text_break, (Settings.SCREEN_WIDTH / 2 - 70, Settings.SCREEN_HEIGHT / 2 - 50))        
 
     def updateTime(self):
         self.updateStatus()

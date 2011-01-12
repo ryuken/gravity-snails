@@ -1,13 +1,8 @@
-import pygame
 from scenemanager import SceneManager
 from gui.button import Button
 from gui.label import Label
-from gui.slider import Slider
-from settings import Settings
 from scene import Scene
 from gui.frame import Frame
-from game import Game
-from settingsmenu import SettingsMenu
 
 class HelpMenu(Scene):
     def __init__(self, previousScene):
@@ -19,10 +14,10 @@ class HelpMenu(Scene):
         text += "\n"
         text += "Use the left mouse button to place snails in the screen\n"
         text += "Use the arrow keys to move and to target\n"
-        text += "Use the spacebar to fire the weapon\n"
+        text += "Use the space bar to fire the weapon\n"
         text += "\n"
-        text += "You can't shoot the snails themself\n"
-        text += "Snails only die if they touch the salt\n"
+        text += "You can shoot the snail's and the terrain beneath them\n"
+        text += "Snails die if they touch the salt or when they'r hitpoint's are 0\n"
         text += "So shoot the ground under them away!\n"
         labelText = Label(text)
         labelText.rect.center = (self.frame.rect.width / 2, self.frame.rect.height / 2)
