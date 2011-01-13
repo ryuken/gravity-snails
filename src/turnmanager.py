@@ -33,7 +33,7 @@ class TurnManager(object):
             self.position = Settings.TIMER_POSITION
             self.size = Settings.TIMER_SIZE
             self.rect = pygame.Rect(self.position, self.size)
-            self.status = TurnStatus.BREAK
+            self.status = TurnStatus.CURRENTTURN
             self.teams = None
             self.timer = None
             self.currentTeam = None

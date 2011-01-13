@@ -2,6 +2,7 @@ import pygame
 
 from inventory import Inventory
 from weapon import Weapon
+from balloon_launcher import BalloonLauncher
 from snail import Snail
 from turnmanager import TurnManager
 
@@ -21,9 +22,11 @@ class Team(pygame.sprite.Group):
 
         self.inventory = Inventory()
         cannon = Weapon("Canon", 20)
+        balloonLauncher = BalloonLauncher("Balloon launcher", 30)
+        self.inventory.addWeapon(balloonLauncher)
         self.inventory.addWeapon(cannon)
 
-        self.active_weapon = cannon
+        self.active_weapon = balloonLauncher
 
         self.colorIndex = None
 
@@ -36,7 +39,7 @@ class Team(pygame.sprite.Group):
         #pygame.sprite.Group.draw(self, surface)
         for sprite in self:
             sprite.draw(surface)
-            
+
         if self.hasTurn:
             self.active_weapon.snail_rect = self.currentSnailWithTurn.rect
             self.active_weapon.draw(surface)
