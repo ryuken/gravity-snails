@@ -21,7 +21,7 @@ class Team(pygame.sprite.Group):
 
         self.inventory = Inventory(self.name)
         cannon = Weapon("Canon", 20)
-        balloonLauncher = BalloonLauncher("Balloon launcher", 30)
+        balloonLauncher = BalloonLauncher("Balloon", 30)
 
         self.inventory.addWeapon(balloonLauncher)
         self.inventory.addWeapon(cannon)
@@ -39,7 +39,6 @@ class Team(pygame.sprite.Group):
                 self.active_weapon = self.inventory.update(args[0])
             else:
                 self.inventory.visible = False
-                pygame.sprite.Group.update(self,*args)
         else:
             self.active_weapon.update(*args)
 
@@ -91,7 +90,7 @@ class Team(pygame.sprite.Group):
                 # remove the snail from the ordered list of snails
                 self.orderedSnailList.remove(snail)
                 snail.kill()
-                
+
                 if self.hasTurn == True and snail.hasTurn == True:
                     TurnManager().stopTurn()
                 elif self.hasTurn == False and snail.hasTurn == True:

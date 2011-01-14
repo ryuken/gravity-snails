@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-from menu import Menu
+from gui.menu import Menu
 from gui.button import Button
 from settings import Settings
 from gui.label import Label

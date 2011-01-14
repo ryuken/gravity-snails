@@ -12,9 +12,9 @@ class Snail(pygame.sprite.Sprite):
 
     def __init__(self, team):
         pygame.sprite.Sprite.__init__(self)
-        
+
         self.id = None
-        
+
         self.initEvents()
         # Set the speed constants
         self.speed = {'movement' : 2, 'jump' : 10, 'fall' : 0.2}
@@ -96,6 +96,12 @@ class Snail(pygame.sprite.Sprite):
                         TurnManager().changeTurn()
                         TurnManager().changeTurnSnail(self.team)
         elif(not None == self.team.active_weapon):
+            #check if right mouse is pressed
+#            if(input.mouse_right):
+#                self.team.active_weapon = None
+#                self.team.inventory.selectedItemIndex = None
+#                self.update(input, terrain)
+                #return
             # If the snail is placed
             # Check if the snail if moving, and check if the snail is falling
             self.updateMove(input)

@@ -26,7 +26,7 @@ class Weapon(pygame.sprite.Sprite):
         if self.ammo > 0:
             if(self.snail):
                 self.bullet = Bullet(self.snail, self.weaponAngle)
-            self.ammo -= 1
+            #self.ammo -= 1, this weapon can be shooted infinitely!
         else:
             raise ValueError("You can't shoot anymore, you don't have any ammo.")
 

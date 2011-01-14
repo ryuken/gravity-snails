@@ -5,7 +5,7 @@ from gui.button import Button
 from gui.slider import Slider
 from settings import Settings
 from scene import Scene
-from menu import Menu
+from gui.menu import Menu
 
 from scenemanager import SceneManager
 class SettingsMenu(Scene):
@@ -25,13 +25,13 @@ class SettingsMenu(Scene):
         self.frame.addWidget(self.sliderStartTime)
         self.frame.addWidget(self.sliderBreakTime)
         self.frame.addWidget(Button("Ok",self.applySettings))
-        
+
     def update(self, input):
         self.frame.update(input)
-        
+
     def draw(self, surface):
         self.frame.draw(surface)
-        
+
     def applySettings(self):
         Settings.GAME_PLAYERS = self.sliderPlayers.value
         Settings.GAME_SNAILS = self.sliderSnails.value

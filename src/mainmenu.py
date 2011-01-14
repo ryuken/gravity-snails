@@ -1,7 +1,7 @@
 from scenemanager import SceneManager
 from gui.button import Button
 from scene import Scene
-from menu import Menu
+from gui.menu import Menu
 from game import Game
 from settingsmenu import SettingsMenu
 from help import HelpMenu
@@ -16,13 +16,13 @@ class MainMenu(Scene):
         self.menu.addWidget(Button("Settings", self.runSettingsMenu))
         self.menu.addWidget(Button("Help", self.runHelpMenu))
         self.menu.addWidget(Button("Quit", self.quitGame))
-      
+
     def draw(self, surface):
         self.menu.draw(surface)
-        
+
     def update(self, input):
         self.menu.update(input)
-          
+
     def runGame(self):
         game = Game()
         game.mainmenu = self
