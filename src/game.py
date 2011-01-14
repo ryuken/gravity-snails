@@ -27,7 +27,7 @@ class Game(Scene):
 
     def initEvents(self):
         SceneManager().registerEventReader(self.do_action)
-        
+
     def do_action(self, event):
         # check events
         if event.type == pygame.KEYDOWN:
@@ -50,7 +50,7 @@ class Game(Scene):
 
     def createGameObjects(self):
         #A Assign
-        self.terrain.create(5)
+        self.terrain.create(15)
 
     def addTeam(self, name, numberOfSnails, gravity_direction):
         team = Team(name)
@@ -64,7 +64,7 @@ class Game(Scene):
 
     def startNewGame(self):
         for i in range(0, Settings.GAME_PLAYERS):
-            self.addTeam('test'+str(i), Settings.GAME_SNAILS, i)
+            self.addTeam('team '+str(i+1), Settings.GAME_SNAILS, i)
         self.turnManager = TurnManager()
         self.turnManager.setTeams(self.teams)
 
