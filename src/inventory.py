@@ -13,7 +13,7 @@ class Inventory(Menu):
         self.max_weapons = 20
         self.weapons = []
         self.items = []
-        self.visible = True
+        self.visible = False
         self.selectedItemIndex = None
         size = []
         size.append(Settings.SCREEN_WIDTH/4)

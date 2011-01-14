@@ -51,7 +51,7 @@ class BalloonLauncher(Weapon):
                     self.balloon.update(terrain)
 
     def draw(self, surface):
-        surface.blit(self.image, self.rect)
+        #surface.blit(self.image, self.rect)
 
         if self.balloon <> None:
             surface.blit(self.balloon.image, self.balloon.rect)

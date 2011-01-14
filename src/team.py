@@ -32,7 +32,10 @@ class Team(pygame.sprite.Group):
     def update(self, *args):
         if(None == self.active_weapon):
             if(self.hasTurn):
+                self.inventory.visible = True
                 self.active_weapon = self.inventory.update(args[0])
+            else:
+                self.inventory.visible = False
         else:
             pygame.sprite.Group.update(self,*args)
             self.active_weapon.update(*args)
