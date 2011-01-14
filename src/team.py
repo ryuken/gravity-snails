@@ -27,6 +27,7 @@ class Team(pygame.sprite.Group):
         self.inventory.addWeapon(cannon)
 
         self.active_weapon = None
+
         self.colorIndex = None
 
     def update(self, *args):
@@ -57,6 +58,7 @@ class Team(pygame.sprite.Group):
     def addSnails(self, numberOfSnails):
         for i in range(0, numberOfSnails):
             snail = Snail(self)
+            snail.id = i
             self.add(snail)
             self.orderedSnailList.append(snail)
 
@@ -86,6 +88,10 @@ class Team(pygame.sprite.Group):
         for snail in self.orderedSnailList:
             # Check if the snail is alive
             if snail.isAlive == False:
+                # remove the snail from the ordered list of snails
+                self.orderedSnailList.remove(snail)
+                snail.kill()
+                
                 if self.hasTurn == True and snail.hasTurn == True:
                     TurnManager().stopTurn()
                 elif self.hasTurn == False and snail.hasTurn == True:
@@ -97,3 +103,4 @@ class Team(pygame.sprite.Group):
         else:
             self.isAlive = False
             TurnManager().teams.remove(self)
+            print "removed " + self.name

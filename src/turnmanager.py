@@ -80,88 +80,116 @@ class TurnManager(object):
         if self.currentTime == 0:
             self.stopTurn()
 
-    def changeTurn(self):
+    def changeTurn(self):       
+        someoneHasTurn = []
+        
         teamIterator = iter(self.teams)
         for team in teamIterator:
-            # check if the team has the turn
             if team.hasTurn == True:
-                team.hasTurn = False
-                
-                if len(self.teams) > 0:
-                    nextTeam = None
-                    # try to get the next team
-                    try:
-                        nextTeam = teamIterator.next()
-                        # check if the team is alive
-                        if nextTeam.isAlive == True:
-                            print nextTeam.name +" is alive"
-                            
-                            # when the team is alive give it the turn
-                            nextTeam.hasTurn = True
-                            print nextTeam.name + " got turn"
-                            
-                            self.currentTeam = nextTeam
-                        else:
-                            # recursion
-                            self.changeTurn()
-                    except StopIteration:
-                        if len(self.teams) > 0:
-                            # set the first team of the list of teams as the next team 
-                            nextTeam = self.teams[0]
-                            # check if this team is alive
+                someoneHasTurn.append(True)
+        
+        if len(someoneHasTurn) > 0:
+            teamIterator = iter(self.teams)
+            for team in teamIterator:
+                # check if the team has the turn
+                if team.hasTurn == True:
+                    team.hasTurn = False
+                    
+                    if len(self.teams) > 0:
+                        nextTeam = None
+                        # try to get the next team
+                        try:
+                            nextTeam = teamIterator.next()
+                            # check if the team is alive
                             if nextTeam.isAlive == True:
-                                print nextTeam.name + " from StopIteration is alive"
+                                print nextTeam.name +" is alive"
                                 
-                                # give it the turn
+                                # when the team is alive give it the turn
                                 nextTeam.hasTurn = True
-                                print nextTeam.name + " from StopIteration got the turn"
+                                print nextTeam.name + " got turn"
                                 
                                 self.currentTeam = nextTeam
-                            else:
-                                # recursion
-                                self.changeTurn()
+                        except StopIteration:
+                            if len(self.teams) > 0:
+                                # set the first team of the list of teams as the next team 
+                                nextTeam = self.teams[0]
+                                # check if this team is alive
+                                if nextTeam.isAlive == True:
+                                    print nextTeam.name + " from StopIteration is alive"
+                                    
+                                    # give it the turn
+                                    nextTeam.hasTurn = True
+                                    print nextTeam.name + " from StopIteration got the turn"
+                                    
+                                    self.currentTeam = nextTeam
+        else:
+            # give a team the turn who is alive
+            livingTeam = []
+            teamIterator = iter(self.teams)
+            for team in teamIterator:
+                if team.isAlive == True:
+                    livingTeam.append(team)
+            
+            if len(livingTeam) > 0:
+                livingTeam[0].hasTurn = True
+                self.currentTeam = livingTeam[0]
+                print livingTeam[0].name + " got turn"
+            else:
+                print "All teams's are dead"
 
     def changeTurnSnail(self, team):
+        someoneHasTurn = []
+        
         snailIterator = iter(team.orderedSnailList)
-
         for snail in snailIterator:
             # check if the snail has the turn
             if snail.hasTurn == True:
-                snail.hasTurn = False
-                
-                if len(team.orderedSnailList) > 0:        
-                    if snail.isAlive == False:
-                        team.orderedSnailList.remove(snail)
-                        snail.kill()
+                someoneHasTurn.append(True)
+        
+        if len(someoneHasTurn) > 0:
+            snailIterator = iter(team.orderedSnailList)
+            for snail in snailIterator:
+                if snail.hasTurn == True:
+                    print str(snail.id) + " had turn"
+                    snail.hasTurn = False
                     
-                    nextSnail = None
-                    # try to get the next snail
-                    try:
-                        nextSnail = snailIterator.next()
-                        # check if the snail is alive
-                        if nextSnail.isAlive == True:
-                            # give it the turn
-                            nextSnail.hasTurn = True
-                        else:
-                            # remove the snail from the ordered list of snails
-                            team.orderedSnailList.remove(nextSnail)
-                            nextSnail.kill()
-                            # recursion
-                            self.changeTurnSnail(team)
-                    except StopIteration:
-                        if len(team.orderedSnailList) > 0:
+                    if len(team.orderedSnailList) > 0:
+                        nextSnail = None
+                        # try to get the next snail
+                        try:
+                            nextSnail = snailIterator.next()
+                            # check if the snail is alive
+                            if nextSnail.isAlive == True:
+                                print str(snail.id) + " is alive"
+                                # give it the turn
+                                nextSnail.hasTurn = True
+                                print str(snail.id) + " got turn"
+                        except StopIteration:
                             # set the first team of the list of teams as the next team 
                             nextSnail = team.orderedSnailList[0]
                             # check if this team is alive
                             if nextSnail.isAlive == True:
+                                print str(snail.id) + " is alive"
                                 # give it the turn
                                 nextSnail.hasTurn = True
-                            else:
-                                # remove it from the list of teams
-                                team.orderedSnailList.remove(nextSnail)
-                                nextSnail.kill()
-                                # recursion
-                                self.changeTurnSnail(team)
+                                print str(snail.id) + " got turn"
+                    else:
+                        print team.name + " has no snails"
+        else:
+            # give a snail the turn who is alive
+            livingSnail = []
+            
+            snailIterator = iter(team.orderedSnailList)
+            for snail in snailIterator:
+                if snail.isAlive == True:
+                    livingSnail.append(snail)
+            
+            if len(livingSnail) > 0:
+                livingSnail[0].hasTurn = True
+                print str(livingSnail[0].id) + " got turn"
+            else:
+                print "All snail's of " + team.name + " are dead"
+                self.changeTurn()
                     
     def stopTurn(self):
         if self.status == TurnStatus.BREAK:

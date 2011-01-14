@@ -1,5 +1,4 @@
 import pygame
-import random
 from pygame.locals import *
 from utils import load_image
 
@@ -13,6 +12,9 @@ class Snail(pygame.sprite.Sprite):
 
     def __init__(self, team):
         pygame.sprite.Sprite.__init__(self)
+        
+        self.id = None
+        
         self.initEvents()
         # Set the speed constants
         self.speed = {'movement' : 2, 'jump' : 10, 'fall' : 0.2}
