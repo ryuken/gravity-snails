@@ -50,12 +50,12 @@ class Snail(pygame.sprite.Sprite):
         self.font_hp = pygame.font.Font(None, 20)
     def initEvents(self):
         SceneManager().registerEventReader(self.do_action)
-        
+
     def do_action(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 self.shoot()
-                
+
     def collideWithTerrain(self, terrain):
         return len(pygame.sprite.spritecollide(self, terrain, False)) > 0
 
@@ -73,7 +73,7 @@ class Snail(pygame.sprite.Sprite):
         self.checkHealth()
 
         #E Event
-        if(not self.isPlaced):
+        if(not self.isPlaced and not None == self.team.active_weapon):
             if self.team.hasTurn and self.hasTurn:
                 # The snail is not placed yet
                 # Store the current position
@@ -93,7 +93,7 @@ class Snail(pygame.sprite.Sprite):
                         self.isPlaced = True
                         TurnManager().changeTurn()
                         TurnManager().changeTurnSnail(self.team)
-        else:
+        elif(not None == self.team.active_weapon):
             # If the snail is placed
             # Check if the snail if moving, and check if the snail is falling
             self.updateMove(input)

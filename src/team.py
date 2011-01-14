@@ -30,16 +30,17 @@ class Team(pygame.sprite.Group):
         self.colorIndex = None
 
     def update(self, *args):
+        pygame.sprite.Group.update(self,*args)
+        self.checkAlive()
         if(None == self.active_weapon):
             if(self.hasTurn):
                 self.inventory.visible = True
                 self.active_weapon = self.inventory.update(args[0])
             else:
                 self.inventory.visible = False
+                pygame.sprite.Group.update(self,*args)
         else:
-            pygame.sprite.Group.update(self,*args)
             self.active_weapon.update(*args)
-            self.checkAlive()
 
     def draw(self, surface):
         for sprite in self:
