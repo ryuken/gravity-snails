@@ -19,25 +19,29 @@ class Balloon(pygame.sprite.Sprite):
             self.speed[1]= 10
             bullet_margin_y = self.rect.height / 2
             bullet_margin_x = 0
+            self.image = pygame.transform.rotate(self.image, 180)
         if(gravity_direction == Direction.DOWN):
             self.speed[1]= -10
             bullet_margin_y = -self.rect.height / 2
             bullet_margin_x = 0
+            self.image = pygame.transform.rotate(self.image, 0)
         if(gravity_direction == Direction.LEFT):
             self.speed[0]= 10
             bullet_margin_y = 0
             bullet_margin_x = self.rect.width / 2
+            self.image = pygame.transform.rotate(self.image, 180+90)
         if(gravity_direction == Direction.RIGHT):
             self.speed[0]= -10
             bullet_margin_y = 0
             bullet_margin_x = -self.rect.width / 2
+            self.image = pygame.transform.rotate(self.image, 90)
 
         self.rect.centerx = snail.rect.centerx + bullet_margin_x
         self.rect.centery = snail.rect.centery + bullet_margin_y
 
         self.isAlive = True
         self.isProtected = True
-        
+
         self.snail = snail
     def update(self, terrain):
         if self.isAlive:
@@ -60,7 +64,7 @@ class Balloon(pygame.sprite.Sprite):
                 list = pygame.sprite.spritecollide(self, self.snail.team, False)
                 if len(list) <> 1:
                     self.isProtected = False
-            else:   
+            else:
             # snail collision
                 teams = TurnManager().teams
                 for team in teams:
@@ -74,7 +78,7 @@ class Balloon(pygame.sprite.Sprite):
                                 for t in teams:
                                     if t.hasTurn:
                                         sprite.hitpoints -= t.active_weapon.power
-    
+
                         self.bounceOutScreen()
                         self.isAlive = False
 
