@@ -13,9 +13,8 @@ class TestButton(unittest.TestCase):
         setUp is called before each test function execution.
         """
         pygame.init()        
-        self.button = Button("Test", self.callback())
+        self.button = Button("Test", self.callback)
         self.button.rect = pygame.Rect(0,0,64,64)
-        self.button.register_action(self.callback)
         self.got_clicked = False
         self.input = Input()
         
@@ -26,6 +25,13 @@ class TestButton(unittest.TestCase):
         self.input.mouse_left_click = True
         
         self.button.update(self.input)
+        
+        self.input.mouse_left = False
+        self.input.mouse_left_click = False
+        self.input.mouse_left_clicked = False
+        
+        self.button.update(self.input)
+        
         self.assertTrue(self.got_clicked)
         
     def testClickedSomethingElse(self):
@@ -35,6 +41,13 @@ class TestButton(unittest.TestCase):
         self.input.mouse_left_click = True
         
         self.button.update(self.input)
+        
+        self.input.mouse_left = False
+        self.input.mouse_left_click = False
+        self.input.mouse_left_clicked = False
+        
+        self.button.update(self.input)
+        
         self.assertFalse(self.got_clicked)
         
     def callback(self):
