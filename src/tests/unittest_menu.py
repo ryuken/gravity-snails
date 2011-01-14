@@ -1,7 +1,7 @@
 import unittest
 import pygame
 from gui.label import Label
-from menu import Menu
+from gui.menu import Menu
 
 class TestMenu(unittest.TestCase):
     """
