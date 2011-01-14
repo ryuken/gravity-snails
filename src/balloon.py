@@ -18,24 +18,21 @@ class Balloon(pygame.sprite.Sprite):
         if(gravity_direction == Direction.UP):
             self.speed[1]= 10
             bullet_margin_y = self.rect.height / 2
+            bullet_margin_x = 0
         if(gravity_direction == Direction.DOWN):
             self.speed[1]= -10
             bullet_margin_y = -self.rect.height / 2
+            bullet_margin_x = 0
         if(gravity_direction == Direction.LEFT):
             self.speed[0]= 10
+            bullet_margin_y = 0
+            bullet_margin_x = self.rect.width / 2
         if(gravity_direction == Direction.RIGHT):
             self.speed[0]= -10
+            bullet_margin_y = 0
+            bullet_margin_x = -self.rect.width / 2
 
-        # Calculate the start position of the bullet
-        #bullet_margin_x = math.cos(math.radians(angle)) * (snail.rect.width * 3)
-        #bullet_margin_y = math.sin(math.radians(angle)) * (snail.rect.height * 3)
-        position = [0,0]
-        position[0] = snail.rect.centerx
-        position[1] = snail.rect.centery + bullet_margin_y
-        #position[0] += bullet_margin_x
-        #position[1] += bullet_margin_y
-
-        self.rect.centerx = snail.rect.centerx
+        self.rect.centerx = snail.rect.centerx + bullet_margin_x
         self.rect.centery = snail.rect.centery + bullet_margin_y
 
         self.isAlive = True
