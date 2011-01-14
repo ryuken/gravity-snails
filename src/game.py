@@ -28,7 +28,9 @@ class Game(Scene):
         # check events
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    TurnManager().currentTeam.currentSnailWithTurn.shoot()
+                    for snail in TurnManager().currentTeam.orderedSnailList:
+                        if snail.hasTurn:
+                            snail.shoot()
                 if event.key == pygame.K_ESCAPE:
                     SceneManager().setScene(self.mainmenu)
 
@@ -58,7 +60,7 @@ class Game(Scene):
 
     def startNewGame(self):
         for i in range(0, Settings.GAME_PLAYERS):
-            self.addTeam('test', Settings.GAME_SNAILS, i)
+            self.addTeam('test'+str(i), Settings.GAME_SNAILS, i)
         self.turnManager = TurnManager()
         self.turnManager.setTeams(self.teams)
 

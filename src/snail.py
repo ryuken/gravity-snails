@@ -65,7 +65,7 @@ class Snail(pygame.sprite.Sprite):
 
         #E Event
         if(not self.isPlaced):
-            if self.hasTurn and self.team.hasTurn:
+            if self.team.hasTurn and self.hasTurn:
                 # The snail is not placed yet
                 # Store the current position
                 prev_x = self.rect.centerx
@@ -83,6 +83,7 @@ class Snail(pygame.sprite.Sprite):
                     if input.get_mouse_left_click():
                         self.isPlaced = True
                         TurnManager().changeTurn()
+                        TurnManager().changeTurnSnail(self.team)
         else:
             # If the snail is placed
             # Check if the snail if moving, and check if the snail is falling
@@ -135,7 +136,7 @@ class Snail(pygame.sprite.Sprite):
         # Stop moving left right
         self.direction['movement'] = 0
         # Store the arrowkeys + spacebar in variables
-        if self.team.hasTurn and self.hasTurn:
+        if self.team.hasTurn and self.hasTurn and TurnManager().status == TurnStatus.CURRENTTURN:
             self.team.active_weapon.snail_rect = self.rect
 
             left_pressed = input.keyboard_left

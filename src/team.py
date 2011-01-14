@@ -12,17 +12,17 @@ class Team(pygame.sprite.Group):
         pygame.sprite.Group.__init__(self)
         self.name = name
         self.hasTurn = False
-        # When initialized the list of snails is empty so not alive!
-        self.isAlive = False
+        
+        self.isAlive = True
 
         self.orderedSnailList = []
-        self.currentSnailWithTurn = None
 
         self.gravity_direction = None
 
         self.inventory = Inventory()
         cannon = Weapon("Canon", 20)
         balloonLauncher = BalloonLauncher("Balloon launcher", 30)
+        
         self.inventory.addWeapon(balloonLauncher)
         self.inventory.addWeapon(cannon)
 
@@ -36,13 +36,14 @@ class Team(pygame.sprite.Group):
         self.checkAlive()
 
     def draw(self, surface):
-        #pygame.sprite.Group.draw(self, surface)
         for sprite in self:
             sprite.draw(surface)
 
         if self.hasTurn:
-            self.active_weapon.snail_rect = self.currentSnailWithTurn.rect
-            self.active_weapon.draw(surface)
+            for snail in self.orderedSnailList:
+                if snail.hasTurn == True:
+                    self.active_weapon.snail_rect = snail.rect
+                    self.active_weapon.draw(surface)
 
     def addSnails(self, numberOfSnails):
         for i in range(0, numberOfSnails):
@@ -50,39 +51,20 @@ class Team(pygame.sprite.Group):
             self.add(snail)
             self.orderedSnailList.append(snail)
 
-            # give the first snail in the team the turn
-            if i == 0:
-                self.currentSnailWithTurn = snail
-                snail.hasTurn = True
-
-#    def nextSnailTurn(self):
-#        snailIterator = iter(self.orderedSnailList)
-#
-#        for snail in snailIterator:
-#            if snail.hasTurn:
-#                snail.hasTurn = False
-#                nextSnail = None
-#                try:
-#                    nextSnail = snailIterator.next()
-#                    if nextSnail:
-#                        nextSnail.hasTurn = True
-#                        self.currentSnailWithTurn = nextSnail
-#                except StopIteration:
-#                    nextSnail = self.orderedSnailList[0]
-#                    nextSnail.hasTurn = True
-#                    self.currentSnailWithTurn = nextSnail
+        self.orderedSnailList[len(self.orderedSnailList) - 1].hasTurn = True
 
     def setGravity(self, direction):
         self.gravity_direction = direction
         for s in self.sprites():
             s.gravity_direction = direction
 
-    """
-    sets the image of the team using a number
-    the sprites folder contains snails with 4 different colors
-    the number given will be used to select a different snail
-    """
     def setTeamImage(self, imageNumber):
+        """
+        sets the image of the team using a number
+        the sprite's folder contains snails with 4 different colors
+        the number given will be used to select a different snail
+        """
+        
         self.colorIndex = imageNumber
         rightAndLeftImages=['snail', 'snail']
         rightAndLeftImages[0] += str(imageNumber) + 'Right.png'
@@ -91,16 +73,15 @@ class Team(pygame.sprite.Group):
             s.setImages(rightAndLeftImages)
 
     def checkAlive(self):
+        # Loop thru snail's
         for snail in self.orderedSnailList:
+            # Check if the snail is alive
             if snail.isAlive == False:
-                if snail.hasTurn == True:
+                if self.hasTurn == True and snail.hasTurn == True:
+                    TurnManager().stopTurn()
+                elif self.hasTurn == False and snail.hasTurn == True:
                     TurnManager().changeTurnSnail(self)
-                    if self.hasTurn == True:
-                        TurnManager().stopTurn()
-                if snail == self.currentSnailWithTurn:
-                    TurnManager().changeTurnSnail(self)
-                self.orderedSnailList.remove(snail)
-                snail.kill()
+                      
         # Check if all the snails are dead
         if len(self.orderedSnailList) > 0:
             self.isAlive = True

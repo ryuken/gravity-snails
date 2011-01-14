@@ -64,7 +64,9 @@ class Balloon(pygame.sprite.Sprite):
                         # when the sprite is not self ( a bullet), it's a snail
                         if sprite <> self:
                             # decrease the hitpoint's of the snail with the power of weapon which shot
-                            sprite.hitpoints -= TurnManager().currentTeam.active_weapon.power
+                            for t in teams:
+                                if t.hasTurn:
+                                    sprite.hitpoints -= t.active_weapon.power
 
                     self.bounceOutScreen()
                     self.isAlive = False
