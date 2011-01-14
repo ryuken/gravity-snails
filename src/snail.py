@@ -7,6 +7,7 @@ from enums import Direction
 from enums import TurnStatus
 from turnmanager import TurnManager
 from scenemanager import SceneManager
+from settings import Settings
 
 class Snail(pygame.sprite.Sprite):
 
@@ -33,7 +34,7 @@ class Snail(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
         # The hitpoints of the snail
-        self.hitpoints = 100
+        self.hitpoints = Settings.GAME_SNAILS_HP
 
         # The snail isn't placed yet
         self.isPlaced = False
