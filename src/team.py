@@ -26,7 +26,7 @@ class Team(pygame.sprite.Group):
         self.inventory.addWeapon(balloonLauncher)
         self.inventory.addWeapon(cannon)
 
-        self.active_weapon = balloonLauncher
+        self.active_weapon = cannon
 
         self.colorIndex = None
 

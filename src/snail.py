@@ -6,12 +6,13 @@ from utils import load_image
 from enums import Direction
 from enums import TurnStatus
 from turnmanager import TurnManager
+from scenemanager import SceneManager
 
 class Snail(pygame.sprite.Sprite):
 
     def __init__(self, team):
         pygame.sprite.Sprite.__init__(self)
-
+        self.initEvents()
         # Set the speed constants
         self.speed = {'movement' : 2, 'jump' : 10, 'fall' : 0.2}
         # The snail doesn't move
@@ -46,7 +47,14 @@ class Snail(pygame.sprite.Sprite):
 
         pygame.font.init()
         self.font_hp = pygame.font.Font(None, 20)
-
+    def initEvents(self):
+        SceneManager().registerEventReader(self.do_action)
+        
+    def do_action(self, event):
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                self.shoot()
+                
     def collideWithTerrain(self, terrain):
         return len(pygame.sprite.spritecollide(self, terrain, False)) > 0
 
@@ -137,7 +145,7 @@ class Snail(pygame.sprite.Sprite):
         self.direction['movement'] = 0
         # Store the arrowkeys + spacebar in variables
         if self.team.hasTurn and self.hasTurn and TurnManager().status == TurnStatus.CURRENTTURN:
-            self.team.active_weapon.snail_rect = self.rect
+            self.team.active_weapon.snail = self
 
             left_pressed = input.keyboard_left
             right_pressed = input.keyboard_right

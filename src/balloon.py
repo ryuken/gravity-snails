@@ -5,7 +5,7 @@ from turnmanager import TurnManager
 from enums import Direction
 
 class Balloon(pygame.sprite.Sprite):
-    def __init__(self, snail_rect, angle, gravity_direction):
+    def __init__(self, snail, angle, gravity_direction):
         pygame.sprite.Sprite.__init__(self)
         self.image = load_image("balloon.png")
         self.rect = self.image.get_rect()
@@ -25,18 +25,18 @@ class Balloon(pygame.sprite.Sprite):
             self.speed[0]= -10
 
         # Calculate the start position of the bullet
-        bullet_margin_x = math.cos(math.radians(angle)) * (snail_rect.width * 3)
-        bullet_margin_y = math.sin(math.radians(angle)) * (snail_rect.height * 3)
+        #bullet_margin_x = math.cos(math.radians(angle)) * (snail.rect.width * 3)
+        #bullet_margin_y = math.sin(math.radians(angle)) * (snail.rect.height * 3)
         position = [0,0]
-        position[0] = snail_rect.centerx
-        position[1] = snail_rect.centery
-        position[0] += bullet_margin_x
-        position[1] += bullet_margin_y
+        position[0] = snail.rect.centerx
+        position[1] = snail.rect.centery
+        #position[0] += bullet_margin_x
+        #position[1] += bullet_margin_y
 
         self.rect.center = position
 
         self.isAlive = True
-
+        self.isProtected = True
     def update(self, terrain):
         if self.isAlive:
             self.rect.centerx += self.speed[0]

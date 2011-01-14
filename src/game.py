@@ -17,6 +17,7 @@ class Game(Scene):
     def __init__(self):
         self.mainmenu = None
         self.winscreen = None
+        self.initEvents()
         self.initTerrain()
         self.initTeams()
 
@@ -24,18 +25,21 @@ class Game(Scene):
 
         self.startNewGame()
 
+    def initEvents(self):
+        SceneManager().registerEventReader(self.do_action)
+        
     def do_action(self, event):
         # check events
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    for snail in TurnManager().currentTeam.orderedSnailList:
-                        if snail.hasTurn:
-                            snail.shoot()
-                if event.key == pygame.K_ESCAPE:
-                    SceneManager().setScene(self.mainmenu)
-
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                for snail in TurnManager().currentTeam.orderedSnailList:
+                    if snail.hasTurn:
+                        snail.shoot()
+            if event.key == pygame.K_ESCAPE:
+                SceneManager().setScene(self.mainmenu)
     def clean(self):
         self.turnManager.stopTimer()
+        SceneManager().unregisterEventReader(self.do_action)
 
     def initTeams(self):
         self.teams = []

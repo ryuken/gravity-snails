@@ -22,6 +22,7 @@ class SceneManager(object):
         if SceneManager._count2 == 0:
             #Init
             self.initPygame()
+            self.initEventReaders()
             self.initScreen()
             self.initClock()
             self.initInput()
@@ -36,7 +37,10 @@ class SceneManager(object):
     def initPygame(self):
         result = pygame.init()
         return result[1]
-
+    
+    def initEventReaders(self):
+        self.eventReaders = []
+        
     def initScreen(self):
         self.surface = pygame.display.set_mode([Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT]) #retourneert Surface
         pygame.display.set_caption(Settings.GAME_TITLE)
@@ -56,10 +60,8 @@ class SceneManager(object):
                 if event.type == pygame.QUIT:
                     self.running = False
                 else:
-                    self.scene.do_action(event)
-
-            #game.addTeam('test', 2, Direction.LEFT)
-            #game.addTeam('test2', 2, Direction.RIGHT)
+                    for eventReader in self.eventReaders:
+                        eventReader(event)
 
             self.scene.update(self.input)
             self.surface.fill(Settings.SCREEN_COLOR)
@@ -75,3 +77,9 @@ class SceneManager(object):
             self.scene = scene
         else:
             self.running = False
+            
+    def registerEventReader(self, callback):
+        self.eventReaders.append(callback)
+        
+    def unregisterEventReader(self, callback):
+        self.eventReaders.remove(callback)

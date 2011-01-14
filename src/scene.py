@@ -7,6 +7,3 @@ class Scene(object):
         pass
     def update(self, input):
         pass
-    
-    def do_action(self, event):
-        pass

@@ -16,8 +16,8 @@ class BalloonLauncher(Weapon):
     """
     def shoot(self, gravity_direction = None):
         if self.ammo > 0:
-            if(self.snail_rect):
-                self.balloon = Balloon(self.snail_rect, self.weaponAngle, gravity_direction)
+            if(self.snail):
+                self.balloon = Balloon(self.snail, self.weaponAngle, gravity_direction)
             self.ammo -= 1
         else:
             raise ValueError("You can't shoot anymore, you don't have any ammo.")
@@ -33,15 +33,15 @@ class BalloonLauncher(Weapon):
                 self.weaponAngle = 360 + self.weaponAngle
 
     def update(self, input, terrain):
-        if self.snail_rect:
+        if self.snail:
             x_margin = 0
             y_margin = 0
 
-            x_margin = math.cos(math.radians(self.weaponAngle)) * (self.snail_rect.width * 2)
-            y_margin = math.sin(math.radians(self.weaponAngle)) * (self.snail_rect.height * 2)
+            x_margin = math.cos(math.radians(self.weaponAngle)) * (self.snail.rect.width * 2)
+            y_margin = math.sin(math.radians(self.weaponAngle)) * (self.snail.rect.height * 2)
 
-            self.rect.centerx = self.snail_rect.centerx + x_margin
-            self.rect.centery = self.snail_rect.centery + y_margin
+            self.rect.centerx = self.snail.rect.centerx + x_margin
+            self.rect.centery = self.snail.rect.centery + y_margin
 
             if self.balloon:
                 if self.balloon.isAlive == False:
