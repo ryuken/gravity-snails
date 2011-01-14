@@ -17,8 +17,10 @@ class Balloon(pygame.sprite.Sprite):
         #self.speed[1] = math.sin(math.radians(angle)) * 10.0 #(self.rect.height)
         if(gravity_direction == Direction.UP):
             self.speed[1]= 10
+            bullet_margin_y = self.rect.height / 2
         if(gravity_direction == Direction.DOWN):
             self.speed[1]= -10
+            bullet_margin_y = -self.rect.height / 2
         if(gravity_direction == Direction.LEFT):
             self.speed[0]= 10
         if(gravity_direction == Direction.RIGHT):
@@ -29,14 +31,17 @@ class Balloon(pygame.sprite.Sprite):
         #bullet_margin_y = math.sin(math.radians(angle)) * (snail.rect.height * 3)
         position = [0,0]
         position[0] = snail.rect.centerx
-        position[1] = snail.rect.centery
+        position[1] = snail.rect.centery + bullet_margin_y
         #position[0] += bullet_margin_x
         #position[1] += bullet_margin_y
 
-        self.rect.center = position
+        self.rect.centerx = snail.rect.centerx
+        self.rect.centery = snail.rect.centery + bullet_margin_y
 
         self.isAlive = True
         self.isProtected = True
+        
+        self.snail = snail
     def update(self, terrain):
         if self.isAlive:
             self.rect.centerx += self.speed[0]
@@ -54,22 +59,27 @@ class Balloon(pygame.sprite.Sprite):
                 self.bounceOutScreen()
                 self.isAlive = False
 
+            if self.isProtected:
+                list = pygame.sprite.spritecollide(self, self.snail.team, False)
+                if len(list) <> 1:
+                    self.isProtected = False
+            else:   
             # snail collision
-            teams = TurnManager().teams
-            for team in teams:
-                list = pygame.sprite.spritecollide(self, team, False)
-                if(len(list) > 0):
-                    # iterate thru the sprite's which collided with the bullet
-                    for sprite in list:
-                        # when the sprite is not self ( a bullet), it's a snail
-                        if sprite <> self:
-                            # decrease the hitpoint's of the snail with the power of weapon which shot
-                            for t in teams:
-                                if t.hasTurn:
-                                    sprite.hitpoints -= t.active_weapon.power
-
-                    self.bounceOutScreen()
-                    self.isAlive = False
+                teams = TurnManager().teams
+                for team in teams:
+                    list = pygame.sprite.spritecollide(self, team, False)
+                    if(len(list) > 0):
+                        # iterate thru the sprite's which collided with the bullet
+                        for sprite in list:
+                            # when the sprite is not self ( a bullet), it's a snail
+                            if sprite <> self:
+                                # decrease the hitpoint's of the snail with the power of weapon which shot
+                                for t in teams:
+                                    if t.hasTurn:
+                                        sprite.hitpoints -= t.active_weapon.power
+    
+                        self.bounceOutScreen()
+                        self.isAlive = False
 
     def bounceOutScreen(self):
         # bullet's need to go out of screen because
