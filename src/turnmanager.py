@@ -173,6 +173,7 @@ class TurnManager(object):
                                 print str(snail.id) + " is alive"
                                 # give it the turn
                                 nextSnail.hasTurn = True
+                                nextSnail.hasShot = False
                                 print str(snail.id) + " got turn"
                     else:
                         print team.name + " has no snails"
