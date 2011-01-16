@@ -304,4 +304,5 @@ class Snail(pygame.sprite.Sprite):
                 arrow = pygame.transform.rotate(arrow, 90)
                 # set the arrow at the correct position
                 pos = [self.rect.topleft[0] - 85, self.rect.top - 27]
-            surface.blit(arrow, pos)
+            if TurnManager().status == TurnStatus.CURRENTTURN:
+                surface.blit(arrow, pos)
