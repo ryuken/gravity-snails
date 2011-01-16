@@ -26,27 +26,27 @@ class Team(pygame.sprite.Group):
         self.inventory.addWeapon(balloonLauncher)
         self.inventory.addWeapon(cannon)
 
-        self.active_weapon = None
+        self.active_weapon = cannon
 
         self.colorIndex = None
 
     def update(self, *args):
         pygame.sprite.Group.update(self,*args)
         self.checkAlive()
-        if(None == self.active_weapon):
-            if(self.hasTurn):
-                self.inventory.visible = True
-                self.active_weapon = self.inventory.update(args[0])
-            else:
-                self.inventory.visible = False
-        else:
+        if(self.inventory.visible and self.hasTurn):
+            tempWeapon = self.inventory.update(args[0])
+            if(not None == tempWeapon):
+                self.active_weapon = tempWeapon
+        if(not None == self.active_weapon):
             self.active_weapon.update(*args)
+
 
     def draw(self, surface):
         for sprite in self:
             sprite.draw(surface)
-        #draw the inventory
-        self.inventory.draw(surface)
+        #draw the inventory if team has turn
+        if(self.hasTurn):
+            self.inventory.draw(surface)
 
         if self.hasTurn and not None == self.active_weapon:
             for snail in self.orderedSnailList:

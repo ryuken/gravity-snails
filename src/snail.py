@@ -95,13 +95,13 @@ class Snail(pygame.sprite.Sprite):
                         self.isPlaced = True
                         TurnManager().changeTurn()
                         TurnManager().changeTurnSnail(self.team)
-        elif(not None == self.team.active_weapon):
+        else:
             #check if right mouse is pressed
-#            if(input.mouse_right):
-#                self.team.active_weapon = None
-#                self.team.inventory.selectedItemIndex = None
-#                self.update(input, terrain)
-                #return
+            if(input.mouse_right_clicked and self.hasTurn and self.team.hasTurn):
+                input.mouse_right_clicked = False
+                self.team.inventory.visible = True
+                #self.update(input, terrain)
+                return
             # If the snail is placed
             # Check if the snail if moving, and check if the snail is falling
             self.updateMove(input)

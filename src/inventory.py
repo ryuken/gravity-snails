@@ -13,7 +13,7 @@ class Inventory(Menu):
         self.max_weapons = 20
         self.weapons = []
         self.items = []
-        self.visible = False
+        self.visible = True
         self.selectedItemIndex = None
         size = []
         size.append(Settings.SCREEN_WIDTH/4)
@@ -28,6 +28,7 @@ class Inventory(Menu):
         self.addWidget(Label(" "))
 
     def addWeapon(self, weapon):
+        self.selectedItemIndex = 0
         if len(self.weapons) < self.max_weapons:
             self.weapons.append(weapon)
             weaponButton = Button(weapon.name, self.selectItem, len(self.weapons)-1)
@@ -38,7 +39,10 @@ class Inventory(Menu):
     def update(self, input):
         Menu.update(self, input)
         if(not None == self.selectedItemIndex):
-            return self.weapons[self.selectedItemIndex]
+            self.visible = False
+            returnWeapon = self.weapons[self.selectedItemIndex]
+            self.selectedItemIndex = None
+            return returnWeapon
         else:
             return None
 
