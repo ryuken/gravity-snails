@@ -12,13 +12,16 @@ class HelpMenu(Scene):
         text  = "Welcome to gravity snails\n"
         text += "=========================\n"
         text += "\n"
-        text += "Use the left mouse button to place snails in the screen\n"
-        text += "Use the arrow keys to move and to target\n"
-        text += "Use the space bar to fire the weapon\n"
-        text += "\n"
         text += "You can shoot the snails and the terrain beneath them\n"
         text += "Snails die if they touch the salt or when they are out of hitpoints\n"
+        text += "\nCONTROLS\n=========================\n\n"
+        text += "LEFT MOUSE BUTTON:\nplace snails in the screen\n\n"
+        text += "ARROW KEYS:\nmove and target\n\n"
+        text += "SPACE BAR:\nfire the active weapon\n\n"
+        text += "RIGHT MOUSE BUTTON:\nswitch weapon\n\n"
+        text += "\n"
         labelText = Label(text)
+        labelText.centerLines = False
         labelText.rect.center = (self.frame.rect.width / 2, self.frame.rect.height / 2)
         self.frame.addWidget(labelText)
 

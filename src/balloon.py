@@ -7,6 +7,7 @@ from enums import Direction
 class Balloon(pygame.sprite.Sprite):
     def __init__(self, snail, angle, gravity_direction):
         pygame.sprite.Sprite.__init__(self)
+        self._exploded = False
         self.image = load_image("balloon.png")
         self.rect = self.image.get_rect()
         self.gravity_direction = gravity_direction

@@ -44,15 +44,16 @@ class Team(pygame.sprite.Group):
     def draw(self, surface):
         for sprite in self:
             sprite.draw(surface)
+
         #draw the inventory if team has turn
         if(self.hasTurn):
+            self.active_weapon.draw(surface)
             self.inventory.draw(surface)
 
         if self.hasTurn and not None == self.active_weapon:
             for snail in self.orderedSnailList:
                 if snail.hasTurn == True:
                     self.active_weapon.snail_rect = snail.rect
-                    self.active_weapon.draw(surface)
 
     def addSnails(self, numberOfSnails):
         for i in range(0, numberOfSnails):

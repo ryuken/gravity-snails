@@ -12,6 +12,7 @@ class Label(object):
         #print 'label size before resizing: ('+str(self.rect.width)+', ' +str(self.rect.height)+ ')'
         self.rect = pygame.Rect(0,0,1,1)
         self.rect.width, self.rect.height = self.calc_size()
+        self.centerLines = True
 
     def calc_size(self):
         lines = self.text.split("\n")
@@ -23,7 +24,7 @@ class Label(object):
             if lineSurface.get_width() > width:
                 width = lineSurface.get_width()
         return (width, height)
-            
+
     def update(self, input):
         pass
 
@@ -33,5 +34,8 @@ class Label(object):
         y = self.rect.top
         for line in lines:
             lineSurface = self.font.render(line, 1, (255, 255, 255)) #returns surface
-            surface.blit(lineSurface, (self.rect.centerx - (lineSurface.get_width() / 2), y))
+            if self.centerLines:
+                surface.blit(lineSurface, (self.rect.centerx - (lineSurface.get_width() / 2), y))
+            else:
+                surface.blit(lineSurface, (self.rect.centerx - (lineSurface.get_width() / 2), y))
             y += lineSurface.get_height()

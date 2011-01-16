@@ -55,7 +55,7 @@ class Snail(pygame.sprite.Sprite):
 
     def do_action(self, event):
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
+            if event.key == pygame.K_SPACE and self.hasTurn:
                 self.shoot()
 
     def collideWithTerrain(self, terrain):
@@ -66,7 +66,7 @@ class Snail(pygame.sprite.Sprite):
             self.isAlive = False
 
     def shoot(self):
-        if self.team.hasTurn and self.hasTurn:
+        if self.team.hasTurn and self.hasTurn and False == self.hasShot:
             self.team.active_weapon.shoot(self.gravity_direction)
             self.hasShot = True
 
@@ -292,7 +292,6 @@ class Snail(pygame.sprite.Sprite):
                 arrow = pygame.transform.flip(arrow, 1, 1)
                 # set the arrow at the correct position
                 pos = [self.rect.topleft[0] - 20, self.rect.top + 50]
-
             elif self.team.gravity_direction == Direction.LEFT:
                 # flip the default image so the arrow will be easier to rotate
                 # then rotate it to the correct direction
@@ -300,11 +299,9 @@ class Snail(pygame.sprite.Sprite):
                 arrow = pygame.transform.rotate(arrow, 90)
                 # set the arrow at the correct position
                 pos = [self.rect.topleft[0] + 27, self.rect.top - 20]
-
             elif self.team.gravity_direction == Direction.RIGHT:
                 # rotate the default image to the correct direction
                 arrow = pygame.transform.rotate(arrow, 90)
                 # set the arrow at the correct position
                 pos = [self.rect.topleft[0] - 85, self.rect.top - 27]
-
             surface.blit(arrow, pos)
