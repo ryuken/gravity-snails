@@ -28,7 +28,7 @@ class Button(object):
         argSize = len(args)
         if(0 < argSize):
             self.args = args
-
+        self.button_sound = load_sound("button.ogg")
     def update(self, input):
         """
         @param input: The input class
@@ -39,8 +39,7 @@ class Button(object):
         if self.pressed:
             if not input.mouse_left:
                 self.pressed = False
-                button_sound = load_sound("button.ogg")
-                button_sound.play()
+                self.button_sound.play()
                 if(not None == self.args):
                     self.callback(self.args)
                 else:
