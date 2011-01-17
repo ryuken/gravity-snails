@@ -45,11 +45,24 @@ class Snail(pygame.sprite.Sprite):
         self.bullet = None
         # The snail hasn't shooted yet
         self.hasShot = False
+
         # The snail doesn't have the turn
-        self.hasTurn = False
+        #self.hasTurn = False
+
+        self._hasTurn = False
 
         pygame.font.init()
         self.font_hp = pygame.font.Font(None, 20)
+
+    def set_hasTurn(self, value):
+        self._hasTurn = value
+        self.hasShot = False
+
+    def get_hasTurn(self):
+        return self._hasTurn
+
+    hasTurn = property(get_hasTurn, set_hasTurn)
+
     def initEvents(self):
         SceneManager().registerEventReader(self.do_action)
 

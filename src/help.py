@@ -13,7 +13,7 @@ class HelpMenu(Scene):
         text += "=========================\n"
         text += "\n"
         text += "You can shoot the snails and the terrain beneath them\n"
-        text += "Snails die if they touch the salt or when they are out of hitpoints\n"
+        text += "Snails die if they touch the salt\nor when they are out of hitpoints\n"
         text += "\nCONTROLS\n=========================\n\n"
         text += "LEFT MOUSE BUTTON:\nplace snails in the screen\n\n"
         text += "ARROW KEYS:\nmove and target\n\n"
