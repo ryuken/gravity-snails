@@ -5,7 +5,7 @@ from utils import load_image
 from enums import Direction
 from enums import TurnStatus
 from turnmanager import TurnManager
-from scenemanager import SceneManager
+from scenes.scenemanager import SceneManager
 from settings import Settings
 
 class Snail(pygame.sprite.Sprite):
