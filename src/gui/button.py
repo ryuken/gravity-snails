@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 from input import Input
+from utils import load_sound
 class Button(object):
     """
     @ivar font_size: The font size
@@ -38,6 +39,8 @@ class Button(object):
         if self.pressed:
             if not input.mouse_left:
                 self.pressed = False
+                button_sound = load_sound("button.ogg")
+                button_sound.play()
                 if(not None == self.args):
                     self.callback(self.args)
                 else:

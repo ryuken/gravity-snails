@@ -28,7 +28,7 @@ def load_sound(name):
     if not pygame.mixer or not pygame.mixer.get_init():
         return NoneSound()
     fullpath = os.path.abspath(os.path.dirname(sys.argv[0]))
-    fullname = fullpath + '/data/'
+    fullname = fullpath + '/sounds/'
     fullname = fullname + name
     print fullname + "\n"
     try:

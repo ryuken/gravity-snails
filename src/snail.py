@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 from utils import load_image
+from utils import load_sound
 
 from enums import Direction
 from enums import TurnStatus
@@ -80,6 +81,8 @@ class Snail(pygame.sprite.Sprite):
 
     def checkHealth(self):
         if self.hitpoints <= 0:
+            kill_sound = load_sound("kill.ogg")
+            kill_sound.play()
             self.isAlive = False
 
     def shoot(self):

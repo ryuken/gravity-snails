@@ -5,7 +5,7 @@ from gui.label import Label
 from gui.frame import Frame
 from scenes.scene import Scene
 from settingsmenu import SettingsMenu
-
+from utils import load_sound
 class WinScreen(Scene):
     def __init__(self, nextScene, teamColor):
         Scene.__init__(self)
@@ -25,6 +25,8 @@ class WinScreen(Scene):
         self.frame.addWidget(labelText)
         self.frame.addWidget(buttonBack)
 
+        self.victory_sound = load_sound("victory.ogg")
+        self.victory_sound.play()
     def draw(self, surface):
         self.frame.draw(surface)
         
@@ -32,4 +34,5 @@ class WinScreen(Scene):
         self.frame.update(input)
     
     def runNextScene(self):
+        self.victory_sound.stop()
         SceneManager().setScene(self.nextScene)
