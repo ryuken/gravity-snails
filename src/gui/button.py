@@ -36,10 +36,10 @@ class Button(object):
         """
         if input.get_mouse_left_click(self.rect):
             self.pressed = True
+            self.button_sound.play()
         if self.pressed:
             if not input.mouse_left:
                 self.pressed = False
-                self.button_sound.play()
                 if(not None == self.args):
                     self.callback(self.args)
                 else:
