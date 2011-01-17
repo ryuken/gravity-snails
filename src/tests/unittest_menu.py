@@ -15,14 +15,6 @@ class TestMenu(unittest.TestCase):
         """
         pygame.init()
         self.menu = Menu()
-        self.menu.size['width'] = 1
-        self.menu.size['height'] = 1
-        self.initialMenuSize = self.menu.size
-
-    def testAutoResize(self):
-        mySmallLabel = Label("Some very really really tiny small nonsense")
-        self.menu.addOption(mySmallLabel)
-        self.assertTrue(self.initialMenuSize['width'] < self.menu.size['width'])
 
 
 if __name__ == '__main__':
