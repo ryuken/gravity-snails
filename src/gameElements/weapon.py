@@ -1,7 +1,7 @@
 import pygame, math
-from bullet import Bullet
 from utils import load_image
 from turnmanager import TurnManager
+from gameElements.shootableobject import ShootableObject
 
 class Weapon(pygame.sprite.Sprite):
 
@@ -10,11 +10,8 @@ class Weapon(pygame.sprite.Sprite):
         self.name = name
         self.power = power
 
-        # Set the aiming direction
-        self.weaponAngle = 45
-
         self.ammo = 6 * 5
-        self.bullet = None
+        self.shootableObject = None
 
         self.image = load_image('crosshair.png')
         self.rect = self.image.get_rect()
@@ -23,12 +20,7 @@ class Weapon(pygame.sprite.Sprite):
         self.snail = None
 
     def shoot(self, gravity_direction = None):
-        if self.ammo > 0:
-            if(self.snail):
-                self.bullet = Bullet(self.snail, self.weaponAngle)
-            #self.ammo -= 1, this weapon can be shooted infinitely!
-        else:
-            raise ValueError("You can't shoot anymore, you don't have any ammo.")
+        raise ValueError("Weapon.shoot is abstract, please extend to implement shoot method!")
 
     def adjustAngle(self, direction):
         if direction == 0:
@@ -42,24 +34,15 @@ class Weapon(pygame.sprite.Sprite):
 
     def update(self, input, terrain):
         if self.snail:
-            x_margin = 0
-            y_margin = 0
-
-            x_margin = math.cos(math.radians(self.weaponAngle)) * (self.snail.rect.width * 2)
-            y_margin = math.sin(math.radians(self.weaponAngle)) * (self.snail.rect.height * 2)
-
-            self.rect.centerx = self.snail.rect.centerx + x_margin
-            self.rect.centery = self.snail.rect.centery + y_margin
-
-            if self.bullet:
-                if self.bullet.isAlive == False:
-                    self.bullet = None
+            if self.shootableObject:
+                if self.shootableObject.isAlive == False:
+                    self.shootableObject = None
                     TurnManager().stopTurn()
                 else:
-                    self.bullet.update(terrain)
+                    self.shootableObject.update(terrain)
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
 
-        if self.bullet <> None:
-            surface.blit(self.bullet.image, self.bullet.rect)
+        if self.shootableObject <> None:
+            surface.blit(self.shootableObject.image, self.shootableObject.rect)

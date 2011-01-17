@@ -1,8 +1,8 @@
 import pygame
 
 from inventory import Inventory
-from weapon import Weapon
-from balloon_launcher import BalloonLauncher
+from gameElements.cannon import Cannon
+from gameElements.balloon_launcher import BalloonLauncher
 from snail import Snail
 from turnmanager import TurnManager
 
@@ -20,7 +20,7 @@ class Team(pygame.sprite.Group):
         self.gravity_direction = None
 
         self.inventory = Inventory(self.name)
-        cannon = Weapon("Canon", 20)
+        cannon = Cannon("Cannon", 20)
         balloonLauncher = BalloonLauncher("Balloon", 30)
 
         self.inventory.addWeapon(balloonLauncher)

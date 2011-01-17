@@ -50,15 +50,19 @@ class Snail(pygame.sprite.Sprite):
         #self.hasTurn = False
 
         self._hasTurn = False
-
         pygame.font.init()
         self.font_hp = pygame.font.Font(None, 20)
 
     def set_hasTurn(self, value):
+        """
+            set the hasTurn value
+            @param value: the value to assign to hasTurn
+        """
         self._hasTurn = value
         self.hasShot = False
 
     def get_hasTurn(self):
+        """get the hasTurn value"""
         return self._hasTurn
 
     hasTurn = property(get_hasTurn, set_hasTurn)
@@ -186,10 +190,7 @@ class Snail(pygame.sprite.Sprite):
             if (right_pressed):
                 # Move the snail to the right
                 self.direction['movement'] = self.speed['movement']
-            if (up_pressed):
-                self.team.active_weapon.adjustAngle(0)
-            if (down_pressed):
-                self.team.active_weapon.adjustAngle(1)
+
 
     def updateGravity(self):
         # Make the snail fall
