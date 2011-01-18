@@ -6,6 +6,10 @@ from gui.frame import Frame
 
 class HelpMenu(Scene):
     def __init__(self, previousScene):
+        """
+        @param previousScene: The scene which should come after this help
+        @summary: Initializes a help frame
+        """
         Scene.__init__(self)
         self.previousScene = previousScene
         self.frame = Frame()
