@@ -1,5 +1,4 @@
 import pygame
-from pygame.locals import *
 from enums import TurnStatus
 from settings import Settings
 from threading import Timer
@@ -27,9 +26,11 @@ class TurnManager(object):
             pygame.font.init()
             self.font_timer = pygame.font.Font(None, self.font_size)
             self.font_break = pygame.font.Font(None, 50)
+            
             self.startTime = Settings.TIMER_STARTTIME
             self.breakTime = Settings.TIMER_BREAKTIME
             self.currentTime = self.breakTime
+            
             self.position = Settings.TIMER_POSITION
             self.size = Settings.TIMER_SIZE
             self.rect = pygame.Rect(self.position, self.size)
@@ -40,8 +41,10 @@ class TurnManager(object):
             print "Init turnmanager"
             TurnManager._count += 1
 
-
     def startTimer(self):
+        """
+        Create a timer and start it
+        """
         if self.teams is not None:
             self.timer = Timer(1.0, self.updateTime)
             self.timer.start()
@@ -49,15 +52,24 @@ class TurnManager(object):
             raise ValueError("Teams must be assigned use TurnManager.setTeams(teams).")
 
     def setTeams(self, teams):
+        """
+        Set the teams and give team 1 the turn
+        """
         self.teams = teams
         self.teams[0].hasTurn = True
-        #self.currentTeam = self.teams[0]
+        self.currentTeam = self.teams[0]
 
     def stopTimer(self):
+        """
+        Stop the timer when the timer is not None
+        """
         if(not None == self.timer):
             self.timer.cancel()
 
     def draw(self, surface):
+        """
+        Draw the timer in the game
+        """
         # Draw the red rectangle on the game surface
         self.rect = surface.fill((255,0,0), self.rect)
         surface.blit(surface, self.position)
@@ -71,16 +83,26 @@ class TurnManager(object):
             surface.blit(text_break, (Settings.SCREEN_WIDTH / 2 - text_break.get_width()/2, Settings.SCREEN_HEIGHT / 2 - 50))
 
     def updateTime(self):
+        """
+        Decrease the time every second
+        """
         self.updateStatus()
         self.currentTime -= 1
         self.timer = Timer(1.0, self.updateTime)
         self.timer.start()
 
     def updateStatus(self):
+        """
+        When the time is at 0
+        Stop the turn of the current team/snail
+        """
         if self.currentTime == 0:
             self.stopTurn()
 
     def changeTurn(self):
+        """
+        Change the turn of the team
+        """
         someoneHasTurn = []
 
         teamIterator = iter(self.teams)
@@ -138,6 +160,9 @@ class TurnManager(object):
                 print "All teams's are dead"
 
     def changeTurnSnail(self, team):
+        """
+        Change the turn of the snail
+        """
         someoneHasTurn = []
 
         snailIterator = iter(team.orderedSnailList)
@@ -192,6 +217,11 @@ class TurnManager(object):
                 self.changeTurn()
 
     def stopTurn(self):
+        """
+        Stop the turn, means when the status is 
+        BREAK change it to CURRENTTURN and when
+        it is on CURRENTTURN change it to BREAK
+        """
         if self.status == TurnStatus.BREAK:
             self.status = TurnStatus.CURRENTTURN
             self.currentTime = self.startTime
