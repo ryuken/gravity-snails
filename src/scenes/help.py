@@ -5,6 +5,9 @@ from scenes.scene import Scene
 from gui.frame import Frame
 
 class HelpMenu(Scene):
+    """
+    @ivar previousScene: The scene which should come after this help
+    """
     def __init__(self, previousScene):
         """
         @param previousScene: The scene which should come after this help
@@ -36,10 +39,21 @@ class HelpMenu(Scene):
         self.frame.addWidget(buttonBack)
 
     def update(self, input):
+        """
+        @param input: The user input
+        @summary: updates the status of the help frame based on the user input
+        """
         self.frame.update(input)
 
     def draw(self, surface):
+        """
+        @param surface: The surface which the help should be drawed on
+        @summary: draws the help frame on a specified surface
+        """
         self.frame.draw(surface)
 
     def runPreviousScene(self):
+        """
+        @summary: closes the help frame and tells sceneManager to go to previous scene
+        """
         SceneManager().setScene(self.previousScene)
