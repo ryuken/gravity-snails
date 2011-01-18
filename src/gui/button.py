@@ -8,9 +8,9 @@ class Button(object):
     @ivar font: The font
     @ivar rect: The size of the button
     @ivar text: The text that should be showed on the button
-    @ivar callback: This function will be called when someone clicks the button 
+    @ivar callback: This function will be called when someone clicks the button
     """
-    
+
     def __init__(self, text, callback, *args):
         """
         @param text: The text that should be showed on the button
@@ -25,6 +25,7 @@ class Button(object):
         self.callback = callback
         self.pressed = False
         self.args = None
+        self.button_sound = load_sound("button.ogg")
         argSize = len(args)
         if(0 < argSize):
             self.args = args

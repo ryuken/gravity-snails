@@ -1,8 +1,8 @@
 import pygame
 
 from inventory import Inventory
-from gameElements.cannon import Cannon
-from gameElements.balloon_launcher import BalloonLauncher
+from weapons.cannon import Cannon
+from weapons.balloon_launcher import BalloonLauncher
 from snail import Snail
 from turnmanager import TurnManager
 
