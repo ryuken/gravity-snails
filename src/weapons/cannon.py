@@ -30,6 +30,11 @@ class Cannon(Weapon):
             raise ValueError("You can't shoot anymore, you don't have any ammo.")
 
     def update(self, input, terrain):
+        """
+        @param input: The user input
+        @param terrain: The terrain which should be used for collission detection
+        @summary: updates the cannon based on user input
+        """
         if self.snail:
             if self.snail.hasTurn:
                 self.updateAngle(input)
@@ -45,7 +50,10 @@ class Cannon(Weapon):
         Weapon.update(self, input, terrain)
 
     def updateAngle(self, input):
-
+        """
+        @param input: The user input
+        @summary: updates the angle of the crossair based on the user input
+        """
         gravity_direction = None
         if self.snail:
             gravity_direction = self.snail.gravity_direction
@@ -67,6 +75,10 @@ class Cannon(Weapon):
 
 
     def draw(self, surface):
+        """
+        @param surface: The surface which the cannon should be drawed on
+        @summary: draws the cannon on a specified surface
+        """
         surface.blit(self.image, self.rect)
 
         if self.shootableObject <> None:

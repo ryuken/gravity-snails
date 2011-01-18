@@ -5,7 +5,15 @@ from utils import load_sound
 from turnmanager import TurnManager
 
 class ShootableObject(pygame.sprite.Sprite):
+    """
+    @ivar image: The image that represents this object
+    """
+
     def __init__(self, snail):
+        """
+        @param snail: The snail which has shooted this object. This will also be used to calculate the position of this object
+        @summary: Initializes a shootable object
+        """
         pygame.sprite.Sprite.__init__(self)
         self.image = load_image("bullet.png")
         self.rect = self.image.get_rect()
@@ -25,6 +33,10 @@ class ShootableObject(pygame.sprite.Sprite):
         #self.explosionSound.play()
 
     def update(self, terrain):
+        """
+        @param terrain: The terrain which should be used for collission detection
+        @summary: updates this object
+        """
         if self.isAlive:
             self.rect.centerx += self.speed[0]
             self.rect.centery += self.speed[1]
@@ -60,6 +72,9 @@ class ShootableObject(pygame.sprite.Sprite):
                 self.isAlive = False
 
     def bounceOutScreen(self):
+        """
+        @summary: a very ugly method to remove a shootable object from the screen!
+        """
         self.explosionSound.play()
         # bullet's need to go out of screen because
         # otherwise it will be in screen again
@@ -67,4 +82,8 @@ class ShootableObject(pygame.sprite.Sprite):
         self.rect.y = Settings.SCREEN_HEIGHT + 1000
 
     def draw(self, surface):
+        """
+        @param surface: The surface which the shootable object should be drawed on
+        @summary: draws the shootable object on a specified surface
+        """
         surface.blit(self.image, self.rect)
