@@ -18,7 +18,10 @@ class Cannon(Weapon):
         self.image = load_image('crosshair.png')
         self.rect = self.image.get_rect()
 
-    def shoot(self, gravity_direction = None):
+    def shoot(self):
+        """
+        @summary: Shoot the ammo from the launcher
+        """
         if self.ammo > 0:
             if(self.snail):
                 self.shootableObject = Bullet(self.snail, self.weaponAngle)

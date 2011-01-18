@@ -19,7 +19,7 @@ class Weapon(pygame.sprite.Sprite):
         # this rect got the rect of
         self.snail = None
 
-    def shoot(self, gravity_direction = None):
+    def shoot(self):
         raise ValueError("Weapon.shoot is abstract, please extend to implement shoot method!")
 
     def adjustAngle(self, direction):

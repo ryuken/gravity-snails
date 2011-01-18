@@ -12,7 +12,7 @@ class Balloon(ShootableObject):
     @ivar rect: The rect which should be used to draw the image
     """
 
-    def __init__(self, snail, gravity_direction):
+    def __init__(self, snail):
         """
         @param snail: The snail which has shooted this balloon
         @param gravity_direction: The gravity direction which should be used for this balloon
@@ -22,7 +22,7 @@ class Balloon(ShootableObject):
         self._exploded = False
         self.image = load_image("balloon.png")
         self.rect = self.image.get_rect()
-        self.gravity_direction = gravity_direction
+        self.gravity_direction = gravity_direction = snail.gravity_direction
 
         # Calculate the x and y speed of the bullet
         if(gravity_direction == Direction.UP):

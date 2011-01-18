@@ -14,14 +14,13 @@ class BalloonLauncher(Weapon):
         """
         Weapon.__init__(self, name, power)
 
-    def shoot(self, gravity_direction = None):
+    def shoot(self):
         """
-        @param gravity_direction: The gravity direction which should be used to create a balloon
         @summary: Shoot the ammo from the launcher
         """
         if self.ammo > 0:
             if(self.snail):
-                self.shootableObject = Balloon(self.snail, gravity_direction)
+                self.shootableObject = Balloon(self.snail)
             #self.ammo -= 1, this weapon can be shooted infinitely!
         else:
             raise ValueError("You can't shoot anymore, you don't have any ammo.")
