@@ -6,13 +6,21 @@ from settings import Settings
 from gui.label import Label
 
 class Inventory(Menu):
+    """
+    @ivar title: The title of the inventory
+    @ivar max_weapons: The maximum weapons the inventory can hold
+    @ivar visible: Represents wether this inventory is visible or not
+    @ivar selectedItemIndex: The index of the selected item/weapon inside the inventory
+    """
 
     def __init__(self, title):
+        """
+        @param title: The title of the inventory
+        @summary: Initializes an inventory
+        """
         Menu.__init__(self)
-        self.max_items = 5
         self.max_weapons = 20
         self.weapons = []
-        self.items = []
         self.visible = True
         self.selectedItemIndex = None
         size = []
@@ -28,6 +36,10 @@ class Inventory(Menu):
         self.addWidget(Label(" "))
 
     def addWeapon(self, weapon):
+        """
+        @param weapon: The weapon to be added to the inventory
+        @summary: Adds a weapon to the inventory if the inventory still has room for it
+        """
         self.selectedItemIndex = 0
         if len(self.weapons) < self.max_weapons:
             self.weapons.append(weapon)
@@ -37,6 +49,10 @@ class Inventory(Menu):
             print "Weapons full"
 
     def update(self, input):
+        """
+        @param input: The user input
+        @summary: updates the inventory status based on the user input
+        """
         Menu.update(self, input)
         if(not None == self.selectedItemIndex):
             self.visible = False
@@ -46,11 +62,10 @@ class Inventory(Menu):
         else:
             return None
 
-    def addItem(self, item):
-        if len(self.items < self.max_items):
-            self.items.append(item)
-        else:
-            print "Item's full"
     def selectItem(self, args):
+        """
+        @param args: The argumens array
+        @summary: selects an item based on the arguments inside the "args" array
+        """
         self.selectedItemIndex = args[0]
         self.visible = False

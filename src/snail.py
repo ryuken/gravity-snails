@@ -87,7 +87,7 @@ class Snail(pygame.sprite.Sprite):
 
     def shoot(self):
         if self.team.hasTurn and self.hasTurn and False == self.hasShot:
-            self.team.active_weapon.shoot(self.gravity_direction)
+            self.team.active_weapon.shoot()
             self.hasShot = True
 
     def update(self, input, terrain):
