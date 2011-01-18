@@ -6,10 +6,21 @@ from turnmanager import TurnManager
 from enums import *
 
 class Cannon(Weapon):
+    """
+    @ivar name: The name of this weapon
+    @ivar power: Amount of hitpoints this weapon will damage
+    @ivar ammo: The amount of ammo this weapon ha
+    @ivar weaponAngle: The aiming angle in degrees
+    @ivar rect: The rect which should be used to draw the image
+    """
 
     def __init__(self, name, power):
+        """
+        @param name: The name of this cannon
+        @param power: Amount of hitpoints this weapon will damage
+        @summary: Initializes a cannon
+        """
         Weapon.__init__(self, name, power)
-
 
         # Set the aiming direction
         self.weaponAngle = 45
