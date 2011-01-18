@@ -7,12 +7,18 @@ from weapons.weapon import Weapon
 class BalloonLauncher(Weapon):
 
     def __init__(self, name, power):
+        """
+        @param name: The name of this weapon
+        @param power: Amount of hitpoints this weapon will damage
+        @summary: Initializes a balloon launcher
+        """
         Weapon.__init__(self, name, power)
 
-    """
-    Shoot the ammo from the launcher
-    """
     def shoot(self, gravity_direction = None):
+        """
+        @param gravity_direction: The gravity direction which should be used to create a balloon
+        @summary: Shoot the ammo from the launcher
+        """
         if self.ammo > 0:
             if(self.snail):
                 self.shootableObject = Balloon(self.snail, gravity_direction)

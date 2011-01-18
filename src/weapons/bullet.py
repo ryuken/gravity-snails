@@ -5,7 +5,19 @@ from turnmanager import TurnManager
 from weapons.shootableobject import ShootableObject
 
 class Bullet(ShootableObject):
+    """
+    @ivar image: The image that represents the bullet
+    @ivar gravity_direction: The gravity direction which should be used for this balloon
+    @ivar angle: The angle which is used to calculate speed in x and y directions
+    @ivar rect: The rect which should be used to draw the image
+    """
+
     def __init__(self, snail, angle):
+        """
+        @param snail: The snail which has shooted this balloon
+        @param angle: The angle which is used to calculate speed in x and y directions
+        @summary: Initializes a bullet
+        """
         ShootableObject.__init__(self, snail)
 
         self.image = load_image("bullet.png")

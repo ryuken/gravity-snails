@@ -6,7 +6,18 @@ from enums import Direction
 from weapons.shootableobject import ShootableObject
 
 class Balloon(ShootableObject):
+    """
+    @ivar image: The image that represents the balloon
+    @ivar gravity_direction: The gravity direction which should be used for this balloon
+    @ivar rect: The rect which should be used to draw the image
+    """
+
     def __init__(self, snail, gravity_direction):
+        """
+        @param snail: The snail which has shooted this balloon
+        @param gravity_direction: The gravity direction which should be used for this balloon
+        @summary: Initializes a balloon
+        """
         ShootableObject.__init__(self, snail)
         self._exploded = False
         self.image = load_image("balloon.png")
