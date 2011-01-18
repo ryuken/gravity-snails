@@ -1,4 +1,9 @@
 class Settings:
+    """
+    Settings which can be customized at the beginning of the game.
+    All classes use this general settings class, which is similar to an enum.
+    The values can be modified.
+    """
     SCREEN_WIDTH = 640
     SCREEN_HEIGHT = 640
     SCREEN_COLOR = (0, 0, 64)
