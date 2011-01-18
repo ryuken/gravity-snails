@@ -41,8 +41,11 @@ class Weapon(pygame.sprite.Sprite):
                 else:
                     self.shootableObject.update(terrain)
 
+    """
+    Draws the shooter and also the shooted object when it has been shot
+    """
     def draw(self, surface):
         surface.blit(self.image, self.rect)
 
         if self.shootableObject <> None:
-            surface.blit(self.shootableObject.image, self.shootableObject.rect)
+            self.shootableObject.draw(surface)

@@ -19,9 +19,3 @@ class BalloonLauncher(Weapon):
             #self.ammo -= 1, this weapon can be shooted infinitely!
         else:
             raise ValueError("You can't shoot anymore, you don't have any ammo.")
-
-    def draw(self, surface):
-        #surface.blit(self.image, self.rect)
-
-        if self.shootableObject <> None:
-            surface.blit(self.shootableObject.image, self.shootableObject.rect)

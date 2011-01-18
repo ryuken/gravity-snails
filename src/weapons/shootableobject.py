@@ -65,3 +65,6 @@ class ShootableObject(pygame.sprite.Sprite):
         # otherwise it will be in screen again
         self.rect.x = Settings.SCREEN_WIDTH + 1000
         self.rect.y = Settings.SCREEN_HEIGHT + 1000
+
+    def draw(self, surface):
+        surface.blit(self.image, self.rect)
