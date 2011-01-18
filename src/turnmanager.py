@@ -4,6 +4,12 @@ from settings import Settings
 from threading import Timer
 
 class TurnManager(object):
+    """
+    The TurnManager is used to change the turns of the teams
+    and of the snails. TurnManager has a timer, which automatically
+    changes the turn of the teams/snails when the time is up. 
+    It also draws a timer.
+    """
     _instance = None
     _count    = 0
 
@@ -33,6 +39,7 @@ class TurnManager(object):
             
             self.position = Settings.TIMER_POSITION
             self.size = Settings.TIMER_SIZE
+            """ self.rect is a rectangle at the specified pos and size """
             self.rect = pygame.Rect(self.position, self.size)
             self.status = TurnStatus.CURRENTTURN
             self.teams = None
