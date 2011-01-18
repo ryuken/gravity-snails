@@ -10,7 +10,10 @@ from scenes.scenemanager import SceneManager
 from settings import Settings
 
 class Snail(pygame.sprite.Sprite):
-
+    """
+    This is the snail class, which is used for handling walking, collision detection,
+    and everything else the snail does in the game.
+    """
     def __init__(self, team):
         pygame.sprite.Sprite.__init__(self)
 
@@ -56,41 +59,72 @@ class Snail(pygame.sprite.Sprite):
 
     def set_hasTurn(self, value):
         """
-            set the hasTurn value
-            @param value: the value to assign to hasTurn
+        set the hasTurn value
+        @param value: the value to assign to hasTurn, True or False
         """
         self._hasTurn = value
         self.hasShot = False
 
     def get_hasTurn(self):
-        """get the hasTurn value"""
+        """
+        get the hasTurn value"""
         return self._hasTurn
-
+    """
+    Property used to set and get the hasTurn value
+    """
     hasTurn = property(get_hasTurn, set_hasTurn)
+    
 
     def initEvents(self):
+        """
+        Register an event in the SceneManager so we can handle key input from Pygame later.
+        """
         SceneManager().registerEventReader(self.do_action)
-
+    
+    
     def do_action(self, event):
+        """
+        Handle events for handling some keys with custom logic in Snail.
+        """
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE and self.hasTurn:
                 self.shoot()
 
     def collideWithTerrain(self, terrain):
+        """
+        Check if the snail collides with terrain.
+        @param terrain: The terrain object which was created at startup.
+        @return: True when a snail collides with terrain else False 
+        """
         return len(pygame.sprite.spritecollide(self, terrain, False)) > 0
 
     def checkHealth(self):
+        """
+        Check the health of the current snail.
+        If the snail hits less or equal than 0 HP, play a sound and set attribut isAlive to false
+        This method is called in Snail.update
+        """
         if self.hitpoints <= 0:
             kill_sound = load_sound("kill.ogg")
             kill_sound.play()
             self.isAlive = False
 
     def shoot(self):
+        """
+        Shoot with the current active weapon of team.
+        This method is called in do_action when the space button is pressed
+        """
         if self.team.hasTurn and self.hasTurn and False == self.hasShot:
             self.team.active_weapon.shoot()
             self.hasShot = True
 
     def update(self, input, terrain):
+        """
+        This is where all the continious logic happens of snail, such as checking health, placing snails,
+        updating positions, checking for collision.
+        @param input: The input class also used for unit testing
+        @param terrain: The terrain object which was created at startup.
+        """
         # the checkHealth needs to be run first
         self.checkHealth()
 
@@ -137,8 +171,11 @@ class Snail(pygame.sprite.Sprite):
 
         # Use the correct sprite
         self.updateImage()
-
+    
     def updateImage(self):
+        """
+        Update the image of the snail depending on the direction of the movement and gravity direction
+        """
         # Check if the snail is moving left or right
         left_pressed = self.direction['movement'] == -self.speed['movement']
         right_pressed = self.direction['movement'] == self.speed['movement']
@@ -196,12 +233,19 @@ class Snail(pygame.sprite.Sprite):
 
 
     def updateGravity(self):
+        """
+        Update the gravity so the snail will make a falling movement when jumping
+        """
         # Make the snail fall
         self.direction['jump'] += self.speed['fall']
         if self.direction['jump'] > 5:
             self.direction['jump'] = 5
 
     def updateCollisionVertical(self, terrain):
+        """
+        Check for vertical collision depending of the gravity direction of snail.
+        @param terrain: The terrain object which was created at startup.
+        """
         if(self.gravity_direction == Direction.DOWN):
             self.rect = self.rect.move(0, self.direction['jump'])
         if(self.gravity_direction == Direction.UP):
@@ -234,6 +278,10 @@ class Snail(pygame.sprite.Sprite):
                 self.direction['jump'] = -self.speed['jump']
 
     def updateCollisionHorizontal(self, terrain):
+        """
+        Check for horizontal collision depending of the gravity direction of snail.
+        @param terrain: The terrain object which was created at startup.
+        """
         if(self.gravity_direction == Direction.DOWN or self.gravity_direction == Direction.UP):
             self.rect = self.rect.move(self.direction['movement'], 0)
         else:
@@ -245,6 +293,9 @@ class Snail(pygame.sprite.Sprite):
                 self.rect = self.rect.move(0, -self.direction['movement'])
 
     def setImages(self, rightAndLeftImages=['snail1Right.png', 'snail1Left.png']):
+        """
+        Load the different images so we can use them later when moving
+        """
         self.rightAndLeftImages = rightAndLeftImages
         # Load every snail sprite
         self.image = load_image(rightAndLeftImages[0])
@@ -274,6 +325,7 @@ class Snail(pygame.sprite.Sprite):
         """
         Draw the snail, when the snail has the turn it will
         get an arrow on his head so you know that he got the turn
+        @param surface: This is the surface created in the game class 
         """
 
         # draw the snail
