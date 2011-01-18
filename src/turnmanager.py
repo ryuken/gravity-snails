@@ -61,6 +61,8 @@ class TurnManager(object):
     def setTeams(self, teams):
         """
         Set the teams and give team 1 the turn
+        
+        @param teams The teams to set
         """
         self.teams = teams
         self.teams[0].hasTurn = True
@@ -76,6 +78,8 @@ class TurnManager(object):
     def draw(self, surface):
         """
         Draw the timer in the game
+        
+        @param surface The surface to draw on
         """
         # Draw the red rectangle on the game surface
         self.rect = surface.fill((255,0,0), self.rect)
@@ -169,6 +173,8 @@ class TurnManager(object):
     def changeTurnSnail(self, team):
         """
         Change the turn of the snail
+        
+        @param team The team to change the snail from
         """
         someoneHasTurn = []
 
