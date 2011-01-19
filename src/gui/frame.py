@@ -2,6 +2,9 @@ import pygame
 from pygame.locals import *
 from settings import Settings
 class Frame(object):
+    """
+    This is the frame class, it keep tracks of the widgets, and draws them on a frame
+    """
     def __init__(self):
         """
         Initializes a frame

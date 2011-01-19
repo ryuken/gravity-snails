@@ -4,11 +4,7 @@ from input import Input
 from utils import load_sound
 class Button(object):
     """
-    @ivar font_size: The font size
-    @ivar font: The font
-    @ivar rect: The size of the button
-    @ivar text: The text that should be showed on the button
-    @ivar callback: This function will be called when someone clicks the button
+    This is the Button class, which is used for handling a button.
     """
 
     def __init__(self, text, callback, *args):

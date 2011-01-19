@@ -1,10 +1,20 @@
 from gui.frame import Frame
 from settings import Settings
 class Menu(Frame):
+    """
+    The menu class reposition/resizes widgets so that they look like a menu
+    """
     def __init__(self):
+        """
+        Initializes a menu
+        """
         Frame.__init__(self)
 
-    def addWidget(self, optionValue):
+    def addWidget(self, widget):
+        """
+        Adds a widget to the menu
+        @param widget: The widget that should be added to the menu
+        """
         widget_width = 128
         widget_height = 32
         widget_space = 2
@@ -18,11 +28,11 @@ class Menu(Frame):
             if(widget_height < self.widgets[i].rect.height):
                 widget_height = self.widgets[i].rect.height
 
-        optionValue.rect.width = widget_width
-        optionValue.rect.height = widget_height
-        optionValue.rect.centerx = (self.rect.width / 2)
+        widget.rect.width = widget_width
+        widget.rect.height = widget_height
+        widget.rect.centerx = (self.rect.width / 2)
 
-        Frame.addWidget(self, optionValue)
+        Frame.addWidget(self, widget)
 
         menu_height = widget_height * len(self.widgets)
 

@@ -2,8 +2,14 @@ import pygame
 from pygame.locals import *
 from input import Input
 class Label(object):
-
+    """
+    The label class displays some text on the screen
+    """
     def __init__(self, text):
+        """
+        Initializes a label
+        @param text: The text that should be showed on the label
+        """
         self.font_size = 25
         self.font = pygame.font.Font(None, self.font_size)
         self.rect = None #pygame.Rect(0,0,1,1)
@@ -15,6 +21,9 @@ class Label(object):
         self.centerLines = True
 
     def calc_size(self):
+        """
+        Calculates the size of the label
+        """
         lines = self.text.split("\n")
         width = 0
         height = 0
@@ -26,9 +35,17 @@ class Label(object):
         return (width, height)
 
     def update(self, input):
+        """
+        Updates the label
+        @param input: The input class
+        """
         pass
 
     def draw(self, surface):
+        """
+        Draws the label
+        @param surface: The surface the label should be drawed on
+        """
         # Create a new surface at the position of the red rectangle and draw the text
         lines = self.text.split("\n")
         y = self.rect.top
