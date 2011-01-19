@@ -1,27 +1,16 @@
 import pygame
 
 from inventory import Inventory
-from weapons.cannon import Cannon
-from weapons.balloon_launcher import BalloonLauncher
+from weapon import Weapon
+from balloon_launcher import BalloonLauncher
 from snail import Snail
 from turnmanager import TurnManager
 
 class Team(pygame.sprite.Group):
-    """
-    This is the team class, which is the owner of a group of snails.
-    Several snails together form a team.
-    """
+
     def __init__(self, name):
-        """
-        Constructor to create a team of snails
-        @param name: The name of the team, which will displayed in various locations
-        @return: Team object.
-        """ 
         pygame.sprite.Group.__init__(self)
-        
         self.name = name
-        """ The name of the team"""
-        
         self.hasTurn = False
 
         self.isAlive = True
@@ -31,55 +20,41 @@ class Team(pygame.sprite.Group):
         self.gravity_direction = None
 
         self.inventory = Inventory(self.name)
-        cannon = Cannon("Cannon", 20)
+        cannon = Weapon("Canon", 20)
         balloonLauncher = BalloonLauncher("Balloon", 30)
 
         self.inventory.addWeapon(balloonLauncher)
         self.inventory.addWeapon(cannon)
 
-        self.active_weapon = cannon
+        self.active_weapon = None
 
         self.colorIndex = None
-    
-    
 
     def update(self, *args):
-        """
-        Call the update of all the objects the team currently manages, this can include weapon, inventory and snails.
-        @param *args: Pass all the arguments to the the update of the sprites. 
-        """
         pygame.sprite.Group.update(self,*args)
         self.checkAlive()
-        if(self.inventory.visible and self.hasTurn):
-            tempWeapon = self.inventory.update(args[0])
-            if(not None == tempWeapon):
-                self.active_weapon = tempWeapon
-        if(not None == self.active_weapon):
+        if(None == self.active_weapon):
+            if(self.hasTurn):
+                self.inventory.visible = True
+                self.active_weapon = self.inventory.update(args[0])
+            else:
+                self.inventory.visible = False
+        else:
             self.active_weapon.update(*args)
 
-
     def draw(self, surface):
-        """
-        Draw all the objects the team currently manages, this can include weapon, inventory and snails.
-        @param surface: This is the surface created in the game class 
-        """
         for sprite in self:
             sprite.draw(surface)
-
-        #draw the inventory if team has turn
-        if(self.hasTurn):
-            self.active_weapon.draw(surface)
-            self.inventory.draw(surface)
+        #draw the inventory
+        self.inventory.draw(surface)
 
         if self.hasTurn and not None == self.active_weapon:
             for snail in self.orderedSnailList:
                 if snail.hasTurn == True:
                     self.active_weapon.snail_rect = snail.rect
+                    self.active_weapon.draw(surface)
 
     def addSnails(self, numberOfSnails):
-        """
-        Add a number of snails to the teams, this creates snails objects.
-        """
         for i in range(0, numberOfSnails):
             snail = Snail(self)
             snail.id = i
@@ -87,13 +62,8 @@ class Team(pygame.sprite.Group):
             self.orderedSnailList.append(snail)
 
         self.orderedSnailList[len(self.orderedSnailList) - 1].hasTurn = True
-    
-    
+
     def setGravity(self, direction):
-        """
-        Set the gravity direction for the team
-        @param direction: An integer representing a value. Use enums.Direction.
-        """
         self.gravity_direction = direction
         for s in self.sprites():
             s.gravity_direction = direction
@@ -113,11 +83,6 @@ class Team(pygame.sprite.Group):
             s.setImages(rightAndLeftImages)
 
     def checkAlive(self):
-        """
-        Check if the team is alive and if every snail of the team is still alive
-        Remove the dead snails from the orderedlist and change the turn if a snail died while having the turn.
-        @return: True if the team still has snails at least 1, which means alive else False
-        """
         # Loop thru snail's
         for snail in self.orderedSnailList:
             # Check if the snail is alive

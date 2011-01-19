@@ -4,18 +4,11 @@ from utils import load_image
 from math import ceil
 
 class Salt(pygame.sprite.Group):
-    """
-    This is the Salt class.
-    Salt is placed around the screen.
-    Salt is a trap, when a snail touches this,
-    they will die. (collision is done in Snail)
-    """
+
     def __init__(self):
         pygame.sprite.Group.__init__(self)
-        
-        """ height """
+
         h = int(ceil(Settings.SCREEN_HEIGHT / 315.0))
-        """ width """
         w = int(ceil(Settings.SCREEN_WIDTH / 315.0))
         y = 0
         x = 0
@@ -33,7 +26,8 @@ class Salt(pygame.sprite.Group):
             self.saltSprite.rect = self.saltSprite.image.get_rect()
             self.saltSprite.rect.move_ip((Settings.SCREEN_WIDTH - 31),y)
             self.add(self.saltSprite)
-            
+            #surface.blit(self.saltSprite.image, (0,y))
+            #surface.blit(self.saltSprite.image, ((Settings.SCREEN_WIDTH - 31),y))
             y += 315
         
         for i in range(0, w):
@@ -52,4 +46,6 @@ class Salt(pygame.sprite.Group):
             self.saltSprite.rect.move_ip(x,(Settings.SCREEN_HEIGHT - 31))
             self.add(self.saltSprite)
             
+            #surface.blit(self.saltSprite.image, (x,0))
+            #surface.blit(self.saltSprite.image, (x,(Settings.SCREEN_HEIGHT - 31)))
             x += 315

@@ -1,42 +1,32 @@
 import pygame, math
 from utils import load_image
 from settings import Settings
-from utils import load_sound
 from turnmanager import TurnManager
 
-class ShootableObject(pygame.sprite.Sprite):
-    """
-    @ivar image: The image that represents this object
-    """
-
-    def __init__(self, snail):
-        """
-        @param snail: The snail which has shooted this object. This will also be used to calculate the position of this object
-        @summary: Initializes a shootable object
-        """
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self, snail, angle):
         pygame.sprite.Sprite.__init__(self)
         self.image = load_image("bullet.png")
         self.rect = self.image.get_rect()
-
+        
         # Calculate the x and y speed of the bullet
         self.speed = [0,0]
-
+        self.speed[0] = math.cos(math.radians(angle)) * 10.0 #(self.rect.width)
+        self.speed[1] = math.sin(math.radians(angle)) * 10.0 #(self.rect.height)
+        
         self.snail = snail
+        # Calculate the start position of the bullet
+        #bullet_margin_x = math.cos(math.radians(angle)) * (snail_rect.width)
+        #bullet_margin_y = math.sin(math.radians(angle)) * (snail_rect.height)
         position = [0,0]
         position[0] = snail.rect.centerx
         position[1] = snail.rect.centery
-
+        
         self.rect.center = position
+        
         self.isAlive = True
         self.isProtected = True
-        self.explosionSound = load_sound("cannon.ogg")
-        #self.explosionSound.play()
-
-    def update(self, terrain):
-        """
-        @param terrain: The terrain which should be used for collission detection
-        @summary: updates this object
-        """
+    def update(self, terrain):        
         if self.isAlive:
             self.rect.centerx += self.speed[0]
             self.rect.centery += self.speed[1]
@@ -50,7 +40,7 @@ class ShootableObject(pygame.sprite.Sprite):
                 list = pygame.sprite.spritecollide(self, self.snail.team, False)
                 if len(list) <> 1:
                     self.isProtected = False
-            else:
+            else:               
                 # snail collision
                 teams = TurnManager().teams
                 for team in teams:
@@ -62,7 +52,7 @@ class ShootableObject(pygame.sprite.Sprite):
                             if sprite <> self:
                                 # decrease the hitpoint's of the snail with the power of weapon which shot
                                 sprite.hitpoints -= TurnManager().currentTeam.active_weapon.power
-
+                        
                         self.bounceOutScreen()
                         self.isAlive = False
             # terrain collision
@@ -70,20 +60,9 @@ class ShootableObject(pygame.sprite.Sprite):
             if(len(list) > 0):
                 self.bounceOutScreen()
                 self.isAlive = False
-
+                
     def bounceOutScreen(self):
-        """
-        @summary: a very ugly method to remove a shootable object from the screen!
-        """
-        self.explosionSound.play()
         # bullet's need to go out of screen because
         # otherwise it will be in screen again
         self.rect.x = Settings.SCREEN_WIDTH + 1000
         self.rect.y = Settings.SCREEN_HEIGHT + 1000
-
-    def draw(self, surface):
-        """
-        @param surface: The surface which the shootable object should be drawed on
-        @summary: draws the shootable object on a specified surface
-        """
-        surface.blit(self.image, self.rect)
