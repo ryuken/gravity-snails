@@ -10,6 +10,11 @@ from gui.menu import Menu
 from scenemanager import SceneManager
 class SettingsMenu(Scene):
     def __init__(self, parentScene):
+        """
+        Initialize the Settingsmenu
+        @param parentScene: The scene he should go back to when the settings are adjusted
+        """
+    
         Scene.__init__(self)
         self.parentScene = parentScene
         self.frame = Menu()
@@ -27,12 +32,23 @@ class SettingsMenu(Scene):
         self.frame.addWidget(Button("Ok",self.applySettings))
 
     def update(self, input):
+        """
+        Update the settingsmenu
+        @param input: The input class
+        """
         self.frame.update(input)
 
     def draw(self, surface):
+        """
+        Draw the settingsmenu on a surface
+        @param surface: The surface the settingsmenu should be drawed on
+        """
         self.frame.draw(surface)
 
     def applySettings(self):
+        """
+        Adjust the game settings
+        """
         Settings.GAME_PLAYERS = self.sliderPlayers.value
         Settings.GAME_SNAILS = self.sliderSnails.value
         Settings.GAME_SNAILS_HP = self.sliderSnailsHp.value
