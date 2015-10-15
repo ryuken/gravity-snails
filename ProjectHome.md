@@ -1,0 +1,1 @@
+A school project. Making a game with PyGame, focusing on game design.
