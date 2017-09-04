@@ -4,7 +4,7 @@ from gui.button import Button
 from gui.label import Label
 from gui.frame import Frame
 from scenes.scene import Scene
-from settingsmenu import SettingsMenu
+from scenes.settingsmenu import SettingsMenu
 from utils import load_sound
 class WinScreen(Scene):
     """

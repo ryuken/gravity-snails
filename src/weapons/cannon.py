@@ -92,5 +92,5 @@ class Cannon(Weapon):
         """
         surface.blit(self.image, self.rect)
 
-        if self.shootableObject <> None:
+        if self.shootableObject != None:
             surface.blit(self.shootableObject.image, self.shootableObject.rect)

@@ -14,7 +14,7 @@ class SceneManager(object):
                                 cls, *args, **kwargs)
 
 #            _count += 1
-            print "Created new instance of SceneManger"
+            print("Created new instance of SceneManger")
         return cls._instance2
 
     def __init__(self):
@@ -40,11 +40,11 @@ class SceneManager(object):
         """ Initializes pygame """
         result = pygame.init()
         return result[1]
-    
+
     def initEventReaders(self):
         """ Initializes the event readers """
         self.eventReaders = []
-        
+
     def initScreen(self):
         """ Initializes the screen """
         self.surface = pygame.display.set_mode([Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT]) #retourneert Surface
@@ -89,14 +89,14 @@ class SceneManager(object):
             self.scene = scene
         else:
             self.running = False
-            
+
     def registerEventReader(self, callback):
         """
         Register a event reader
         @param callback: The function that should be called
         """
         self.eventReaders.append(callback)
-        
+
     def unregisterEventReader(self, callback):
         """
         Unregisters a event reader

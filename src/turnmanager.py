@@ -7,7 +7,7 @@ class TurnManager(object):
     """
     The TurnManager is used to change the turns of the teams
     and of the snails. TurnManager has a timer, which automatically
-    changes the turn of the teams/snails when the time is up. 
+    changes the turn of the teams/snails when the time is up.
     It also draws a timer.
     """
     _instance = None
@@ -22,7 +22,7 @@ class TurnManager(object):
                                 cls, *args, **kwargs)
 
 #            _count += 1
-            print "Created new instance"
+            print("Created new instance")
         # return the class attribute _instance we just maked or we already had
         return cls._instance
 
@@ -32,11 +32,11 @@ class TurnManager(object):
             pygame.font.init()
             self.font_timer = pygame.font.Font(None, self.font_size)
             self.font_break = pygame.font.Font(None, 50)
-            
+
             self.startTime = Settings.TIMER_STARTTIME
             self.breakTime = Settings.TIMER_BREAKTIME
             self.currentTime = self.breakTime
-            
+
             self.position = Settings.TIMER_POSITION
             self.size = Settings.TIMER_SIZE
             """ self.rect is a rectangle at the specified pos and size """
@@ -45,7 +45,7 @@ class TurnManager(object):
             self.teams = None
             self.timer = None
             self.currentTeam = None
-            print "Init turnmanager"
+            print("Init turnmanager")
             TurnManager._count += 1
 
     def startTimer(self):
@@ -61,7 +61,7 @@ class TurnManager(object):
     def setTeams(self, teams):
         """
         Set the teams and give team 1 the turn
-        
+
         @param teams The teams to set
         """
         self.teams = teams
@@ -78,7 +78,7 @@ class TurnManager(object):
     def draw(self, surface):
         """
         Draw the timer in the game
-        
+
         @param surface The surface to draw on
         """
         # Draw the red rectangle on the game surface
@@ -135,11 +135,11 @@ class TurnManager(object):
                             nextTeam = teamIterator.next()
                             # check if the team is alive
                             if nextTeam.isAlive == True:
-                                print nextTeam.name +" is alive"
+                                print(nextTeam.name +" is alive")
 
                                 # when the team is alive give it the turn
                                 nextTeam.hasTurn = True
-                                print nextTeam.name + " got turn"
+                                print(nextTeam.name + " got turn")
 
                                 self.currentTeam = nextTeam
                         except StopIteration:
@@ -148,11 +148,11 @@ class TurnManager(object):
                                 nextTeam = self.teams[0]
                                 # check if this team is alive
                                 if nextTeam.isAlive == True:
-                                    print nextTeam.name + " from StopIteration is alive"
+                                    print(nextTeam.name + " from StopIteration is alive")
 
                                     # give it the turn
                                     nextTeam.hasTurn = True
-                                    print nextTeam.name + " from StopIteration got the turn"
+                                    print(nextTeam.name + " from StopIteration got the turn")
 
                                     self.currentTeam = nextTeam
         else:
@@ -166,14 +166,14 @@ class TurnManager(object):
             if len(livingTeam) > 0:
                 livingTeam[0].hasTurn = True
                 self.currentTeam = livingTeam[0]
-                print livingTeam[0].name + " got turn"
+                print(livingTeam[0].name + " got turn")
             else:
-                print "All teams's are dead"
+                print("All teams's are dead")
 
     def changeTurnSnail(self, team):
         """
         Change the turn of the snail
-        
+
         @param team The team to change the snail from
         """
         someoneHasTurn = []
@@ -188,7 +188,7 @@ class TurnManager(object):
             snailIterator = iter(team.orderedSnailList)
             for snail in snailIterator:
                 if snail.hasTurn == True:
-                    print str(snail.id) + " had turn"
+                    print(str(snail.id) + " had turn")
                     snail.hasTurn = False
 
                     if len(team.orderedSnailList) > 0:
@@ -198,21 +198,21 @@ class TurnManager(object):
                             nextSnail = snailIterator.next()
                             # check if the snail is alive
                             if nextSnail.isAlive == True:
-                                print str(snail.id) + " is alive"
+                                print(str(snail.id) + " is alive")
                                 # give it the turn
                                 nextSnail.hasTurn = True
-                                print str(snail.id) + " got turn"
+                                print(str(snail.id) + " got turn")
                         except StopIteration:
                             # set the first team of the list of teams as the next team
                             nextSnail = team.orderedSnailList[0]
                             # check if this team is alive
                             if nextSnail.isAlive == True:
-                                print str(snail.id) + " is alive"
+                                print(str(snail.id) + " is alive")
                                 # give it the turn
                                 nextSnail.hasTurn = True
-                                print str(snail.id) + " got turn"
+                                print(str(snail.id) + " got turn")
                     else:
-                        print team.name + " has no snails"
+                        print(team.name + " has no snails")
         else:
             # give a snail the turn who is alive
             livingSnail = []
@@ -224,14 +224,14 @@ class TurnManager(object):
 
             if len(livingSnail) > 0:
                 livingSnail[0].hasTurn = True
-                print str(livingSnail[0].id) + " got turn"
+                print(str(livingSnail[0].id) + " got turn")
             else:
-                print "All snail's of " + team.name + " are dead"
+                print("All snail's of " + team.name + " are dead")
                 self.changeTurn()
 
     def stopTurn(self):
         """
-        Stop the turn, means when the status is 
+        Stop the turn, means when the status is
         BREAK change it to CURRENTTURN and when
         it is on CURRENTTURN change it to BREAK
         """

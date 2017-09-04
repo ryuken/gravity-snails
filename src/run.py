@@ -1,4 +1,3 @@
-
 from scenes.mainmenu import MainMenu
 from scenes.scenemanager import SceneManager
 mySceneManager = SceneManager()

@@ -48,7 +48,7 @@ class ShootableObject(pygame.sprite.Sprite):
                 self.isAlive = False
             if self.isProtected:
                 list = pygame.sprite.spritecollide(self, self.snail.team, False)
-                if len(list) <> 1:
+                if len(list) != 1:
                     self.isProtected = False
             else:
                 # snail collision
@@ -59,7 +59,7 @@ class ShootableObject(pygame.sprite.Sprite):
                         # iterate thru the sprite's which collided with the bullet
                         for sprite in list:
                             # when the sprite is not self ( a bullet), it's a snail
-                            if sprite <> self:
+                            if sprite != self:
                                 # decrease the hitpoint's of the snail with the power of weapon which shot
                                 sprite.hitpoints -= TurnManager().currentTeam.active_weapon.power
 

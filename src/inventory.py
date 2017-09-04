@@ -46,7 +46,7 @@ class Inventory(Menu):
             weaponButton = Button(weapon.name, self.selectItem, len(self.weapons)-1)
             self.addWidget(weaponButton)
         else:
-            print "Weapons full"
+            print("Weapons full")
 
     def update(self, input):
         """

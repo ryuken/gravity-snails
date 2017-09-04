@@ -57,5 +57,5 @@ class Weapon(pygame.sprite.Sprite):
         """
         surface.blit(self.image, self.rect)
 
-        if self.shootableObject <> None:
+        if self.shootableObject != None:
             self.shootableObject.draw(surface)

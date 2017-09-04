@@ -16,12 +16,12 @@ class Team(pygame.sprite.Group):
         Constructor to create a team of snails
         @param name: The name of the team, which will displayed in various locations
         @return: Team object.
-        """ 
+        """
         pygame.sprite.Group.__init__(self)
-        
+
         self.name = name
         """ The name of the team"""
-        
+
         self.hasTurn = False
 
         self.isAlive = True
@@ -40,13 +40,13 @@ class Team(pygame.sprite.Group):
         self.active_weapon = cannon
 
         self.colorIndex = None
-    
-    
+
+
 
     def update(self, *args):
         """
         Call the update of all the objects the team currently manages, this can include weapon, inventory and snails.
-        @param *args: Pass all the arguments to the the update of the sprites. 
+        @param *args: Pass all the arguments to the the update of the sprites.
         """
         pygame.sprite.Group.update(self,*args)
         self.checkAlive()
@@ -61,7 +61,7 @@ class Team(pygame.sprite.Group):
     def draw(self, surface):
         """
         Draw all the objects the team currently manages, this can include weapon, inventory and snails.
-        @param surface: This is the surface created in the game class 
+        @param surface: This is the surface created in the game class
         """
         for sprite in self:
             sprite.draw(surface)
@@ -87,8 +87,8 @@ class Team(pygame.sprite.Group):
             self.orderedSnailList.append(snail)
 
         self.orderedSnailList[len(self.orderedSnailList) - 1].hasTurn = True
-    
-    
+
+
     def setGravity(self, direction):
         """
         Set the gravity direction for the team
@@ -137,4 +137,4 @@ class Team(pygame.sprite.Group):
         else:
             self.isAlive = False
             TurnManager().teams.remove(self)
-            print "removed " + self.name
+            print("removed " + self.name)

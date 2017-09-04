@@ -8,12 +8,12 @@ def load_image(name, colorkey=None):
     fullpath = os.path.abspath(os.path.dirname(sys.argv[0]))
     fullname = fullpath + '/sprites/'
     fullname = fullname + name
-    #print fullname + "\n"
+    #print(fullname + "\n")
     try:
         image = pygame.image.load(fullname)
-    except pygame.error, message:
-        print 'Cannot load image:', fullname
-        raise SystemExit, message
+    except (pygame.error, message):
+        print('Cannot load image:', fullname)
+        raise (SystemExit, message)
     #image = image.convert_alpha()
     if colorkey is not None:
         if colorkey is -1:
@@ -30,10 +30,10 @@ def load_sound(name):
     fullpath = os.path.abspath(os.path.dirname(sys.argv[0]))
     fullname = fullpath + '/sounds/'
     fullname = fullname + name
-    print fullname + "\n"
+    print(fullname + "\n")
     try:
         sound = pygame.mixer.Sound(fullname)
-    except pygame.error, message:
-        print 'Cannot load sound:', fullname
-        raise SystemExit, message
+    except (pygame.error, message):
+        print('Cannot load sound:', fullname)
+        raise (SystemExit, message)
     return sound

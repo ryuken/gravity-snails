@@ -7,14 +7,14 @@ from settings import Settings
 from scenes.scene import Scene
 from gui.menu import Menu
 
-from scenemanager import SceneManager
+from scenes.scenemanager import SceneManager
 class SettingsMenu(Scene):
     def __init__(self, parentScene):
         """
         Initialize the Settingsmenu
         @param parentScene: The scene he should go back to when the settings are adjusted
         """
-    
+
         Scene.__init__(self)
         self.parentScene = parentScene
         self.frame = Menu()
