@@ -132,7 +132,7 @@ class TurnManager(object):
                         nextTeam = None
                         # try to get the next team
                         try:
-                            nextTeam = teamIterator.next()
+                            nextTeam = teamIterator.__next__()
                             # check if the team is alive
                             if nextTeam.isAlive == True:
                                 print(nextTeam.name +" is alive")
@@ -195,7 +195,7 @@ class TurnManager(object):
                         nextSnail = None
                         # try to get the next snail
                         try:
-                            nextSnail = snailIterator.next()
+                            nextSnail = snailIterator.__next__()
                             # check if the snail is alive
                             if nextSnail.isAlive == True:
                                 print(str(snail.id) + " is alive")
